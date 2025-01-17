@@ -1,1 +1,20 @@
-<p>login works!</p>
+<div class="auth-container">
+    <h1>Sign in</h1>
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+        <div class="login-field">
+            <i class="login__icon fas fa-user"></i>
+            <input formControlName="email" type="text" class="login-input" placeholder="Enter email">
+        </div>
+        <div class="login-field">
+            <i class="login__icon fas fa-lock"></i>
+            <input formControlName="password" type="password" name="password" id="password" class="login-input" placeholder="Enter password">
+        </div>
+        <div class="login-field">
+            <i class="login__icon fas fa-lock"></i>
+            <input type="submit" value="Login">
+        </div>
+    </form>
+    <div class="register">
+        <p>Don't have account? <a href="/">Create one</a></p>
+    </div>
+</div>
