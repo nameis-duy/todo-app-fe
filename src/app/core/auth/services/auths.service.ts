@@ -1,3 +1,4 @@
+import { RegisterRequest } from './../../models/register.model';
 import { LoginResponse } from './../../models/loginResponse.model';
 import { LoginRequest } from './../../models/login.model';
 import { HttpClient } from '@angular/common/http';
@@ -18,7 +19,11 @@ export class AuthsService {
 
   login(loginRequest: LoginRequest): Observable<{ loginRes: LoginResponse }> {
     const loginUrl = this.baseUrl + "auth/login";
-
     return this.http.post<{ loginRes: LoginResponse }>(loginUrl, loginRequest);
+  }
+
+  register(registerRequest: RegisterRequest): Observable<{ regisRes: boolean }> {
+    const registerUrl = this.baseUrl + "auth/register";
+    return this.http.post<{ regisRes: boolean }>(registerUrl, registerRequest);
   }
 }

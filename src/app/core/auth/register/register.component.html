@@ -1,1 +1,37 @@
-<p>register works!</p>
+<div class="auth-container">
+    <h1>Sign up</h1>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="register-field">
+            <i class="register__icon fas fa-user"></i>
+            <input formControlName="firstName" type="text" class="register-input" placeholder="Enter first name"
+                [required]="true" [maxLength]="250">
+        </div>
+        <div class="register-field">
+            <i class="register__icon fas fa-user"></i>
+            <input formControlName="lastName" type="text" class="register-input" placeholder="Enter last name"
+                [required]="true" [maxlength]="100">
+        </div>
+        <div class="register-field">
+            <i class="register__icon fas fa-user"></i>
+            <input formControlName="email" type="email" class="register-input" placeholder="Enter email" 
+                [email]="true" [required]="true">
+        </div>
+        <div class="register-field">
+            <i class="register__icon fas fa-lock"></i>
+            <input formControlName="password" type="password" name="password" id="password" class="register-input"
+                placeholder="Enter password" [required]="true" [minlength]="6">
+        </div>
+        <div class="register-field">
+            <i class="register__icon fas fa-lock"></i>
+            <input formControlName="confirmPassword" type="password" name="password" id="confirmPassword"
+                class="register-input" placeholder="Enter confirm password" [required]="true">
+        </div>
+        <div class="register-field">
+            <i class="register__icon fas fa-lock"></i>
+            <input type="submit" value="Register">
+        </div>
+    </form>
+    <div class="register">
+        <p>Already have an account? <a href="/">Sign in</a></p>
+    </div>
+</div>
