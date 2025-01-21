@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AppConstant } from '../../constants/constant';
+import { AppConstant } from '../constants/constant';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +13,7 @@ export class JwtService {
     }
 
     setToken(token: string): void {
-        window.localStorage[this.jwtKey] = token;
+        window.localStorage.setItem(this.jwtKey, token);
     }
 
     getRefreshToken(): string {
@@ -21,7 +21,7 @@ export class JwtService {
     }
 
     setRefreshToken(token: string): void {
-        window.localStorage[this.jwtRefreshKey] = token;
+        window.localStorage.setItem(this.jwtRefreshKey, token);
     }
 
     destroyToken(): void {

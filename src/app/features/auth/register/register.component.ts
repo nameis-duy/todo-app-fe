@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { AbstractControl, EmailValidator, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { JwtService } from '../services/jwt.service';
-import { AuthsService } from '../services/auths.service';
-import { RegisterRequest } from '../../models/register.model';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthsService } from '../../../core/auth/auths.service';
+import { RouterLink } from '@angular/router';
+import { JwtService } from '../../../core/services/jwt.service';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -18,11 +18,11 @@ export class RegisterComponent {
   constructor() {
     this.registerForm = new FormGroup({
       firstName: new FormControl('', {
-        validators: [Validators.required, Validators.maxLength(250)],
+        validators: [Validators.required, Validators.maxLength(250), Validators.minLength(1)],
         nonNullable: true
       }),
       lastName: new FormControl('', {
-        validators: [Validators.required, Validators.maxLength(100)],
+        validators: [Validators.required, Validators.maxLength(100), Validators.minLength(1)],
         nonNullable: true
       }),
       email: new FormControl('', {
@@ -34,14 +34,18 @@ export class RegisterComponent {
         nonNullable: true
       }),
       confirmPassword: new FormControl('', {
-        validators: [Validators.required, this.matchedConfirmPassword()],
+        validators: [Validators.required],
         nonNullable: true
       }),
     });
   }
 
   onSubmit() {
-    if (this.registerForm.invalid) return;
+    debugger;
+    if (this.registerForm.invalid) {
+      alert('invalid information');
+      return;
+    }
     let observable = this.authService.register(this.registerForm.value);
     observable.pipe().subscribe({
       next: (res: any) => {
@@ -54,15 +58,5 @@ export class RegisterComponent {
         throw err;
       },
     });
-  }
-
-  matchedConfirmPassword() : ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      console.log(control.value);
-      // if (this.registerForm.value.password == control.value) {
-      //   return {confirmPassword: {value: "Confirm password not match with password"}}
-      // }
-      return null;
-    };
   }
 }

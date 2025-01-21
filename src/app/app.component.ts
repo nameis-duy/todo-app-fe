@@ -1,14 +1,22 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { LoginComponent } from "./core/auth/login/login.component";
-import { RegisterComponent } from "./core/auth/register/register.component";
+import { Component, inject } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { JwtService } from './core/services/jwt.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RegisterComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'todo-app-fe';
+  title = 'TodoApp';
+  jwtService = inject(JwtService);
+  router = inject(Router);
+
+  ngOnInit() {
+    const token = this.jwtService.getToken();
+    if (!token && this.router.url !== 'register') {
+      this.router.navigateByUrl('/login');
+    }
+  }
 }
