@@ -1,0 +1,10 @@
+<div class="task-items-container">
+    <input type="checkbox" [checked]="task().isCompleted" placeholder="checkbox" />
+    <p>{{ task().title }}</p>
+    <p>{{ task().description }}</p>
+    <p>Priority: {{ task().priority }}</p>
+    <p>Status: {{ task().status }}</p>
+    <button type="button">Edit</button>
+    <button type="button">Remove</button>
+</div>
+<hr />

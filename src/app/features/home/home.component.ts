@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { AuthsService } from '../../core/auth/auths.service';
 import { Router } from '@angular/router';
+import { TaskListComponent } from "../task-list/task-list.component";
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [TaskListComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

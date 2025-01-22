@@ -30,4 +30,8 @@ export class AuthsService {
   logout() {
     this.jwtService.destroyToken();
   }
+
+  isAuthenticated() : boolean {
+    return !!this.jwtService.getToken();
+  }
 }
