@@ -1,6 +1,9 @@
-import { Component, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TaskCreateRequest } from '../../models/dtos/task.create.request.model';
+import { TaskCreateRequest } from '../../models/dtos/task-create-request.model';
+import { Task } from '../../models/task.model';
+import { formatDate } from '@angular/common';
+import { TaskUpdateRequest } from '../../models/dtos/task-update-request.model';
 
 @Component({
   selector: 'app-task-forms',
@@ -9,36 +12,51 @@ import { TaskCreateRequest } from '../../models/dtos/task.create.request.model';
   styleUrl: './task-forms.component.scss'
 })
 export class TaskFormsComponent {
-  formSubmit = output<TaskCreateRequest>();
+  formCreateSubmit = output<TaskCreateRequest>();
+  formUpdateSubmit = output<TaskUpdateRequest>();
+  task = input<Task>();
+  isUpdate = input.required<boolean>();
 
-  addForm: FormGroup;
+  taskForm?: FormGroup;
 
   constructor() {
-    this.addForm = new FormGroup({
-      title: new FormControl('', {
+    this.createForm();
+  }
+
+  createForm(task?: Task, isUpdate?: boolean) {
+    if (task === undefined) {
+      task = this.task();
+    }
+
+    this.taskForm = new FormGroup({
+      title: new FormControl(isUpdate ? task?.title : '', {
         validators: [Validators.required],
         nonNullable: true
       }),
-      expireDate: new FormControl('', {
+      expiredAt: new FormControl('', {
         validators: [Validators.required],
         nonNullable: true
       }),
-      priority: new FormControl('0', {
+      priority: new FormControl(isUpdate ? '1' : '0', {
         validators: [Validators.required],
         nonNullable: true
       }),
-      description: new FormControl('', {
+      description: new FormControl(isUpdate ? task?.title : '', {
         validators: [Validators.required],
         nonNullable: true
       }),
+      id: new FormControl(task?.id)
     })
+
+    isUpdate ? this.taskForm?.get('expiredAt')!
+      .setValue(formatDate(task?.expiredAt ?? new Date(), 'mm/dd/yyyy', 'en')) : '';
   }
 
   onSubmit() {
-    if (this.addForm.valid) {
-      this.formSubmit.emit(this.addForm.value);
+    if (this.taskForm?.valid) {
+      this.isUpdate() ? this.formUpdateSubmit.emit(this.taskForm.value) : this.formCreateSubmit.emit(this.taskForm.value);
     } else {
-      this.addForm.markAllAsTouched();
+      this.taskForm?.markAllAsTouched();
     }
   }
 }

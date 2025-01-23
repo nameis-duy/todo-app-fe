@@ -4,7 +4,25 @@
     <p>{{ task().description }}</p>
     <p>Priority: {{ task().priority }}</p>
     <p>Status: {{ task().status }}</p>
-    <button type="button">Edit</button>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#update-modal-' + task().id">
+        Edit
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="update-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <app-task-forms [task]="task()" [isUpdate]="true" (formUpdateSubmit)="updateTask($event)"></app-task-forms>
+                </div>
+            </div>
+        </div>
+    </div>
     <button type="button">Remove</button>
 </div>
 <hr />

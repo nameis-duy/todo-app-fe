@@ -1,9 +1,9 @@
-<form [formGroup]="addForm" class="add-task-form" (ngSubmit)="onSubmit()">
+<form [formGroup]="taskForm!" class="add-task-form" (ngSubmit)="onSubmit()">
     <div class="add-task-field">
         <input formControlName="title" type="text" placeholder="Enter Title" class="add-task-input">
     </div>
     <div class="add-task-field">
-        <input formControlName="expireDate" type="date" placeholder="Enter date" class="add-task-input">
+        <input formControlName="expiredAt" type="datetime-local" placeholder="Enter date" class="add-task-input">
     </div>
     <div class="add-task-field">
         <div class="form-check">
@@ -29,7 +29,15 @@
         </div>
     </div>
     <div class="add-task-field">
-        <input formControlName="description" type="textarea" placeholder="Enter description" class="add-task-input">
+        <textarea formControlName="description" type="textarea" placeholder="Enter description" class="add-task-input"></textarea>
     </div>
-    <button type="submit">Add Task</button>
+    <input type="hidden" formControlName="id">
+    <button type="submit">
+        @if (isUpdate() === false) {
+            Add Task
+        }
+        @if (isUpdate() === true) {
+            Save
+        }
+    </button>
 </form>
