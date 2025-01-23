@@ -1,37 +1,56 @@
 <div class="auth-container">
-    <h1>Sign up</h1>
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="register-field">
-            <i class="register__icon fas fa-user"></i>
-            <input formControlName="firstName" type="text" class="register-input" placeholder="Enter first name"
-                [required]="true" [maxLength]="250">
+    <div class="row">
+        <div class="image-section col-6">
+            <img [src]="'https://media.istockphoto.com/id/1056400820/vector/concept-people-fill-out-a-form-application-form-for-employment-people-select-a-resume-for-a.jpg?s=612x612&w=0&k=20&c=DuzHzU_GTzNfPB6Wco_U6KrTCjhrhsz3VVE4NDkQGI8='"
+                alt="register-img" width="400" height="400" class="ms-5 mt-5">
         </div>
-        <div class="register-field">
-            <i class="register__icon fas fa-user"></i>
-            <input formControlName="lastName" type="text" class="register-input" placeholder="Enter last name"
-                [required]="true" [maxlength]="100">
+        <div class="input-section col-6">
+            <h2 class="pb-4">Sign up</h2>
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <div class="register-field input-group w-75">
+                    <span class="input-group-text" id="input-first-name">
+                        <i class="fa-regular fa-address-card"></i>
+                    </span>
+                    <input formControlName="firstName" type="text" class="register-input form-control" placeholder="Enter first name"
+                        aria-describedby="input-first-name" [required]="true" [maxLength]="250">
+                </div>
+                <div class="register-field pt-3 w-75 input-group">
+                    <span class="input-group-text" id="input-last-name">
+                        <i class="fa-regular fa-id-card"></i>
+                    </span>
+                    <input formControlName="lastName" type="text" class="register-input form-control" placeholder="Enter last name"
+                        aria-describedby="input-last-name" [required]="true" [maxlength]="100">
+                </div>
+                <div class="register-field input-group pt-3 w-75">
+                        <span class="input-group-text" id="input-email">
+                            <i class="fa-regular fa-envelope"></i>
+                        </span>
+                        <input formControlName="email" type="email" class="register-input form-control" placeholder="Enter email"
+                            [email]="true" aria-describedby="input-email" [required]="true">
+                </div>
+                <div class="register-field input-group pt-3 w-75">
+                        <span class="input-group-text" id="input-password">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <input formControlName="password" type="password" name="password" id="password"
+                            class="register-input form-control" aria-describedby="input-password" placeholder="Enter password"
+                            [required]="true" [minlength]="6">
+                </div>
+                <div class="register-field input-group pt-3 w-75">
+                        <span class="input-group-text" id="input-confirm-password">
+                            <i class="fa-solid fa-user-lock"></i>
+                        </span>
+                        <input formControlName="confirmPassword" type="password" name="password" id="confirmPassword"
+                            aria-describedby="input-confirm-password" class="register-input form-control"
+                            placeholder="Enter confirm password" [required]="true">
+                </div>
+                <div class="register-field">
+                    <input type="submit" class="register-btn btn mt-5 mb-4 px-4 py-3" value="Register">
+                </div>
+            </form>
+            <div class="register">
+                <p>Already have an account? <a routerLink="/login" class="text-decoration-none">Sign in</a></p>
+            </div>
         </div>
-        <div class="register-field">
-            <i class="register__icon fas fa-user"></i>
-            <input formControlName="email" type="email" class="register-input" placeholder="Enter email" 
-                [email]="true" [required]="true">
-        </div>
-        <div class="register-field">
-            <i class="register__icon fas fa-lock"></i>
-            <input formControlName="password" type="password" name="password" id="password" class="register-input"
-                placeholder="Enter password" [required]="true" [minlength]="6">
-        </div>
-        <div class="register-field">
-            <i class="register__icon fas fa-lock"></i>
-            <input formControlName="confirmPassword" type="password" name="password" id="confirmPassword"
-                class="register-input" placeholder="Enter confirm password" [required]="true">
-        </div>
-        <div class="register-field">
-            <i class="register__icon fas fa-lock"></i>
-            <input type="submit" value="Register">
-        </div>
-    </form>
-    <div class="register">
-        <p>Already have an account? <a routerLink="/login">Sign in</a></p>
     </div>
 </div>

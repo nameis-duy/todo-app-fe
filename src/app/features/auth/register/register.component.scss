@@ -1,0 +1,24 @@
+.auth-container {
+    padding: 3rem;
+    font-family: 'Montserrat', serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+
+    .register-field .register-btn {
+        background-color: #FF9090;
+        color: white;
+
+        &:hover {
+            background-color: #cea9a9;
+        }
+    }
+
+    .register-field .input-group-text {
+        width: 3rem;
+    }
+
+    .register-input {
+        padding: 0.8rem;
+        padding-left: 1.5rem;
+    }
+}
