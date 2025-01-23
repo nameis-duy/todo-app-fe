@@ -1,0 +1,20 @@
+.auth-container {
+    padding: 5rem 3rem;
+    font-family: 'Montserrat', serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+
+    .login-field .login-btn {
+        background-color: #FF9090;
+        color: white;
+
+        &:hover {
+            background-color: #cea9a9;
+        }
+    }
+
+    .login-input {
+        padding: 0.8rem;
+        padding-left: 1.5rem;
+    }
+}

@@ -1,21 +1,35 @@
 <div class="auth-container">
-    <h1>Sign in</h1>
-    <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
-        <div class="login-field">
-            <i class="login__icon fas fa-user"></i>
-            <input formControlName="email" type="text" class="login-input" placeholder="Enter email">
+    <div class="row">
+        <div class="input-section col-6">
+            <h2 class="sign-in-title pb-4">Sign in</h2>
+            <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+                <div class="login-field input-group w-75">
+                    <span class="input-group-text" id="user-input-email">
+                        <i class="login__icon fas fa-user"></i>
+                    </span>
+                    <input formControlName="email" type="text" class="login-input form-control"
+                        placeholder="Enter email" aria-describedby="user-input-email">
+                </div>
+                <div class="login-field input-group pt-3 w-75">
+                    <span class="input-group-text" id="user-input-password">
+                        <i class="login__icon fas fa-lock"></i>
+                    </span>
+                    <input formControlName="password" type="password" name="password" id="password"
+                        class="login-input form-control" aria-describedby="user-input-password"
+                        placeholder="Enter password">
+                </div>
+                <div aria-describedby=""></div>
+                <div class="login-field">
+                    <input type="submit" class="login-btn btn mt-5 mb-4 px-4 py-3" value="Login">
+                </div>
+            </form>
+            <div class="register">
+                <p>Don't have account? <a routerLink="/register" class="text-decoration-none">Create one</a></p>
+            </div>
         </div>
-        <div class="login-field">
-            <i class="login__icon fas fa-lock"></i>
-            <input formControlName="password" type="password" name="password" id="password" class="login-input" placeholder="Enter password">
+        <div class="img-section col-6">
+            <img [src]="'https://img.freepik.com/free-vector/login-concept-illustration_114360-739.jpg?t=st=1737606090~exp=1737609690~hmac=368424737507a9ea7c772f24fea75363b397d1ddea9a341c74b8766d81d3eaf4&w=740'"
+                alt="login-image" width="400" height="400">
         </div>
-        <div aria-describedby=""></div>
-        <div class="login-field">
-            <i class="login__icon fas fa-lock"></i>
-            <input type="submit" value="Login">
-        </div>
-    </form>
-    <div class="register">
-        <p>Don't have account? <a routerLink="/register">Create one</a></p>
     </div>
 </div>
