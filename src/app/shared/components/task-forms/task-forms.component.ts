@@ -52,7 +52,7 @@ export class TaskFormsComponent {
     })
 
     isUpdate ? this.taskForm?.get('expiredAt')!
-      .setValue(formatDate(task?.expiredAt ?? new Date(), 'mm/dd/yyyy', 'en')) : '';
+      .setValue(formatDate(task?.expiredAtUtc ?? new Date(), 'mm/dd/yyyy', 'en')) : '';
   }
 
   onSubmit() {

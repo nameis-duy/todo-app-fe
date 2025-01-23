@@ -1,16 +1,58 @@
 <div class="task-items-container">
-    <input type="checkbox" [checked]="task().isCompleted" placeholder="checkbox" />
-    <p>{{ task().title }}</p>
-    <p>{{ task().description }}</p>
-    <p>Priority: {{ task().priority }}</p>
-    <p>Status: {{ task().status }}</p>
+    <div class="dots-options">
+        <div class="dropdown ms-auto">
+            <div data-bs-toggle="dropdown">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+            <ul class="dropdown-menu">
+                <li>
+                    <span class="dropdown-item" data-bs-toggle="modal"
+                        [attr.data-bs-target]="'#update-modal-' + task().id">
+                        <i class="fas fa-pen mx-2"></i> Edit
+                    </span>
+                </li>
+                <li>
+                    <span class="dropdown-item">
+                        <i class="fas fa-trash mx-2"></i> Delete
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="edit-section-popup">
+        <div class="modal fade" id="update-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <app-task-forms [task]="task()" [isUpdate]="true"
+                            (formUpdateSubmit)="updateTask($event)"></app-task-forms>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h4 class="item-title">{{ task().title }}</h4>
+    <p class="item-description pt-1">{{ task().description }}</p>
+    <div class="enum-sections row">
+        <p class="col-md-3">Priority: {{ task().priority }}</p>
+        <p class="col-md-3">Status: {{ task().status }}</p>
+        <div class="col-md-6 text-center">
+            <p class="">Created on: {{ dateStr }}</p>
+        </div>
+    </div>
+
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#update-modal-' + task().id">
+    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#update-modal-' + task().id">
         Edit
-    </button>
+    </button> -->
 
     <!-- Modal -->
-    <div class="modal fade" id="update-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="update-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -22,15 +64,15 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- REMOVE BUTTON -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#remove-modal-' + task().id">
+    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#remove-modal-' + task().id">
         Remove
-    </button>
+    </button> -->
 
     <!-- Modal -->
-    <div class="modal fade" id="remove-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="remove-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -46,6 +88,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
-<hr />

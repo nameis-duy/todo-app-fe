@@ -5,7 +5,7 @@ export interface Task {
     status: string;
     priority: string;
     isCompleted: boolean;
-    createdAt: Date;
-    modifiedAt: Date;
-    expiredAt: Date;
+    createdAtUtc: Date;
+    modifiedAtUtc: Date;
+    expiredAtUtc: Date;
 }

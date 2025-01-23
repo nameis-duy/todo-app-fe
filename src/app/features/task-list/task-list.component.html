@@ -1,7 +1,7 @@
 <div class="task-list">
     <h1>To-Do List</h1>
     <!-- <button type="button">Add Task</button> -->
-    <app-task-forms (formCreateSubmit)="addTask($event)" [isUpdate]="false"></app-task-forms>
+    <!-- <app-task-forms (formCreateSubmit)="addTask($event)" [isUpdate]="false"></app-task-forms> -->
 
     <!-- Loading indicator -->
     <div *ngIf="isLoading" class="loading">
@@ -9,11 +9,11 @@
     </div>
 
     <!-- Task list -->
-    <ul *ngIf="!isLoading && tasks.length > 0">
-        <li *ngFor="let task of tasks" [class.completed]="task.isCompleted">
+    <div *ngIf="!isLoading && tasks.length > 0">
+        <div *ngFor="let task of tasks" [class.completed]="task.isCompleted">
             <app-task-items [checked]="task.isCompleted" [task]="task"></app-task-items>
-        </li>
-    </ul>
+        </div>
+    </div>
 
     <!-- No tasks message -->
     <div *ngIf="!isLoading && tasks.length === 0">

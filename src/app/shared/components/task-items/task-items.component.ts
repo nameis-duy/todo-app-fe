@@ -16,6 +16,16 @@ export class TaskItemsComponent {
   @ViewChild(TaskFormsComponent) formComponent!: TaskFormsComponent;
   task = input.required<Task>();
   checked = input.required<boolean>();
+  dateStr = '';
+
+  ngOnInit() {    
+    const date = new Date(this.task().createdAtUtc);
+    this.dateStr = date.toLocaleDateString('vi-VN', { 
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+     });  
+  }
 
   ngAfterViewInit() {
     console.log('calling');
@@ -30,7 +40,7 @@ export class TaskItemsComponent {
           this.task().title = res.data.title;
           this.task().description = res.data.description;
           this.task().priority = res.data.priority;
-          this.task().expiredAt = res.data.expiredAt;
+          this.task().expiredAtUtc = res.data.expiredAtUtc;
           alert('succeed');
         }
       },
