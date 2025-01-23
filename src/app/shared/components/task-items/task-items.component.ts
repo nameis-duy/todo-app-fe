@@ -18,6 +18,7 @@ export class TaskItemsComponent {
   checked = input.required<boolean>();
 
   ngAfterViewInit() {
+    console.log('calling');
     this.formComponent.createForm(this.task(), true);
   }
 
@@ -35,6 +36,19 @@ export class TaskItemsComponent {
       },
       error: (err) => {
         console.error('Error adding task: ', err);
+      }
+    })
+  }
+
+  removeTask(id: number) {
+    this.taskService.removeTask(id).subscribe({
+      next: (res) => {
+        if (res.isSucceed) {
+          alert('succeed');
+        }
+      },
+      error: (err) => {
+        console.error('Error removing task: ', err);
       }
     })
   }
