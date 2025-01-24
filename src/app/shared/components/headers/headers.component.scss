@@ -1,0 +1,36 @@
+.header-container {
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+
+    padding: 1rem;
+    padding-bottom: 0;
+    box-shadow: 4px 3px 4px 0px #A1A3AB;
+    margin-bottom: 1rem;
+    
+    .header-span-to {
+        color: #FF6767;
+    }
+
+    .search-section {
+        // font-family: 'Montserrat', sans-serif;
+        // font-weight: bold;
+
+        .input-group {
+            box-shadow: 0px 2px 4px 0px #A1A3AB;
+        }
+
+        .search-btn {
+            background-color: #FF6767;
+            color: #fff;
+
+            &:hover {
+                background-color: #a44d4d;
+            }
+        }
+
+        .date-section-span {
+            color: #3ABEFF;
+        }
+    }
+}

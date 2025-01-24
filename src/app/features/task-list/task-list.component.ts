@@ -45,6 +45,11 @@ export class TaskListComponent {
           this.tasks.push(res.data);
           console.log(this.tasks);
           alert('succeed');
+          const modal = document.getElementById(`add-modal`);
+          if (modal != null) {
+            modal.style.display = 'none';
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+          }
         }
       },
       error: (err) => {

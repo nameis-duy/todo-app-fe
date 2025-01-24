@@ -24,12 +24,10 @@ export class TaskFormsComponent {
   }
 
   createForm(task?: Task, isUpdate?: boolean) {
+    console.log(task);
     if (task === undefined) {
       task = this.task();
     }
-
-    console.log(task);
-    console.log(this.task());
 
     this.taskForm = new FormGroup({
       title: new FormControl(isUpdate ? task?.title : '', {

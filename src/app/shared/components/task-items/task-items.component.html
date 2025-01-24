@@ -12,7 +12,8 @@
                     </span>
                 </li>
                 <li>
-                    <span class="dropdown-item">
+                    <span class="dropdown-item" data-bs-toggle="modal"
+                        [attr.data-bs-target]="'#remove-modal-' + task().id">
                         <i class="fas fa-trash mx-2"></i> Delete
                     </span>
                 </li>
@@ -36,6 +37,26 @@
             </div>
         </div>
     </div>
+    <div class="remove-section-popup">
+        <div class="modal fade" id="remove-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Do you confirm to delete {{ task().title }} task?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" (click)="removeTask(task().id)">Confirm</button>
+                        <button type="button" class="btn btn-danger">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <h4 class="item-title">{{ task().title }}</h4>
     <p class="item-description pt-1">{{ task().description }}</p>
     <div class="enum-sections row">
@@ -45,48 +66,4 @@
             <p class="">Created on: {{ dateStr }}</p>
         </div>
     </div>
-
-    <!-- Button trigger modal -->
-    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#update-modal-' + task().id">
-        Edit
-    </button> -->
-
-    <!-- Modal -->
-    <!-- <div class="modal fade" id="update-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <app-task-forms [task]="task()" [isUpdate]="true" (formUpdateSubmit)="updateTask($event)"></app-task-forms>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- REMOVE BUTTON -->
-    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#remove-modal-' + task().id">
-        Remove
-    </button> -->
-
-    <!-- Modal -->
-    <!-- <div class="modal fade" id="remove-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Do you confirm to delete {{ task().title }} task?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" (click)="removeTask(task().id)">Confirm</button>
-                    <button type="button" class="btn btn-danger">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
 </div>

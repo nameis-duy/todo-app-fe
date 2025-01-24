@@ -1,4 +1,4 @@
-import { Component, inject, input, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, input, ViewChild } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { TaskFormsComponent } from "../task-forms/task-forms.component";
 import { TaskUpdateRequest } from '../../models/dtos/task-update-request.model';
@@ -18,17 +18,18 @@ export class TaskItemsComponent {
   checked = input.required<boolean>();
   dateStr = '';
 
-  ngOnInit() {    
+  ngOnInit() {
     const date = new Date(this.task().createdAtUtc);
-    this.dateStr = date.toLocaleDateString('vi-VN', { 
+    this.dateStr = date.toLocaleDateString('vi-VN', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
-     });  
+    });
   }
 
   ngAfterViewInit() {
     console.log('calling');
+    console.log(this.task());
     this.formComponent.createForm(this.task(), true);
   }
 
@@ -36,12 +37,18 @@ export class TaskItemsComponent {
     task.priority = parseInt(task.priority.toString());
     this.taskService.updateTask(task).subscribe({
       next: (res) => {
+        console.log(res);
         if (res.isSucceed) {
           this.task().title = res.data.title;
           this.task().description = res.data.description;
           this.task().priority = res.data.priority;
           this.task().expiredAtUtc = res.data.expiredAtUtc;
           alert('succeed');
+          const modal = document.getElementById(`update-modal-${this.task().id}`);
+          if (modal != null) {
+            modal.style.display = 'none';
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+          }
         }
       },
       error: (err) => {

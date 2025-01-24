@@ -1,7 +1,20 @@
 <div class="task-list">
-    <h1>To-Do List</h1>
-    <!-- <button type="button">Add Task</button> -->
-    <!-- <app-task-forms (formCreateSubmit)="addTask($event)" [isUpdate]="false"></app-task-forms> -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#add-modal'">
+        Add Task
+    </button>
+    <div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <app-task-forms (formCreateSubmit)="addTask($event)" [isUpdate]="false"></app-task-forms>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Loading indicator -->
     <div *ngIf="isLoading" class="loading">
