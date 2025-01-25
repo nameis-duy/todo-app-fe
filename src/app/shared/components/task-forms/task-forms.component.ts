@@ -23,6 +23,10 @@ export class TaskFormsComponent {
     this.createForm();
   }
 
+  ngAfterViewInit() {
+    this.createForm(this.task(), this.isUpdate());
+  }
+
   createForm(task?: Task, isUpdate?: boolean) {
     console.log(task);
     if (task === undefined) {

@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, input, ViewChild } from '@angular/core';
+import { Component, inject, input, ViewChild } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { TaskFormsComponent } from "../task-forms/task-forms.component";
 import { TaskUpdateRequest } from '../../models/dtos/task-update-request.model';

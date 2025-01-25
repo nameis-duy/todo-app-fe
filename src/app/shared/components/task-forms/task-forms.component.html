@@ -1,43 +1,42 @@
-<form [formGroup]="taskForm!" class="add-task-form" (ngSubmit)="onSubmit()">
-    <div class="add-task-field">
-        <input formControlName="title" type="text" placeholder="Enter Title" class="add-task-input">
-    </div>
-    <div class="add-task-field">
-        <input formControlName="expiredAt" type="datetime-local" placeholder="Enter date" class="add-task-input">
-    </div>
-    <div class="add-task-field">
-        <div class="form-check">
-            <input formControlName="priority" class="form-check-input" type="radio" name="priority"
-                value="2" id="priority-extreme">
-            <label class="form-check-label" for="priority-extreme">
-                Extreme
-            </label>
+<div class="form-container">
+    <form [formGroup]="taskForm!" class="add-task-form" (ngSubmit)="onSubmit()">
+        <div class="add-task-field">
+            <label for="title">Title:</label>
+            <input formControlName="title" type="text" placeholder="Enter Title" class="add-task-input">
         </div>
-        <div class="form-check">
-            <input formControlName="priority" class="form-check-input" type="radio" name="priority"
-                value="1" id="priority-moderate" checked>
-            <label class="form-check-label" for="priority-moderate">
-                Moderate
-            </label>
+        <div class="add-task-field">
+            <input formControlName="expiredAt" type="datetime-local" placeholder="Enter date" class="add-task-input">
         </div>
-        <div class="form-check">
-            <input formControlName="priority" class="form-check-input" type="radio" name="priority" value="0"
-                id="priority-low" checked>
-            <label class="form-check-label" for="priority-low">
-                Low
-            </label>
+        <div class="add-task-field">
+            <div class="form-check">
+                <input formControlName="priority" class="form-check-input" type="radio" name="priority" value="2"
+                    id="priority-extreme">
+                <label class="form-check-label" for="priority-extreme">
+                    Extreme
+                </label>
+            </div>
+            <div class="form-check">
+                <input formControlName="priority" class="form-check-input" type="radio" name="priority" value="1"
+                    id="priority-moderate" checked>
+                <label class="form-check-label" for="priority-moderate">
+                    Moderate
+                </label>
+            </div>
+            <div class="form-check">
+                <input formControlName="priority" class="form-check-input" type="radio" name="priority" value="0"
+                    id="priority-low" checked>
+                <label class="form-check-label" for="priority-low">
+                    Low
+                </label>
+            </div>
         </div>
-    </div>
-    <div class="add-task-field">
-        <textarea formControlName="description" type="textarea" placeholder="Enter description" class="add-task-input"></textarea>
-    </div>
-    <input type="hidden" formControlName="id">
-    <button type="submit">
-        @if (isUpdate() === false) {
-            Add Task
-        }
-        @if (isUpdate() === true) {
-            Save
-        }
-    </button>
-</form>
+        <div class="add-task-field">
+            <textarea formControlName="description" type="textarea" placeholder="Enter description"
+                class="add-task-input"></textarea>
+        </div>
+        <input type="hidden" formControlName="id">
+        <button type="submit">
+            Done
+        </button>
+    </form>
+</div>

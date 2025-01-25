@@ -1,0 +1,37 @@
+.task-list-container {
+    border: 1px solid #F5F8FF;
+    border-radius: 1rem;
+    box-shadow: 1px 3px 4px 0px;
+
+    .add-section-title {
+        padding-left: 3rem;
+        padding-top: 0.9rem;
+
+        i {
+            padding-right: 0.8rem;
+            font-size: 1.5rem;
+        }
+
+        span {
+            color: #FF6767;
+        }
+    }
+
+    .btn-add-task {
+        margin-right: 0.6rem;
+        margin-top: 0.6rem;
+        border: none;
+        background: none;
+        color: #A1A3AB;
+
+        &:hover {
+            background-color: #A1A3AB;
+            color: #F5F8FF;
+            cursor: pointer;
+        }
+
+        span {
+            color: #F24E1E;
+        }
+    }
+}
