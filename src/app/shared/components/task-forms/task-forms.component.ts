@@ -1,13 +1,15 @@
-import { Component, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TaskCreateRequest } from '../../models/dtos/task-create-request.model';
 import { Task } from '../../models/task.model';
-import { formatDate } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { TaskUpdateRequest } from '../../models/dtos/task-update-request.model';
+import { Dictionary } from '../../models/dictionary.model';
+import { BaseService } from '../../../core/services/base.service';
 
 @Component({
   selector: 'app-task-forms',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './task-forms.component.html',
   styleUrl: './task-forms.component.scss'
 })
@@ -17,10 +19,14 @@ export class TaskFormsComponent {
   task = input<Task>();
   isUpdate = input.required<boolean>();
 
+  priorities: Dictionary[] = [];
   taskForm?: FormGroup;
+
+  baseService = inject(BaseService);
 
   constructor() {
     this.createForm();
+    this.getPriorities();
   }
 
   ngAfterViewInit() {
@@ -55,6 +61,20 @@ export class TaskFormsComponent {
 
     isUpdate ? this.taskForm?.get('expiredAt')!
       .setValue(formatDate(task?.expiredAtUtc ?? new Date(), 'mm/dd/yyyy', 'en')) : '';
+  }
+
+  getPriorities(): void {
+    this.baseService.getPriorities().subscribe({
+      next: (res) => {
+        this.priorities = Object.entries(res).map(([key, value]) => ({
+          key: Number(key),
+          value: value
+        }));
+      },
+      error: (err) => {
+        console.error('Error fetching enum api:', err);
+      }
+    })
   }
 
   onSubmit() {
