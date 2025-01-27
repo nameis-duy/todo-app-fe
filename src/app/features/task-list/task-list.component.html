@@ -1,43 +1,52 @@
-<div class="task-list-container">
-    <div class="add-section row">
-        <div class="add-section-title col-md-4">
-            <h4><i class="fa-regular fa-file-lines"></i> <span>To-Do</span></h4>
-        </div>
-        <div class="add-section-btn col-md-8 text-end">
-            <button type="button" class="btn btn-add-task" data-bs-toggle="modal" [attr.data-bs-target]="'#add-modal'">
-                <span><i class="fa-solid fa-plus"></i></span>
-                Add Task
-            </button>
-            <div class="modal fade text-start" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Task</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <app-task-forms (formCreateSubmit)="addTask($event)" [isUpdate]="false"></app-task-forms>
+<div class="task-container row">
+    <div class="task-list-container col-6">
+        <div class="add-section row">
+            <div class="add-section-title col-md-4">
+                <h4><i class="fa-regular fa-file-lines"></i> <span>To-Do</span></h4>
+            </div>
+            <div class="add-section-btn col-md-8 text-end">
+                <button type="button" class="btn btn-add-task" data-bs-toggle="modal"
+                    [attr.data-bs-target]="'#add-modal'">
+                    <span><i class="fa-solid fa-plus"></i></span>
+                    Add Task
+                </button>
+                <div class="modal fade text-start" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Task</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <app-task-forms (formCreateSubmit)="addTask($event)"
+                                    [isUpdate]="false"></app-task-forms>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Loading indicator -->
-    <div *ngIf="isLoading" class="loading">
-        <p>Loading tasks...</p>
-    </div>
 
-    <!-- Task list -->
-    <div *ngIf="!isLoading && tasks.length > 0">
-        <div *ngFor="let task of tasks" [class.completed]="task.isCompleted">
-            <app-task-items [checked]="task.isCompleted" [task]="task"></app-task-items>
+        <!-- Loading indicator -->
+        <div *ngIf="isLoading" class="loading">
+            <p>Loading tasks...</p>
+        </div>
+
+        <!-- Task list -->
+        <div *ngIf="!isLoading && tasks.length > 0">
+            <div *ngFor="let task of tasks" [class.completed]="task.isCompleted">
+                <app-task-items [checked]="task.isCompleted" [task]="task" (selectedId)="selectTask($event)"></app-task-items>
+            </div>
+        </div>
+
+        <!-- No tasks message -->
+        <div *ngIf="!isLoading && tasks.length === 0">
+            <p>No tasks found.</p>
         </div>
     </div>
-
-    <!-- No tasks message -->
-    <div *ngIf="!isLoading && tasks.length === 0">
-        <p>No tasks found.</p>
+    <div class="task-detail-section col-5">
+        <app-task-detail [task$]="selectedTask$"></app-task-detail>
     </div>
 </div>

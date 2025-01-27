@@ -1,0 +1,20 @@
+.task-detail-container {
+    .task-title {
+        padding-bottom: 1rem;
+    }
+
+    .priority-value[color-code='Low'] { color: #05A301; }
+    .priority-value[color-code='Medium'] { color: #42ADE2; }
+    .priority-value[color-code='High'] { color: #F21E1E; }
+
+    .status-value[color-code = 'Pending'] { color: #0225FF; }
+    .status-value[color-code = 'Completed'] { color: #05A301; }
+
+    .task-date {
+        color: #A1A3AB;
+    }
+
+    .task-description {
+        color: #747474;
+    }
+}

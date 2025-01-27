@@ -1,0 +1,17 @@
+<div *ngIf="task;else elseBlock">
+    <div class="task-detail-container">
+        <h5 class="task-title">{{ task.title }}</h5>
+        <p class="task-priority">Priority: <span class="priority-value" [attr.color-code]="task.priority">{{ task.priority }}</span></p>
+        <p class="task-status">Status: <span class="status-value" [attr.color-code]="task.status">{{ task.status }}</span></p>
+        <p class="task-date">Created on: {{ dateStr }} </p>
+        <p class="task-date">Expired on: {{ dateStr }} </p>
+        <p class="task-description">{{ task.description }}</p>
+        <div class="task-action-btn">
+            <button class="btn btn-danger" type="button">Remove</button>
+            <button class="btn btn-success" type="button">Edit</button>
+        </div>
+    </div>
+</div>
+<ng-template #elseBlock>
+    <h5>No information.</h5>
+</ng-template>

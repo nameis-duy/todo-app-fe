@@ -1,7 +1,7 @@
 .task-list-container {
-    border: 1px solid #F5F8FF;
+    border: 1px solid rgba(161, 163, 171, 0.63);
     border-radius: 1rem;
-    box-shadow: 1px 3px 4px 0px;
+    box-shadow: 0px 1px 2px 0px;
     min-height: 86.5vh;
 
     .add-section-title {
@@ -35,4 +35,13 @@
             color: #F24E1E;
         }
     }
+}
+
+.task-detail-section {
+    padding: 2rem 0 0 2rem;
+    margin-left: 1.3rem;
+    border: solid 1px rgba(161, 163, 171, 0.63);
+    border-radius: 1rem;
+    box-shadow: 0px 1px 2px 0px;
+    width: 45%;
 }
