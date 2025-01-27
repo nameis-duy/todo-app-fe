@@ -17,6 +17,7 @@ export class TaskItemsComponent {
   task = input.required<Task>();
   checked = input.required<boolean>();
   dateStr = '';
+  colorCode = 'Low';
 
   ngOnInit() {
     const date = new Date(this.task().createdAtUtc);
@@ -25,6 +26,8 @@ export class TaskItemsComponent {
       month: '2-digit',
       year: 'numeric'
     });
+
+    this.colorCode = this.task().priority;
   }
 
   ngAfterViewInit() {
@@ -49,10 +52,11 @@ export class TaskItemsComponent {
             modal.style.display = 'none';
             document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
           }
+          document.getElementById(`prio-${this.task().id}`)?.setAttribute('color-code', this.task().priority);
         }
       },
       error: (err) => {
-        console.error('Error adding task: ', err);
+        console.error('Error edit task: ', err);
       }
     })
   }

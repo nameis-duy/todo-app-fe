@@ -67,7 +67,9 @@
         <h4 class="item-title">{{ task().title }}</h4>
         <p class="item-description pt-1">{{ task().description }}</p>
         <div class="enum-sections row">
-            <p class="col-md-4">Priority: <span class="priority-value">{{ task().priority }}</span></p>
+            <p class="col-md-4">Priority:
+                <span class="priority-value" id="prio-{{task().id}}" [attr.color-code]="colorCode">{{ task().priority }}</span>
+            </p>
             <p class="col-md-3">Status: <span class="status-value">{{ task().status }}</span></p>
             <div class="col-md-5 text-center">
                 <p class="created-date">Created on: {{ dateStr }}</p>

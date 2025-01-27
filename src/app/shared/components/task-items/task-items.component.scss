@@ -48,9 +48,9 @@
         .enum-sections {
             font-size: smaller;
 
-            .priority-value {
-                color: #42ADE2;
-            }
+            .priority-value[color-code='Low'] { color: #05A301; }
+            .priority-value[color-code='Medium'] { color: #42ADE2; }
+            .priority-value[color-code='High'] { color: #F21E1E; }
 
             .status-value {
                 color: #0225FF;
