@@ -9,6 +9,15 @@
     width: 90%;
     margin: 1rem auto;
 
+    &:hover {
+        background-color: #a1a3ab38;
+        cursor: pointer;
+
+        .created-date {
+            color: #fff;
+        }
+    }
+
     .status-section {
         font-family: "Font Awesome 5 Free";
         float: left;

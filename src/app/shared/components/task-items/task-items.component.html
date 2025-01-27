@@ -1,4 +1,4 @@
-<div class="task-items-container row">
+<div class="task-items-container row" (click)="onClick()">
     <div class="status-section col-1" [attr.color-code]="task().status">
         @if (task().isCompleted) {
             <i class="fa-regular fa-circle-check"></i>

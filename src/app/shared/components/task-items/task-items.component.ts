@@ -1,4 +1,4 @@
-import { Component, inject, input, ViewChild } from '@angular/core';
+import { Component, inject, input, output, ViewChild } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { TaskFormsComponent } from "../task-forms/task-forms.component";
 import { TaskUpdateRequest } from '../../models/dtos/task-update-request.model';
@@ -16,6 +16,7 @@ export class TaskItemsComponent {
   @ViewChild(TaskFormsComponent) formComponent!: TaskFormsComponent;
   task = input.required<Task>();
   checked = input.required<boolean>();
+  selectedId = output<number>();
   dateStr = '';
 
   ngOnInit() {
@@ -28,8 +29,6 @@ export class TaskItemsComponent {
   }
 
   ngAfterViewInit() {
-    console.log('calling');
-    console.log(this.task());
     this.formComponent.createForm(this.task(), true);
   }
 
@@ -69,5 +68,10 @@ export class TaskItemsComponent {
         console.error('Error removing task: ', err);
       }
     })
+  }
+
+  onClick() {
+    console.log('calling');
+    return this.selectedId.emit(this.task().id);
   }
 }

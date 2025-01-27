@@ -36,8 +36,6 @@ export class TaskFormsComponent {
   }
 
   createForm(task?: Task, isUpdate?: boolean) {
-    console.log(task);
-    console.log(isUpdate);
     let priority : string | undefined = '0';
     if (task === undefined) {
       task = this.task();
