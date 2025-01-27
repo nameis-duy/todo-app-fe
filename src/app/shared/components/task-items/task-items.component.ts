@@ -17,7 +17,6 @@ export class TaskItemsComponent {
   task = input.required<Task>();
   checked = input.required<boolean>();
   dateStr = '';
-  colorCode = 'Low';
 
   ngOnInit() {
     const date = new Date(this.task().createdAtUtc);
@@ -26,8 +25,6 @@ export class TaskItemsComponent {
       month: '2-digit',
       year: 'numeric'
     });
-
-    this.colorCode = this.task().priority;
   }
 
   ngAfterViewInit() {

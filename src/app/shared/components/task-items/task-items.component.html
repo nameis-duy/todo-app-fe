@@ -1,6 +1,11 @@
 <div class="task-items-container row">
-    <div class="status-section col-1">
-        <i class="fa-regular fa-circle"></i>
+    <div class="status-section col-1" [attr.color-code]="task().status">
+        @if (task().isCompleted) {
+            <i class="fa-regular fa-circle-check"></i>
+        }
+        @if (!task().isCompleted) {
+            <i class="fa-regular fa-circle"></i>
+        }
     </div>
     <div class="detail-section col-11">
         <div class="dots-options">
@@ -67,10 +72,15 @@
         <h4 class="item-title">{{ task().title }}</h4>
         <p class="item-description pt-1">{{ task().description }}</p>
         <div class="enum-sections row">
-            <p class="col-md-4">Priority:
-                <span class="priority-value" id="prio-{{task().id}}" [attr.color-code]="colorCode">{{ task().priority }}</span>
+            <p class="col-md-4">
+                Priority:
+                <span class="priority-value" id="prio-{{task().id}}" [attr.color-code]="task().priority">{{ task().priority
+                    }}</span>
             </p>
-            <p class="col-md-3">Status: <span class="status-value">{{ task().status }}</span></p>
+            <p class="col-md-3">
+                Status:
+                <span class="status-value" [attr.color-code]="task().status">{{ task().status }}</span>
+            </p>
             <div class="col-md-5 text-center">
                 <p class="created-date">Created on: {{ dateStr }}</p>
             </div>

@@ -15,7 +15,7 @@ import { AppConstant } from '../../../core/constants/constant';
   styleUrl: './task-forms.component.scss'
 })
 export class TaskFormsComponent {
-  priorityStoredKey = AppConstant.PRIORITY_KEY;
+  priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
   formCreateSubmit = output<TaskCreateRequest>();
   formUpdateSubmit = output<TaskUpdateRequest>();
   task = input<Task>();

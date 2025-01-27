@@ -10,9 +10,19 @@
     margin: 1rem auto;
 
     .status-section {
-        color: #F21E1E;
+        font-family: "Font Awesome 5 Free";
         float: left;
+        transition: content 0.3s;
+
+        &:hover .fa-circle::before {
+            cursor: pointer;
+            content: '\f058';
+            color: #05A301;
+        }
     }
+
+    .status-section[color-code = 'Pending'] { color: #0225FF; }
+    .status-section[color-code = 'Completed'] { color: #05A301; }
 
     .detail-section {
         .dots-options {
@@ -52,9 +62,8 @@
             .priority-value[color-code='Medium'] { color: #42ADE2; }
             .priority-value[color-code='High'] { color: #F21E1E; }
 
-            .status-value {
-                color: #0225FF;
-            }
+            .status-value[color-code = 'Pending'] { color: #0225FF; }
+            .status-value[color-code = 'Completed'] { color: #05A301; }
 
             .created-date {
                 color: #ababab;

@@ -13,12 +13,14 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  priorityStoredKey = AppConstant.PRIORITY_KEY;
+  priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
+  statusStoredKey = AppConstant.STATUS_STORING_KEY;
   baseService = inject(BaseService);
   http = inject(HttpClient);
 
   constructor() {
     this.getPriorities();
+    this.getStatus();
   }
 
   getPriorities(): void {
@@ -34,7 +36,26 @@ export class HomeComponent {
           localStorage.setItem(this.priorityStoredKey, prioritiesJson);
         },
         error: (err) => {
-          console.error('Error fetching enum api:', err);
+          console.error('Error fetching priority values:', err);
+        }
+      })
+    }
+  }
+
+  getStatus(): void {
+    if (!localStorage.getItem(this.statusStoredKey)) {
+      this.baseService.getStatus().subscribe({
+        next: (res) => {
+          const status = Object.entries(res).map(([key, value]) => ({
+            key: Number(key),
+            value: value
+          }));
+
+          const statusJson = JSON.stringify(status);
+          localStorage.setItem(this.statusStoredKey, statusJson);
+        },
+        error: (err) => {
+          console.error('Error fetching status values:', err);
         }
       })
     }
