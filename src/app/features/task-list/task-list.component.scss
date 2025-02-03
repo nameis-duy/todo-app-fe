@@ -2,7 +2,9 @@
     border: 1px solid rgba(161, 163, 171, 0.63);
     border-radius: 1rem;
     box-shadow: 0px 1px 2px 0px;
-    min-height: 86.5vh;
+    max-height: 86.5vh;
+    margin-bottom: 0.2rem;
+    overflow-y: auto;
 
     .add-section-title {
         padding-left: 3rem;
@@ -44,4 +46,5 @@
     border-radius: 1rem;
     box-shadow: 0px 1px 2px 0px;
     width: 45%;
+    margin-bottom: 0.2rem;
 }

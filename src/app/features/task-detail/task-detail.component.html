@@ -1,14 +1,37 @@
 <div *ngIf="task;else elseBlock">
     <div class="task-detail-container">
         <h5 class="task-title">{{ task.title }}</h5>
-        <p class="task-priority">Priority: <span class="priority-value" [attr.color-code]="task.priority">{{ task.priority }}</span></p>
-        <p class="task-status">Status: <span class="status-value" [attr.color-code]="task.status">{{ task.status }}</span></p>
+        <p class="task-priority">Priority: <span class="priority-value" [attr.color-code]="task.priority">{{
+                task.priority }}</span></p>
+        <p class="task-status">Status: <span class="status-value" appStatusColorDirective [status]="task.status">{{
+                task.status }}</span></p>
         <p class="task-date">Created on: {{ dateStr }} </p>
-        <p class="task-date">Expired on: {{ dateStr }} </p>
+        <p class="task-date">Expired on: {{ expiredDateStr }} </p>
         <p class="task-description">{{ task.description }}</p>
         <div class="task-action-btn">
-            <button class="btn btn-danger" type="button">Remove</button>
-            <button class="btn btn-success" type="button">Edit</button>
+            <button class="btn btn-edit" type="button" aria-label="''" data-bs-toggle="modal"
+                [attr.data-bs-target]="'#update-modal-' + task.id">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </button>
+            <div class="modal fade" [id]="'update-modal-' + task.id" tabindex="-1" aria-labelledby="editTaskModal"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="editTaskModal">Edit Task</h1>
+                            <button [id]="'btn-update-modal-close-{{ task.id }}'" type="button" class="btn-close"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <app-task-forms [task]="task" [isUpdate]="true"
+                                (formUpdateSubmit)="updateTask($event)"></app-task-forms>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-remove" type="button" aria-label="''">
+                <i class="fa-solid fa-trash"></i>
+            </button>
         </div>
     </div>
 </div>

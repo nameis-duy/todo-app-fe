@@ -3,12 +3,17 @@
         padding-bottom: 1rem;
     }
 
-    .priority-value[color-code='Low'] { color: #05A301; }
-    .priority-value[color-code='Medium'] { color: #42ADE2; }
-    .priority-value[color-code='High'] { color: #F21E1E; }
+    .priority-value[color-code='Low'] {
+        color: #05A301;
+    }
 
-    .status-value[color-code = 'Pending'] { color: #0225FF; }
-    .status-value[color-code = 'Completed'] { color: #05A301; }
+    .priority-value[color-code='Medium'] {
+        color: #42ADE2;
+    }
+
+    .priority-value[color-code='High'] {
+        color: #F21E1E;
+    }
 
     .task-date {
         color: #A1A3AB;
@@ -16,5 +21,24 @@
 
     .task-description {
         color: #747474;
+    }
+
+    .task-action-btn {
+        position: absolute;
+        right: 6.7rem;
+        bottom: 3rem;
+
+        .btn {
+            background: #FF6767;
+            color: #fff;
+
+            &:hover {
+                background: #c94a4a;
+            }
+        }
+
+        .btn-edit {
+            margin-right: 0.5rem;
+        }
     }
 }

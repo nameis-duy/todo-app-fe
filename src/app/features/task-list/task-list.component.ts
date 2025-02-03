@@ -7,6 +7,8 @@ import { TaskFormsComponent } from "../../shared/components/task-forms/task-form
 import { TaskCreateRequest } from '../../shared/models/dtos/task-create-request.model';
 import { TaskDetailComponent } from "../task-detail/task-detail.component";
 import { BehaviorSubject } from 'rxjs';
+import { AppConstant } from '../../core/constants/constant';
+import { Dictionary } from '../../shared/models/dictionary.model';
 
 @Component({
   selector: 'app-task-list',
@@ -16,9 +18,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class TaskListComponent {
   taskService = inject(TaskService);
+  statusStoredKey = AppConstant.STATUS_STORING_KEY;
+  priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
 
   tasks: Task[] = [];
   isLoading = true;
+  statusObj: any;
+  priorityObj: any;
 
   private selectedTask = new BehaviorSubject<Task | undefined>(undefined);
   selectedTask$ = this.selectedTask.asObservable();
@@ -49,13 +55,8 @@ export class TaskListComponent {
       next: (res) => {
         if (res.isSucceed) {
           this.tasks.push(res.data);
-          console.log(this.tasks);
-          alert('succeed');
-          const modal = document.getElementById(`add-modal`);
-          if (modal != null) {
-            modal.style.display = 'none';
-            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-          }
+          this.sortTasks();
+          document.getElementById(`btn-close-add-modal`)?.click();
         }
       },
       error: (err) => {
@@ -66,5 +67,24 @@ export class TaskListComponent {
 
   selectTask(id: number) {
     this.selectedTask.next(this.tasks.find(task => task.id === id));
+  }
+
+  //SUPPORT FUNC
+  sortTasks() {
+    if (!this.statusObj || !this.priorityObj) {
+      const statusList: Dictionary[] = JSON.parse(localStorage.getItem(this.statusStoredKey)!);
+      const priorities: Dictionary[] = JSON.parse(localStorage.getItem(this.priorityStoredKey)!);
+
+      this.statusObj = Object.fromEntries(statusList.map(item => [item.value, item.key]));
+      this.priorityObj = Object.fromEntries(priorities.map(item => [item.value, item.key]));
+    }
+
+    this.tasks.sort((a, b) => {
+      if (a.status !== b.status) {
+        return this.statusObj[a.status] - this.statusObj[b.status];
+      }
+
+      return this.priorityObj[b.priority] - this.priorityObj[a.priority];
+    })
   }
 }

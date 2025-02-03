@@ -21,6 +21,11 @@ export class StatusColorDirectiveDirective {
       colorCode = '#05A301';
     }
 
-    this.render.setStyle(this.el.nativeElement, 'borderColor', colorCode);
+    if (this.el.nativeElement.tagName === 'DIV') {
+      this.render.setStyle(this.el.nativeElement, 'borderColor', colorCode);
+    }
+    else {
+      this.render.setStyle(this.el.nativeElement, 'color', colorCode);
+    }
   }
 }
