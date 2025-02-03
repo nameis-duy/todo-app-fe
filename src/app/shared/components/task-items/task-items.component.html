@@ -1,10 +1,10 @@
-<div class="task-items-container row" (click)="onClick()">
-    <div class="status-section col-1" [attr.color-code]="task().status">
+<div class="task-items-container row" (click)="onClickDetail()" appStatusColorDirective [status]="task().status">
+    <div class="status-section col-1" appStatusColorDirective [status]="task().status">
         @if (task().isCompleted) {
-            <i class="fa-regular fa-circle-check"></i>
+        <i class="fa-regular fa-circle-check"></i>
         }
         @if (!task().isCompleted) {
-            <i class="fa-regular fa-circle"></i>
+        <i class="fa-regular fa-circle"></i>
         }
     </div>
     <div class="detail-section col-11">
@@ -26,6 +26,17 @@
                             [attr.data-bs-target]="'#remove-modal-' + task().id">
                             <i class="fas fa-trash mx-2"></i>
                             <span class="dropdown-item-text">Delete</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="dropdown-item" (click)="changeTaskStatus(task().id, task().isCompleted)">
+                            <span *ngIf="task().isCompleted; else elseBlock">
+                                <i class="fa-regular fa-circle-xmark mx-2"></i>
+                            </span>
+                            <ng-template #elseBlock>
+                                <i class="fa-regular fa-circle-check mx-2"></i>
+                            </ng-template>
+                            <span class="dropdown-item-text">{{ task().isCompleted ? 'Undone' : 'Complete' }}</span>
                         </span>
                     </li>
                 </ul>
@@ -74,12 +85,13 @@
         <div class="enum-sections row">
             <p class="col-md-4">
                 Priority:
-                <span class="priority-value" id="prio-{{task().id}}" [attr.color-code]="task().priority">{{ task().priority
+                <span class="priority-value" id="prio-{{task().id}}" [attr.color-code]="task().priority">{{
+                    task().priority
                     }}</span>
             </p>
             <p class="col-md-3">
                 Status:
-                <span class="status-value" [attr.color-code]="task().status">{{ task().status }}</span>
+                <span class="status-value" appStatusColorDirective [status]="task().status">{{ task().status }}</span>
             </p>
             <div class="col-md-5 text-center">
                 <p class="created-date">Created on: {{ dateStr }}</p>

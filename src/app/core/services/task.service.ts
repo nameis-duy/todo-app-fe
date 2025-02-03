@@ -6,6 +6,7 @@ import { Task } from '../../shared/models/task.model';
 import { ResponseResult } from '../../shared/models/response.model';
 import { TaskCreateRequest } from '../../shared/models/dtos/task-create-request.model';
 import { TaskUpdateRequest } from '../../shared/models/dtos/task-update-request.model';
+import { TaskChangeStatusRequest } from '../../shared/models/dtos/task-change-status-request.model';
 
 @Injectable({
     providedIn: 'root'
@@ -33,5 +34,9 @@ export class TaskService {
 
     removeTask(id: number) : Observable<ResponseResult<Task>> {
         return this.http.delete<ResponseResult<Task>>(this.API_URL + `/${id}`);
+    }
+
+    changeTaskStatus(task: TaskChangeStatusRequest) : Observable<ResponseResult<Task>> {
+        return this.http.put<ResponseResult<Task>>(`${this.API_URL}/status`, task);
     }
 }

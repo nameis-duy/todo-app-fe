@@ -17,26 +17,14 @@ export class TaskDetailComponent {
   ngOnInit() {
     this.task$()?.subscribe((t) => {
       this.task = t;
+      if (this.task) {
+        const date = new Date(this.task!.createdAtUtc);
+        this.dateStr = date.toLocaleDateString('vi-VN', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+      }
     })
-    
-    if (this.task !== undefined) {
-      const date = new Date(this.task!.createdAtUtc);
-      this.dateStr = date.toLocaleDateString('vi-VN', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      });
-    }
-  }
-
-  ngAfterViewChecked() {
-    if (this.task !== undefined) {
-      const date = new Date(this.task!.createdAtUtc);
-      this.dateStr = date.toLocaleDateString('vi-VN', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      });
-    }
   }
 }
