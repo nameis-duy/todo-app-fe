@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthsService } from '../../../core/auth/auths.service';
 import { Router, RouterLink } from '@angular/router';
 import { JwtService } from '../../../core/services/jwt.service';
 import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -17,6 +18,8 @@ export class RegisterComponent {
   toastr = inject(ToastrService);
   router = inject(Router);
   registerForm: FormGroup;
+
+  isSubmitted = false;
 
   constructor() {
     this.registerForm = new FormGroup({
@@ -40,12 +43,12 @@ export class RegisterComponent {
         validators: [Validators.required],
         nonNullable: true
       }),
-    });
+    }, { validators: this.confirmPasswordValidator() });
   }
 
   onSubmit() {
     if (this.registerForm.invalid) {
-      alert('invalid information');
+      this.isSubmitted = true;
       return;
     }
     let observable = this.authService.register(this.registerForm.value);
@@ -62,5 +65,45 @@ export class RegisterComponent {
         throw err;
       },
     });
+  }
+
+  confirmPasswordValidator(): ValidatorFn {
+    return (formControl: AbstractControl): ValidationErrors | null => {
+      const password = formControl.get('password');
+      const confirmPassword = formControl.get('confirmPassword');
+
+      if (!password || !confirmPassword) {
+        return null;
+      }
+
+      const isMatchedPassword = confirmPassword?.value === password?.value;
+      if (isMatchedPassword) {
+        return null;
+      }
+      
+      confirmPassword.setErrors({ passwordsNotMatched: true })
+      return { passwordsNotMatched: true }
+    }
+  }
+
+  //GETTER  
+  get firstName() {
+    return this.registerForm.get('firstName');
+  }
+
+  get lastName() {
+    return this.registerForm.get('lastName');
+  }
+
+  get email() {
+    return this.registerForm.get('email');
+  }
+
+  get password() {
+    return this.registerForm.get('password');
+  }
+
+  get confirmPassword() {
+    return this.registerForm.get('confirmPassword');
   }
 }

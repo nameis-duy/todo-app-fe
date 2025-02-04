@@ -7,42 +7,95 @@
         <div class="input-section col-6">
             <h2 class="pb-4">Sign up</h2>
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-                <div class="register-field input-group w-75">
-                    <span class="input-group-text" id="input-first-name">
-                        <i class="fa-regular fa-address-card"></i>
-                    </span>
-                    <input formControlName="firstName" type="text" class="register-input form-control" placeholder="Enter first name"
-                        aria-describedby="input-first-name" [required]="true" [maxLength]="250">
+                <div>
+                    <div class="register-field input-group w-75">
+                        <span class="input-group-text" id="input-first-name">
+                            <i class="fa-regular fa-address-card"></i>
+                        </span>
+                        <input formControlName="firstName" type="text" class="register-input form-control"
+                            placeholder="Enter first name" aria-describedby="input-first-name" [maxLength]="250">
+                        <br>
+                    </div>
+                    <div class="register-field w-75">
+                        <div *ngIf="isSubmitted || firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+                            class="text-danger register-field-errors">
+                            <div *ngIf="firstName?.errors?.['required']">First name is required.</div>
+                            <div *ngIf="firstName?.errors?.['minlength'] || firstName?.errors?.['maxlength']">
+                                First name length must between 1 - 250.
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="register-field pt-3 w-75 input-group">
-                    <span class="input-group-text" id="input-last-name">
-                        <i class="fa-regular fa-id-card"></i>
-                    </span>
-                    <input formControlName="lastName" type="text" class="register-input form-control" placeholder="Enter last name"
-                        aria-describedby="input-last-name" [required]="true" [maxlength]="100">
+                <div>
+                    <div class="register-field pt-3 w-75 input-group">
+                        <span class="input-group-text" id="input-last-name">
+                            <i class="fa-regular fa-id-card"></i>
+                        </span>
+                        <input formControlName="lastName" type="text" class="register-input form-control"
+                            placeholder="Enter last name" aria-describedby="input-last-name" [required]="true"
+                            [maxlength]="100">
+                    </div>
+                    <div class="register-field w-75">
+                        <div *ngIf="isSubmitted || lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+                            class="text-danger register-field-errors">
+                            <div *ngIf="lastName?.errors?.['required']">Last name is required.</div>
+                            <div *ngIf="lastName?.errors?.['minlength'] || lastName?.errors?.['maxlength']">
+                                Last name length must between 1 - 100.
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="register-field input-group pt-3 w-75">
+                <div>
+                    <div class="register-field input-group pt-3 w-75">
                         <span class="input-group-text" id="input-email">
                             <i class="fa-regular fa-envelope"></i>
                         </span>
-                        <input formControlName="email" type="email" class="register-input form-control" placeholder="Enter email"
-                            [email]="true" aria-describedby="input-email" [required]="true">
+                        <input formControlName="email" type="email" class="register-input form-control"
+                            placeholder="Enter email" [email]="true" aria-describedby="input-email" [required]="true">
+                    </div>
+                    <div class="register-field w-75">
+                        <div *ngIf="isSubmitted || email?.invalid && (email?.dirty || email?.touched)"
+                            class="text-danger register-field-errors">
+                            <div *ngIf="email?.errors?.['required']">Email is required.</div>
+                            <div *ngIf="email?.errors?.['email']">Invalid email format.</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="register-field input-group pt-3 w-75">
+                <div>
+                    <div class="register-field input-group pt-3 w-75">
                         <span class="input-group-text" id="input-password">
                             <i class="fa-solid fa-lock"></i>
                         </span>
                         <input formControlName="password" type="password" name="password" id="password"
-                            class="register-input form-control" aria-describedby="input-password" placeholder="Enter password"
-                            [required]="true" [minlength]="6">
+                            class="register-input form-control" aria-describedby="input-password"
+                            placeholder="Enter password" [required]="true" [minlength]="6">
+                    </div>
+                    <div class="register-field w-75">
+                        <div *ngIf="isSubmitted || password?.invalid && (password?.dirty || password?.touched)"
+                            class="text-danger register-field-errors">
+                            <div *ngIf="password?.errors?.['required']">Password is required.</div>
+                            <div *ngIf="password?.errors?.['minlength'] || password?.errors?.['maxLength']">
+                                Password length must between 6 - 50.
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="register-field input-group pt-3 w-75">
+                <div>
+                    <div class="register-field input-group pt-3 w-75">
                         <span class="input-group-text" id="input-confirm-password">
                             <i class="fa-solid fa-user-lock"></i>
                         </span>
                         <input formControlName="confirmPassword" type="password" name="password" id="confirmPassword"
                             aria-describedby="input-confirm-password" class="register-input form-control"
                             placeholder="Enter confirm password" [required]="true">
+                    </div>
+                    <div class="register-field w-75">
+                        <div *ngIf="isSubmitted || confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)"
+                            class="text-danger register-field-errors">
+                            <div *ngIf="confirmPassword?.errors?.['required']">Confirm password is required.</div>
+                            <div *ngIf="confirmPassword?.errors?.['passwordsNotMatched']">Confirm password and password are not the same.</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="register-field">
                     <input type="submit" class="register-btn btn mt-5 mb-4 px-4 py-3" value="Register">

@@ -1,12 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, NgZone } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthsService } from '../../../core/auth/auths.service';
 import { Router, RouterLink } from '@angular/router';
 import { JwtService } from '../../../core/services/jwt.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -15,6 +16,9 @@ export class LoginComponent {
   authService = inject(AuthsService);
   router = inject(Router);
   authForm: FormGroup;
+
+  loginErrorMsg = '';
+  ngZone = inject(NgZone);
 
   constructor() {
     this.authForm = new FormGroup({
@@ -42,7 +46,9 @@ export class LoginComponent {
       error: (err) => {
         console.log(err);
         if (err.status === 400) {
-          
+          this.ngZone.run(() => {
+            this.loginErrorMsg = err.error;
+          })
         }
       },
     });

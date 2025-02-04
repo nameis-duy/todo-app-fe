@@ -18,7 +18,11 @@
                         class="login-input form-control" aria-describedby="user-input-password"
                         placeholder="Enter password">
                 </div>
-                <div aria-describedby=""></div>
+                <div class="login-field">
+                    <div *ngIf="loginErrorMsg.length !== 0" class="text-danger login-field-errors">
+                        {{ loginErrorMsg }}
+                    </div>
+                </div>
                 <div class="login-field">
                     <input type="submit" class="login-btn btn mt-5 mb-4 px-4 py-3" value="Login">
                 </div>
