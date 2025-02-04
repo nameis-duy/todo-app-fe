@@ -37,7 +37,7 @@
         <!-- Task list -->
         <div *ngIf="!isLoading && tasks.length > 0">
             <div *ngFor="let task of tasks">
-                <app-task-items [checked]="task.isCompleted" [task]="task" (selectedId)="selectTask($event)" [tasks]="tasks"></app-task-items>
+                <app-task-items [task]="task" (selectedId)="selectTask($event)" [tasks]="tasks"></app-task-items>
             </div>
         </div>
 

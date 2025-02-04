@@ -3,10 +3,11 @@ import { Task } from '../../models/task.model';
 import { TaskFormsComponent } from "../task-forms/task-forms.component";
 import { TaskUpdateRequest } from '../../models/dtos/task-update-request.model';
 import { TaskService } from '../../../core/services/task.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { AppConstant } from '../../../core/constants/constant';
 import { Dictionary } from '../../models/dictionary.model';
 import { StatusColorDirectiveDirective } from '../../directives/status-color-directive.directive';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-task-items',
@@ -16,14 +17,15 @@ import { StatusColorDirectiveDirective } from '../../directives/status-color-dir
 })
 export class TaskItemsComponent {
   taskService = inject(TaskService);
+  toastrService = inject(ToastrService);
   statusStoredKey = AppConstant.STATUS_STORING_KEY;
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
 
   @ViewChild(TaskFormsComponent) formComponent!: TaskFormsComponent;
   task = input.required<Task>();
   tasks = input<Task[]>();
-  checked = input.required<boolean>();
   selectedId = output<number>();
+
   dateStr = '';
   statusObj: any;
   priorityObj: any;
@@ -61,10 +63,12 @@ export class TaskItemsComponent {
           document.getElementById(`btn-update-modal-close-${this.task().id}`)?.click();
           document.getElementById(`prio-${this.task().id}`)?.setAttribute('color-code', this.task().priority);
           this.sortTasks();
+          this.toastrService.success('Edit successfully', 'Success');
         }
       },
       error: (err) => {
         console.error('Error edit task: ', err);
+        this.toastrService.error('Server error', 'Error');
       }
     })
   }
@@ -80,11 +84,14 @@ export class TaskItemsComponent {
             if (removeModal) {
               this.closeModal(removeModal);
             }
+            this.selectedId.emit(this.tasks()?.at(0)?.id ?? -1);
+            this.toastrService.success('Remove successfully', 'Success');
           }
         }
       },
       error: (err) => {
         console.error('Error removing task: ', err);
+        this.toastrService.error('Server error', 'Error');
       }
     })
   }
@@ -102,10 +109,12 @@ export class TaskItemsComponent {
           this.task().isCompleted = !isCompleted;
           this.task().status = Object.keys(this.statusObj).find(key => this.statusObj[key] === status)!;
           this.sortTasks();
+          this.toastrService.success(`${isCompleted ? 'Change status' : 'Complete'} succeed`, 'Success');
         }
       },
       error: (err) => {
         console.error('Error change task status: ', err);
+        this.toastrService.error('Server error', 'Error');
       }
     })
   }
@@ -121,7 +130,11 @@ export class TaskItemsComponent {
         return this.statusObj[a.status] - this.statusObj[b.status];
       }
 
-      return this.priorityObj[b.priority] - this.priorityObj[a.priority];
+      if (a.priority !== b.priority) {
+        this.priorityObj[b.priority] - this.priorityObj[a.priority];
+      }
+
+      return new Date(a.createdAtUtc).getTime() - new Date(b.createdAtUtc).getTime();
     })
   }
 

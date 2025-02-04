@@ -76,7 +76,13 @@ export class TaskFormsComponent {
 
   onSubmit() {
     if (this.taskForm?.valid) {
-      this.isUpdate() ? this.formUpdateSubmit.emit(this.taskForm.value) : this.formCreateSubmit.emit(this.taskForm.value);
+      if (this.isUpdate()) {
+        this.formUpdateSubmit.emit(this.taskForm.value);
+      } else {
+        this.formCreateSubmit.emit(this.taskForm.value);
+        this.createForm(undefined, false);
+      }
+
     } else {
       this.taskForm?.markAllAsTouched();
     }

@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthsService } from '../../../core/auth/auths.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { JwtService } from '../../../core/services/jwt.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +14,8 @@ import { JwtService } from '../../../core/services/jwt.service';
 export class RegisterComponent {
   jwtService = inject(JwtService);
   authService = inject(AuthsService);
+  toastr = inject(ToastrService);
+  router = inject(Router);
   registerForm: FormGroup;
 
   constructor() {
@@ -41,7 +44,6 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    debugger;
     if (this.registerForm.invalid) {
       alert('invalid information');
       return;
@@ -50,10 +52,12 @@ export class RegisterComponent {
     observable.pipe().subscribe({
       next: (res: any) => {
         if (res.isSucceed) {
-          console.log(res.message);
+          this.toastr.success('Register successfully', 'Success');
+          this.router.navigateByUrl('/login');
         }
       },
       error: (err) => {
+        this.toastr.error('Server error', 'Error');
         console.log(err);
         throw err;
       },

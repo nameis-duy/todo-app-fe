@@ -9,6 +9,7 @@ import { TaskDetailComponent } from "../task-detail/task-detail.component";
 import { BehaviorSubject } from 'rxjs';
 import { AppConstant } from '../../core/constants/constant';
 import { Dictionary } from '../../shared/models/dictionary.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-task-list',
@@ -18,6 +19,7 @@ import { Dictionary } from '../../shared/models/dictionary.model';
 })
 export class TaskListComponent {
   taskService = inject(TaskService);
+  toastr = inject(ToastrService);
   statusStoredKey = AppConstant.STATUS_STORING_KEY;
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
 
@@ -44,6 +46,7 @@ export class TaskListComponent {
       },
       error: (err) => {
         console.error('Error fetching tasks api:', err);
+        this.toastr.error('Server error', 'Error');
         this.isLoading = false;
       }
     })
@@ -57,10 +60,12 @@ export class TaskListComponent {
           this.tasks.push(res.data);
           this.sortTasks();
           document.getElementById(`btn-close-add-modal`)?.click();
+          this.toastr.success('Add successfully', 'Success')
         }
       },
       error: (err) => {
         console.error('Error adding task: ', err);
+        this.toastr.error('Server error', 'Error');
       }
     })
   }
@@ -84,7 +89,11 @@ export class TaskListComponent {
         return this.statusObj[a.status] - this.statusObj[b.status];
       }
 
-      return this.priorityObj[b.priority] - this.priorityObj[a.priority];
+      if (a.priority !== b.priority) {
+        this.priorityObj[b.priority] - this.priorityObj[a.priority];
+      }
+
+      return new Date(a.createdAtUtc).getTime() - new Date(b.createdAtUtc).getTime();
     })
   }
 }

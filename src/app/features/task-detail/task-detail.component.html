@@ -13,23 +13,8 @@
                 [attr.data-bs-target]="'#update-modal-' + task.id">
                 <i class="fa-regular fa-pen-to-square"></i>
             </button>
-            <div class="modal fade" [id]="'update-modal-' + task.id" tabindex="-1" aria-labelledby="editTaskModal"
-                aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="editTaskModal">Edit Task</h1>
-                            <button [id]="'btn-update-modal-close-{{ task.id }}'" type="button" class="btn-close"
-                                data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <app-task-forms [task]="task" [isUpdate]="true"
-                                (formUpdateSubmit)="updateTask($event)"></app-task-forms>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="btn btn-remove" type="button" aria-label="''">
+            <button class="btn btn-remove" type="button" aria-label="''" data-bs-toggle="modal"
+                [attr.data-bs-target]="'#remove-modal-' + task.id">
                 <i class="fa-solid fa-trash"></i>
             </button>
         </div>

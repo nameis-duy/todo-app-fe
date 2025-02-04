@@ -1,10 +1,12 @@
 <div class="task-items-container row" (click)="onClickDetail()" appStatusColorDirective [status]="task().status">
-    <div class="status-section col-1" appStatusColorDirective [status]="task().status">
+    <div class="status-section col-1">
         @if (task().isCompleted) {
-        <i class="fa-regular fa-circle-check"></i>
+        <i class="fa-regular fa-circle-check" appStatusColorDirective [status]="task().status"
+            (click)="changeTaskStatus(task().id, task().isCompleted)"></i>
         }
         @if (!task().isCompleted) {
-        <i class="fa-regular fa-circle"></i>
+        <i class="fa-regular fa-circle" appStatusColorDirective [status]="task().status"
+            (click)="changeTaskStatus(task().id, task().isCompleted)"></i>
         }
     </div>
     <div class="detail-section col-11">
@@ -49,7 +51,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Task</h1>
-                            <button id="btn-update-modal-close-{{ task().id }}" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button id="btn-update-modal-close-{{ task().id }}" type="button" class="btn-close"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <app-task-forms [task]="task()" [isUpdate]="true"
@@ -81,7 +84,7 @@
             </div>
         </div>
         <h4 class="item-title">{{ task().title }}</h4>
-        <p class="item-description pt-1">{{ task().description }}</p>
+        <p class="item-description pt-1">{{ (task().description.length > 200) ? task().description.slice(0, 197) + '...' : task().description }}</p>
         <div class="enum-sections row">
             <p class="col-md-4">
                 Priority:
