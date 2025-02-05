@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './headers.component.scss'
 })
 export class HeadersComponent {
-
+  today: Date = new Date();
+  daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 }

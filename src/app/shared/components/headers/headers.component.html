@@ -13,8 +13,14 @@
             </div>
         </div>
         <div class="col-2 current-date-section text-center">
-            <p>Tuesday <br>
-                <span class="date-section-span">23/01/2025</span>
+            <p>{{ daysOfWeek[today.getDay()] }} <br>
+                <span class="date-section-span">
+                    {{ today.toLocaleDateString('vi-VN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                    }) }}
+                </span>
             </p>
         </div>
     </div>

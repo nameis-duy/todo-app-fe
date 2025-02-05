@@ -2,7 +2,7 @@
     border: 1px solid rgba(161, 163, 171, 0.63);
     border-radius: 1rem;
     box-shadow: 0px 1px 2px 0px;
-    max-height: 86.5vh;
+    height: 86.5vh;
     margin-bottom: 0.2rem;
     overflow-y: auto;
 
@@ -36,6 +36,12 @@
         span {
             color: #F24E1E;
         }
+    }
+
+    .task-notfound-section {
+        text-align: center;
+        padding-top: 15rem;
+        color: gray;
     }
 }
 

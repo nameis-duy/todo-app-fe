@@ -1,4 +1,6 @@
 .task-detail-container {
+    position: relative;
+
     .task-title {
         padding-bottom: 1rem;
     }
@@ -23,12 +25,15 @@
         color: #747474;
         padding-top: 1rem;
         padding-right: 1rem;
+        height: 44vh;
+        overflow-y: auto;
     }
 
     .task-action-btn {
-        position: absolute;
-        right: 6.7rem;
-        bottom: 3rem;
+        display: flex;
+        justify-content: end;
+        align-items: end;
+        padding-right: 2rem;
 
         .btn {
             background: #FF6767;
@@ -43,4 +48,10 @@
             margin-right: 0.5rem;
         }
     }
+}
+
+.no-infor-section {
+    text-align: center;
+    padding-top: 18rem;
+    color: gray;
 }
