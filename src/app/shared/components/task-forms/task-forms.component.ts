@@ -52,7 +52,7 @@ export class TaskFormsComponent {
         nonNullable: true
       }),
       expiredAt: new FormControl('', {
-        validators: [Validators.required, this.validExpiredTimeValidator()],
+        validators: [Validators.required, this.validExpiredTimeValidator(isUpdate)],
         nonNullable: true
       }),
       priority: new FormControl(isUpdate ? priority : '0', {
@@ -96,10 +96,14 @@ export class TaskFormsComponent {
     }
   }
 
-  validExpiredTimeValidator() : ValidatorFn {
+  validExpiredTimeValidator(isUpdate: boolean | undefined) : ValidatorFn {
     return (control: AbstractControl) : ValidationErrors | null => {
       const now = new Date();
       const expireAt = new Date(control?.value);
+
+      if (isUpdate && !control.dirty) {
+        return null;
+      }
 
       const diffInMs = expireAt.getTime() - now.getTime();
       if (diffInMs <= 0) {

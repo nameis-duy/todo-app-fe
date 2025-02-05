@@ -10,10 +10,18 @@ import { BehaviorSubject } from 'rxjs';
 import { AppConstant } from '../../core/constants/constant';
 import { Dictionary } from '../../shared/models/dictionary.model';
 import { ToastrService } from 'ngx-toastr';
+import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TaskUpdateRequest } from '../../shared/models/dtos/task-update-request.model';
 
 @Component({
   selector: 'app-task-list',
-  imports: [CommonModule, TaskItemsComponent, TaskFormsComponent, TaskDetailComponent],
+  imports: [
+    CommonModule,
+    TaskItemsComponent,
+    TaskFormsComponent,
+    TaskDetailComponent,
+    CdkDrag, CdkDropList
+  ],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss'
 })
@@ -74,14 +82,48 @@ export class TaskListComponent {
     this.selectedTask.next(this.tasks.find(task => task.id === id));
   }
 
+  dropHandle(event: CdkDragDrop<Task[]>) {
+    let selectedTask = this.tasks[event.previousIndex];
+    const targetTask = this.tasks[event.currentIndex];
+    moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);
+    if (event.previousIndex === event.currentIndex) {
+      return;
+    }
+    selectedTask.priority = targetTask.priority;
+    selectedTask.status = targetTask.status;
+    selectedTask.isCompleted = targetTask.isCompleted;
+
+    if (!this.statusObj || !this.priorityObj) {
+      this.initStatusAndPrioritiesObj();
+    }
+
+    this.updateTask({
+      id: selectedTask.id,
+      title: selectedTask.title,
+      description: selectedTask.description,
+      priority: this.priorityObj[selectedTask.priority],
+      status: this.statusObj[selectedTask.status],
+      expiredAt: selectedTask.expiredAtUtc
+    });
+  }
+
+  updateTask(task: TaskUpdateRequest) {
+    this.taskService.updateTask(task).subscribe({
+      next: (res) => {
+        if (res.isSucceed) {
+          this.toastr.success('Change successfully', 'Success')
+        }
+      },
+      error: (err) => {
+        console.error('Error update task: ', err);
+      }
+    })
+  }
+
   //SUPPORT FUNC
   sortTasks() {
     if (!this.statusObj || !this.priorityObj) {
-      const statusList: Dictionary[] = JSON.parse(localStorage.getItem(this.statusStoredKey)!);
-      const priorities: Dictionary[] = JSON.parse(localStorage.getItem(this.priorityStoredKey)!);
-
-      this.statusObj = Object.fromEntries(statusList.map(item => [item.value, item.key]));
-      this.priorityObj = Object.fromEntries(priorities.map(item => [item.value, item.key]));
+      this.initStatusAndPrioritiesObj();
     }
 
     this.tasks.sort((a, b) => {
@@ -95,5 +137,13 @@ export class TaskListComponent {
 
       return new Date(a.createdAtUtc).getTime() - new Date(b.createdAtUtc).getTime();
     })
+  }
+
+  initStatusAndPrioritiesObj() {
+    const statusList: Dictionary[] = JSON.parse(localStorage.getItem(this.statusStoredKey)!);
+    const priorities: Dictionary[] = JSON.parse(localStorage.getItem(this.priorityStoredKey)!);
+
+    this.statusObj = Object.fromEntries(statusList.map(item => [item.value, item.key]));
+    this.priorityObj = Object.fromEntries(priorities.map(item => [item.value, item.key]));
   }
 }

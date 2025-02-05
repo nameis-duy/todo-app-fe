@@ -12,6 +12,5 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptors([customInterceptor])),
     provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(withEventReplay()),
-    provideAnimationsAsync(),
-    provideToastr()]
+    provideToastr(), provideAnimationsAsync()]
 };
