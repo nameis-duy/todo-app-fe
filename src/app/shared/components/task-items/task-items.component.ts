@@ -131,7 +131,7 @@ export class TaskItemsComponent {
       }
 
       if (a.priority !== b.priority) {
-        this.priorityObj[b.priority] - this.priorityObj[a.priority];
+        return this.priorityObj[b.priority] - this.priorityObj[a.priority];
       }
 
       return new Date(a.createdAtUtc).getTime() - new Date(b.createdAtUtc).getTime();

@@ -4,11 +4,27 @@
             <div class="add-task-field">
                 <h6 for="title">Title:</h6>
                 <input formControlName="title" type="text" placeholder="Enter Title" class="add-task-input">
+                <div>
+                    <div *ngIf="isSubmitted || title?.invalid && (title?.dirty || title?.touched)"
+                        class="text-danger input-errors">
+                        <div *ngIf="title?.errors?.['required']">Title cannot be empty</div>
+                        <div *ngIf="title?.errors?.['minlength'] || title?.errors?.['maxLength']">
+                            Title length must between 6 - 150
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="add-task-field">
                 <h6 for="expiredAt">Expired Date</h6>
                 <input formControlName="expiredAt" type="datetime-local" placeholder="Enter date"
                     class="add-task-input">
+                <div>
+                    <div *ngIf="isSubmitted || expiredAt?.invalid && (title?.dirty || title?.touched)"
+                        class="text-danger input-errors">
+                        <div *ngIf="expiredAt?.errors?.['required']">Expired date is required</div>
+                        <div *ngIf="expiredAt?.errors?.['invalidExpiredTime']">Expired time must be 30 minutes after current time.</div>
+                    </div>
+                </div>
             </div>
             <div class="add-task-field">
                 <h6 for="priority">Priority</h6>
@@ -26,6 +42,12 @@
                 <h6 for="description">Task Description</h6>
                 <textarea formControlName="description" type="textarea" placeholder="Enter description"
                     class="add-task-input"></textarea>
+                <div>
+                    <div *ngIf="isSubmitted || description?.invalid && (description?.dirty || description?.touched)"
+                        class="text-danger input-errors">
+                        <div *ngIf="description?.errors?.['required']">Description cannot be empty</div>
+                    </div>
+                </div>
             </div>
         </div>
         <input type="hidden" formControlName="id">

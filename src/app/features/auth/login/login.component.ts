@@ -4,6 +4,7 @@ import { AuthsService } from '../../../core/auth/auths.service';
 import { Router, RouterLink } from '@angular/router';
 import { JwtService } from '../../../core/services/jwt.service';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent {
   jwtService = inject(JwtService);
   authService = inject(AuthsService);
+  toastr = inject(ToastrService);
   router = inject(Router);
   authForm: FormGroup;
 
@@ -49,6 +51,9 @@ export class LoginComponent {
           this.ngZone.run(() => {
             this.loginErrorMsg = err.error;
           })
+        }
+        else {
+          this.toastr.error('Server error', 'Error');
         }
       },
     });

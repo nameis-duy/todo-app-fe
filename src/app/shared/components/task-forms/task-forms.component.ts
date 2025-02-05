@@ -1,5 +1,5 @@
 import { Component, inject, input, output } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { TaskCreateRequest } from '../../models/dtos/task-create-request.model';
 import { Task } from '../../models/task.model';
 import { CommonModule, formatDate } from '@angular/common';
@@ -23,6 +23,7 @@ export class TaskFormsComponent {
 
   priorities: Dictionary[] = [];
   taskForm?: FormGroup;
+  isSubmitted = false;
 
   baseService = inject(BaseService);
 
@@ -36,7 +37,7 @@ export class TaskFormsComponent {
   }
 
   createForm(task?: Task, isUpdate?: boolean) {
-    let priority : string | undefined = '0';
+    let priority: string | undefined = '0';
     if (task === undefined) {
       task = this.task();
     }
@@ -47,11 +48,11 @@ export class TaskFormsComponent {
 
     this.taskForm = new FormGroup({
       title: new FormControl(isUpdate ? task?.title : '', {
-        validators: [Validators.required],
+        validators: [Validators.required, Validators.minLength(6), Validators.maxLength(150)],
         nonNullable: true
       }),
-      expiredAt: new FormControl(isUpdate ? new Date(task?.expiredAtUtc!).toISOString().slice(0, -1) : '', {
-        validators: [Validators.required],
+      expiredAt: new FormControl('', {
+        validators: [Validators.required, this.validExpiredTimeValidator()],
         nonNullable: true
       }),
       priority: new FormControl(isUpdate ? priority : '0', {
@@ -64,6 +65,14 @@ export class TaskFormsComponent {
       }),
       id: new FormControl(task?.id)
     })
+
+    if (isUpdate) {
+      const expiredAtUtc = new Date(task?.expiredAtUtc!);
+      const localDate = new Date(expiredAtUtc.getTime() - expiredAtUtc.getTimezoneOffset() * 60000)
+        .toISOString().slice(0, -1);
+
+      this.taskForm.get('expiredAt')?.setValue(localDate);
+    }
   }
 
   getPriorities(): void {
@@ -82,9 +91,44 @@ export class TaskFormsComponent {
         this.formCreateSubmit.emit(this.taskForm.value);
         this.createForm(undefined, false);
       }
-
     } else {
-      this.taskForm?.markAllAsTouched();
+      this.isSubmitted = true;
     }
+  }
+
+  validExpiredTimeValidator() : ValidatorFn {
+    return (control: AbstractControl) : ValidationErrors | null => {
+      const now = new Date();
+      const expireAt = new Date(control?.value);
+
+      const diffInMs = expireAt.getTime() - now.getTime();
+      if (diffInMs <= 0) {
+        return { invalidExpiredTime: true }
+      }
+
+      const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+      if (diffInMinutes < 30) {
+        return { invalidExpiredTime: true }
+      }
+
+      return null;
+    }
+  }
+
+  //GETTER
+  get title() {
+    return this.taskForm?.get('title');
+  }
+
+  get expiredAt() {
+    return this.taskForm?.get('expiredAt');
+  }
+
+  get priority() {
+    return this.taskForm?.get('priority');
+  }
+
+  get description() {
+    return this.taskForm?.get('description');
   }
 }
