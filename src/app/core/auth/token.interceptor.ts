@@ -1,5 +1,4 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { AppConstant } from '../constants/constant';
 import { inject } from '@angular/core';
 import { JwtService } from '../services/jwt.service';
 

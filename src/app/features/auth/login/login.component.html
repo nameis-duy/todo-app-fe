@@ -1,3 +1,6 @@
+<div *ngIf="isLoading()">
+    <app-loader></app-loader>
+</div>
 <div class="auth-container">
     <div class="row">
         <div class="input-section col-6">
@@ -19,8 +22,8 @@
                         placeholder="Enter password">
                 </div>
                 <div class="login-field">
-                    <div *ngIf="loginErrorMsg.length !== 0" class="text-danger login-field-errors">
-                        {{ loginErrorMsg }}
+                    <div *ngIf="loginErrorMsg().length !== 0" class="text-danger login-field-errors">
+                        {{ loginErrorMsg() }}
                     </div>
                 </div>
                 <div class="login-field">

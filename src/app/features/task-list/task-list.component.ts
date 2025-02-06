@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, NgZone, signal } from '@angular/core';
 import { TaskService } from '../../core/services/task.service';
 import { Task } from '../../shared/models/task.model';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,7 @@ import { Dictionary } from '../../shared/models/dictionary.model';
 import { ToastrService } from 'ngx-toastr';
 import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TaskUpdateRequest } from '../../shared/models/dtos/task-update-request.model';
+import { LoaderComponent } from "../../shared/components/loader/loader.component";
 
 @Component({
   selector: 'app-task-list',
@@ -20,7 +21,8 @@ import { TaskUpdateRequest } from '../../shared/models/dtos/task-update-request.
     TaskItemsComponent,
     TaskFormsComponent,
     TaskDetailComponent,
-    CdkDrag, CdkDropList
+    CdkDrag, CdkDropList,
+    LoaderComponent
   ],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss'
@@ -28,11 +30,12 @@ import { TaskUpdateRequest } from '../../shared/models/dtos/task-update-request.
 export class TaskListComponent {
   taskService = inject(TaskService);
   toastr = inject(ToastrService);
+  ngZone = inject(NgZone);
   statusStoredKey = AppConstant.STATUS_STORING_KEY;
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
 
   tasks: Task[] = [];
-  isLoading = true;
+  isLoading = signal(false);
   statusObj: any;
   priorityObj: any;
 
@@ -44,23 +47,25 @@ export class TaskListComponent {
   }
 
   loadTasks(): void {
+    this.isLoading.set(true);
     this.taskService.getTasks().subscribe({
       next: (response) => {
         if (response.isSucceed) {
           this.tasks = response.data;
           this.selectedTask.next(this.tasks[0]);
-          this.isLoading = false;
         }
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Error fetching tasks api:', err);
         this.toastr.error('Server error', 'Error');
-        this.isLoading = false;
+        this.isLoading.set(false);
       }
     })
-  }
+  } 
 
   addTask(task: TaskCreateRequest): void {
+    this.isLoading.set(true);
     task.priority = parseInt(task.priority.toString());
     this.taskService.addTask(task).subscribe({
       next: (res) => {
@@ -68,12 +73,14 @@ export class TaskListComponent {
           this.tasks.push(res.data);
           this.sortTasks();
           document.getElementById(`btn-close-add-modal`)?.click();
-          this.toastr.success('Add successfully', 'Success')
+          this.toastr.success('Add successfully', 'Success');
         }
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Error adding task: ', err);
         this.toastr.error('Server error', 'Error');
+        this.isLoading.set(false);
       }
     })
   }
@@ -108,14 +115,17 @@ export class TaskListComponent {
   }
 
   updateTask(task: TaskUpdateRequest) {
+    this.isLoading.set(true);
     this.taskService.updateTask(task).subscribe({
       next: (res) => {
         if (res.isSucceed) {
-          this.toastr.success('Change successfully', 'Success')
+          this.toastr.success('Change successfully', 'Success');
         }
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Error update task: ', err);
+        this.isLoading.set(false);
       }
     })
   }

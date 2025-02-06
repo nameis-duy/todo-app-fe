@@ -1,14 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthsService } from '../../../core/auth/auths.service';
 import { Router, RouterLink } from '@angular/router';
 import { JwtService } from '../../../core/services/jwt.service';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { LoaderComponent } from "../../../shared/components/loader/loader.component";
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink, CommonModule],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule, LoaderComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -20,6 +21,7 @@ export class RegisterComponent {
   registerForm: FormGroup;
 
   isSubmitted = false;
+  isLoading = signal(false);
 
   constructor() {
     this.registerForm = new FormGroup({
@@ -47,8 +49,10 @@ export class RegisterComponent {
   }
 
   onSubmit() {
+    this.isLoading.set(true);
     if (this.registerForm.invalid) {
       this.isSubmitted = true;
+      this.isLoading.set(false);
       return;
     }
     let observable = this.authService.register(this.registerForm.value);
@@ -62,6 +66,7 @@ export class RegisterComponent {
       error: (err) => {
         this.toastr.error('Server error', 'Error');
         console.log(err);
+        this.isLoading.set(false);
         throw err;
       },
     });

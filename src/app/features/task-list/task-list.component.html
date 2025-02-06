@@ -1,3 +1,6 @@
+<div *ngIf="isLoading()">
+    <app-loader></app-loader>
+</div>
 <div class="task-container row">
     <div class="task-list-container col-6">
         <div class="add-section row">
@@ -30,22 +33,22 @@
         </div>
 
         <!-- Loading indicator -->
-        <div *ngIf="isLoading" class="loading">
+        <div *ngIf="isLoading()" class="loading task-notfound-section">
             <p>Loading tasks...</p>
         </div>
 
         <!-- Task list -->
-        <div *ngIf="!isLoading && tasks.length > 0">
+        <div *ngIf="!isLoading() && tasks.length > 0">
             <div cdkDropList [cdkDropListData]="tasks" (cdkDropListDropped)="dropHandle($event)">
                 @for (task of tasks; track task) {
-                <app-task-items cdkDrag [cdkDragData]="task" [task]="task" (selectedId)="selectTask($event)"
-                    [tasks]="tasks"></app-task-items>
+                <app-task-items cdkDrag [cdkDragData]="task" [task]="task" [tasks]="tasks"
+                    (selectedId)="selectTask($event)"></app-task-items>
                 }
             </div>
         </div>
 
         <!-- No tasks message -->
-        <div *ngIf="!isLoading && tasks.length === 0" class="task-notfound-section">
+        <div *ngIf="!isLoading() && tasks.length === 0" class="task-notfound-section">
             <p>No tasks found.</p>
         </div>
     </div>

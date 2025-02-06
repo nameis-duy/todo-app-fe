@@ -1,14 +1,15 @@
-import { Component, inject, NgZone } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthsService } from '../../../core/auth/auths.service';
 import { Router, RouterLink } from '@angular/router';
 import { JwtService } from '../../../core/services/jwt.service';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { LoaderComponent } from "../../../shared/components/loader/loader.component";
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink, CommonModule],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule, LoaderComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -19,8 +20,8 @@ export class LoginComponent {
   router = inject(Router);
   authForm: FormGroup;
 
-  loginErrorMsg = '';
-  ngZone = inject(NgZone);
+  loginErrorMsg = signal('');
+  isLoading = signal(false);
 
   constructor() {
     this.authForm = new FormGroup({
@@ -36,6 +37,7 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    this.isLoading.set(true);
     let observable = this.authService.login(this.authForm.value);
     observable.pipe().subscribe({
       next: (res: any) => {
@@ -48,12 +50,12 @@ export class LoginComponent {
       error: (err) => {
         console.log(err);
         if (err.status === 400) {
-          this.ngZone.run(() => {
-            this.loginErrorMsg = err.error;
-          })
+          this.loginErrorMsg.set(err.error);
+          this.isLoading.set(false);
         }
         else {
           this.toastr.error('Server error', 'Error');
+          this.isLoading.set(false);
         }
       },
     });
