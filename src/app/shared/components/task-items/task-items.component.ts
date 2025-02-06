@@ -1,17 +1,18 @@
-import { Component, inject, input, output, ViewChild } from '@angular/core';
+import { Component, inject, input, NgZone, output, signal, Signal, ViewChild } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { TaskFormsComponent } from "../task-forms/task-forms.component";
 import { TaskUpdateRequest } from '../../models/dtos/task-update-request.model';
 import { TaskService } from '../../../core/services/task.service';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { AppConstant } from '../../../core/constants/constant';
 import { Dictionary } from '../../models/dictionary.model';
 import { StatusColorDirectiveDirective } from '../../directives/status-color-directive.directive';
 import { ToastrService } from 'ngx-toastr';
+import { LoaderComponent } from "../loader/loader.component";
 
 @Component({
   selector: 'app-task-items',
-  imports: [TaskFormsComponent, CommonModule, StatusColorDirectiveDirective],
+  imports: [TaskFormsComponent, CommonModule, StatusColorDirectiveDirective, LoaderComponent],
   templateUrl: './task-items.component.html',
   styleUrl: './task-items.component.scss'
 })
@@ -25,6 +26,7 @@ export class TaskItemsComponent {
   task = input.required<Task>();
   tasks = input<Task[]>();
   selectedId = output<number>();
+  isLoading = signal<boolean>(false);
 
   dateStr = '';
   statusObj: any;
@@ -52,6 +54,7 @@ export class TaskItemsComponent {
   }
 
   updateTask(task: TaskUpdateRequest) {
+    this.isLoading.set(true);
     task.priority = parseInt(task.priority.toString());
     this.taskService.updateTask(task).subscribe({
       next: (res) => {
@@ -65,15 +68,18 @@ export class TaskItemsComponent {
           this.sortTasks();
           this.toastrService.success('Edit successfully', 'Success');
         }
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Error edit task: ', err);
         this.toastrService.error('Server error', 'Error');
+        this.isLoading.set(false);
       }
     })
   }
 
   removeTask(id: number) {
+    this.isLoading.set(true);
     this.taskService.removeTask(id).subscribe({
       next: (res) => {
         if (res.isSucceed) {
@@ -88,15 +94,18 @@ export class TaskItemsComponent {
             this.toastrService.success('Remove successfully', 'Success');
           }
         }
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Error removing task: ', err);
         this.toastrService.error('Server error', 'Error');
+        this.isLoading.set(false);
       }
     })
   }
 
   changeTaskStatus(id: number, isCompleted: boolean) {
+    this.isLoading.set(true);
     const status = isCompleted ? 0 : 2;
     const taskChangeRequest = {
       id,
@@ -111,10 +120,12 @@ export class TaskItemsComponent {
           this.sortTasks();
           this.toastrService.success(`${isCompleted ? 'Change status' : 'Complete'} succeed`, 'Success');
         }
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Error change task status: ', err);
         this.toastrService.error('Server error', 'Error');
+        this.isLoading.set(false);
       }
     })
   }

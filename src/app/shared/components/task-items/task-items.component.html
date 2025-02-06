@@ -1,3 +1,6 @@
+<div *ngIf="isLoading()">
+    <app-loader></app-loader>
+</div>
 <div class="task-items-container row" (click)="onClickDetail()" appStatusColorDirective [status]="task().status">
     <div class="status-section col-1">
         @if (task().isCompleted) {
@@ -84,7 +87,8 @@
             </div>
         </div>
         <h4 class="item-title">{{ task().title }}</h4>
-        <p class="item-description pt-1">{{ (task().description.length > 200) ? task().description.slice(0, 197) + '...' : task().description }}</p>
+        <p class="item-description pt-1">{{ (task().description.length > 200) ? task().description.slice(0, 197) + '...'
+            : task().description }}</p>
         <div class="enum-sections row">
             <p class="col-md-4">
                 Priority:
