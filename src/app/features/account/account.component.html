@@ -1,3 +1,6 @@
+<div *ngIf="isLoading()">
+    <app-loader></app-loader>
+</div>
 <app-headers></app-headers>
 <div class="row w-100">
     <div class="side-bar col-2">
@@ -12,30 +15,41 @@
                 <button type="button" class="btn">Go back</button>
             </div>
         </div>
-        <form class="form-container">
+        <form class="form-container" [formGroup]="accountInforForm!">
+            <input type="hidden" formControlName="id">
             <div class="account-infor">
                 <h6 for="firstName" class="form-label">First Name</h6>
-                <input type="text" formControlName="firstName" placeholder="First name" class="form-control">
-                <div></div>    
+                <input type="text" formControlName="firstName" placeholder="First name" class="form-control"
+                    [readOnly]="!isUpdate()">
+                <div></div>
             </div>
             <div class="account-infor">
                 <h6 for="lastName" class="form-label">Last Name</h6>
-                <input type="text" formControlName="lastName" placeholder="Last name" class="form-control">
-                <div></div>    
+                <input type="text" formControlName="lastName" placeholder="Last name" class="form-control"
+                    [readOnly]="!isUpdate()">
+                <div></div>
             </div>
             <div class="account-infor">
                 <h6 for="email" class="form-label">Email address</h6>
-                <input type="text" formControlName="email" placeholder="Email address" class="form-control">
-                <div></div>    
+                <input type="text" formControlName="email" placeholder="Email address" class="form-control"
+                    readonly="true">
+                <div></div>
             </div>
             <div class="account-infor">
                 <h6 for="phone" class="form-label">Contact number</h6>
-                <input type="text" formControlName="phone" placeholder="Contact number" class="form-control">
-                <div></div>    
+                <input type="text" formControlName="phone" placeholder="Contact number" class="form-control"
+                    [readOnly]="!isUpdate()">
+                <div></div>
             </div>
             <div class="action-btn">
-                <button type="button" class="btn">Update infor</button>
-                <button type="button" class="btn">Change password</button>
+                <div *ngIf="isUpdate();else elseBlock">
+                    <button type="submit" class="btn">Save change</button>
+                    <button type="button" class="btn" (click)="toggleUpdate(false)">Cancel</button>
+                </div>
+                <ng-template #elseBlock>
+                    <button type="button" class="btn" (click)="toggleUpdate(true)">Update infor</button>
+                    <button type="button" class="btn">Change password</button>
+                </ng-template>
             </div>
         </form>
     </div>
