@@ -22,7 +22,7 @@
                 <input type="text" formControlName="firstName" placeholder="First name" class="form-control"
                     [readOnly]="!isUpdate()">
                 <div>
-                    <div *ngIf="isSubmitted || firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+                    <div *ngIf="isSubmitted() || firstName?.invalid && (firstName?.dirty || firstName?.touched)"
                         class="text-danger account-infor-errors">
                         <div *ngIf="firstName?.errors?.['required']">First name is required.</div>
                         <div *ngIf="firstName?.errors?.['minlength'] || firstName?.errors?.['maxlength']">
@@ -36,7 +36,7 @@
                 <input type="text" formControlName="lastName" placeholder="Last name" class="form-control"
                     [readOnly]="!isUpdate()">
                 <div>
-                    <div *ngIf="isSubmitted || lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+                    <div *ngIf="isSubmitted() || lastName?.invalid && (lastName?.dirty || lastName?.touched)"
                         class="text-danger account-infor-errors">
                         <div *ngIf="lastName?.errors?.['required']">Last name is required.</div>
                         <div *ngIf="lastName?.errors?.['minlength'] || lastName?.errors?.['maxlength']">
@@ -56,7 +56,7 @@
                 <input type="text" formControlName="phone" placeholder="Contact number" class="form-control"
                     [readOnly]="!isUpdate()">
                 <div>
-                    <div *ngIf="isSubmitted || phone?.invalid && (phone?.dirty || phone?.touched)"
+                    <div *ngIf="isSubmitted() || phone?.invalid && (phone?.dirty || phone?.touched)"
                         class="text-danger account-infor-errors">
                         <div *ngIf="phone?.errors?.['pattern']">Invalid phone format.</div>
                     </div>
@@ -64,12 +64,12 @@
             </div>
             <div class="action-btn">
                 <div *ngIf="isUpdate();else elseBlock">
-                    <button type="submit" class="btn">Save change</button>
+                    <button type="submit" class="btn">Save Change</button>
                     <button type="button" class="btn" (click)="toggleUpdate(false)">Cancel</button>
                 </div>
                 <ng-template #elseBlock>
-                    <button type="button" class="btn" (click)="toggleUpdate(true)">Update infor</button>
-                    <button type="button" class="btn">Change password</button>
+                    <button type="button" class="btn" (click)="toggleUpdate(true)">Update Information</button>
+                    <a routerLink="/account/password" type="button" class="btn">Change Password</a>
                 </ng-template>
             </div>
         </form>
