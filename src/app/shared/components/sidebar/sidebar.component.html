@@ -6,15 +6,16 @@
                     <span class="nav_logo-name">{{ name }}</span> <br> {{ email }}
                 </div>
                 <div class="nav_list">
-                    <a href="#" class="nav_link active">
+                    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                        class="nav_link" ariaCurrentWhenActive="page">
                         <i class="fa-solid fa-list-check"></i>
                         <span class="nav_name">My Task</span>
                     </a>
-                    <!-- <a href="#" class="nav_link">
-                        <i class='bx bx-user nav_icon'></i>
-                        <span class="nav_name">Users</span>
+                    <a routerLink="/account" routerLinkActive="active" class="nav_link" ariaCurrentWhenActive="page">
+                        <i class="fa-regular fa-user"></i>
+                        <span class="nav_name">Profile</span>
                     </a>
-                    <a href="#" class="nav_link">
+                    <!-- <a href="#" class="nav_link">
                         <i class='bx bx-message-square-detail nav_icon'></i>
                         <span class="nav_name">Messages</span>
                     </a>
@@ -32,8 +33,8 @@
                     </a> -->
                 </div>
             </div>
-            <a href="#" class="nav_link"  (click)="onLogout()">
-                <i class="fas fa-sign-out"></i> 
+            <a href="#" class="nav_link" (click)="onLogout()">
+                <i class="fas fa-sign-out"></i>
                 <span class="nav_name" type="button">Logout</span>
             </a>
         </nav>

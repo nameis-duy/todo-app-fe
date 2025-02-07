@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { AuthsService } from '../../../core/auth/auths.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { JwtService } from '../../../core/services/jwt.service';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })

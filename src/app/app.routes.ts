@@ -3,7 +3,7 @@ import { HomeComponent } from './features/home/home.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { authGuard } from './core/auth/auth.guard';
-import { TaskDetailComponent } from './features/task-detail/task-detail.component';
+import { AccountComponent } from './features/account/account.component';
 
 export const routes: Routes = [
     {
@@ -13,8 +13,8 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     {
-        path: "tasks/:id",
-        component: TaskDetailComponent,
+        path: "account",
+        component: AccountComponent,
         canActivate: [authGuard]
     },
     {

@@ -1,0 +1,42 @@
+<app-headers></app-headers>
+<div class="row w-100">
+    <div class="side-bar col-2">
+        <app-sidebar></app-sidebar>
+    </div>
+    <div class="account-container col-10">
+        <div class="account-header row">
+            <div class="col-10 header-title">
+                <h3><span>Account Infor</span>mation</h3>
+            </div>
+            <div class="col-2 header-action">
+                <button type="button" class="btn">Go back</button>
+            </div>
+        </div>
+        <form class="form-container">
+            <div class="account-infor">
+                <h6 for="firstName" class="form-label">First Name</h6>
+                <input type="text" formControlName="firstName" placeholder="First name" class="form-control">
+                <div></div>    
+            </div>
+            <div class="account-infor">
+                <h6 for="lastName" class="form-label">Last Name</h6>
+                <input type="text" formControlName="lastName" placeholder="Last name" class="form-control">
+                <div></div>    
+            </div>
+            <div class="account-infor">
+                <h6 for="email" class="form-label">Email address</h6>
+                <input type="text" formControlName="email" placeholder="Email address" class="form-control">
+                <div></div>    
+            </div>
+            <div class="account-infor">
+                <h6 for="phone" class="form-label">Contact number</h6>
+                <input type="text" formControlName="phone" placeholder="Contact number" class="form-control">
+                <div></div>    
+            </div>
+            <div class="action-btn">
+                <button type="button" class="btn">Update infor</button>
+                <button type="button" class="btn">Change password</button>
+            </div>
+        </form>
+    </div>
+</div>

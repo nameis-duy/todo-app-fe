@@ -1,0 +1,60 @@
+.account-container {
+    margin-top: 6rem;
+    border: solid 2px #a3aba1b8;
+    border-radius: 1rem;
+    padding: 2rem;
+    height: 86vh;
+    box-shadow: 0px 2px 3px 0px;
+
+    .account-header {
+        padding-bottom: 2rem;
+
+        span {
+            text-decoration: underline #F24E1E;
+            text-underline-offset: 4px;
+        }
+
+        .header-action {
+            text-align: end;
+
+            .btn {
+                text-decoration: underline;
+                font-weight: 500;
+
+                &:hover {
+                    background-color: #bab4b4;
+                }
+            }
+        }
+    }
+
+    .form-container {
+        margin-top: 1rem;
+        border: solid 1px #A1A3AB;
+        padding: 1.5rem 2rem;
+        border-radius: 1rem;
+
+        .account-infor {
+            padding-top: .7rem;
+
+            .form-control {
+                width: 50%;
+            }
+        }
+
+        .action-btn {
+            padding-top: 2rem;
+
+            .btn {
+                background-color: #F24E1E;
+                color: #fff;
+                margin-right: 0.7rem;
+
+                &:hover {
+                    background-color: #6f6c6c;
+                    color: #e1d7d7;
+                }
+            }
+        }
+    }
+}
