@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { HeadersComponent } from "../../shared/components/headers/headers.component";
 import { SidebarComponent } from "../../shared/components/sidebar/sidebar.component";
 import { AccountService } from '../../core/services/account.service';
@@ -7,10 +7,12 @@ import { ToastrService } from 'ngx-toastr';
 import { LoaderComponent } from "../../shared/components/loader/loader.component";
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AppConstant } from '../../core/constants/constant';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-account',
-  imports: [CommonModule, HeadersComponent, SidebarComponent, LoaderComponent, ReactiveFormsModule],
+  imports: [CommonModule, HeadersComponent, SidebarComponent, LoaderComponent, ReactiveFormsModule, RouterLink],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
 })
@@ -20,8 +22,13 @@ export class AccountComponent {
   accountInfor: Account | null = null;
   accountInforForm?: FormGroup;
 
+  phoneFormat = AppConstant.PHONE_FORMAT;
+  userNameStoringKey = AppConstant.USER_NAME_STORING_KEY;
+
+  @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
   isLoading = signal<boolean>(false);
   isUpdate = signal<boolean>(false);
+  isSubmitted = signal<boolean>(false);
 
   constructor() {
     this.initForm();
@@ -46,8 +53,8 @@ export class AccountComponent {
         nonNullable: true
       }),
       phone: new FormControl(account ? account.phone : '', {
-        validators: [Validators.required],
-        nonNullable: true
+        validators: [Validators.pattern(this.phoneFormat)],
+        nonNullable: false
       }),
       id: new FormControl(account?.id)
     })
@@ -71,10 +78,56 @@ export class AccountComponent {
     })
   }
 
+  updateAccount() {
+    this.isLoading.set(true);
+    if (this.accountInforForm?.invalid) {
+      this.isLoading.set(false);
+      this.isSubmitted.set(true);
+      return;
+    }
+
+    this.accountService.updateAccount(this.accountInforForm?.value).subscribe({
+      next: (res) => {
+        if (res.isSucceed) {
+          this.accountInfor = res.data;
+          localStorage.setItem(this.userNameStoringKey, this.accountInfor.lastName);
+          this.sidebarComponent.updateName();
+          this.toastr.success('Update successfully', "Success");
+        }
+        this.isLoading.set(false);
+        this.isSubmitted.set(false);
+        this.isUpdate.set(false);
+      }, error: (err) => {
+        console.log("Error update account information:" + err);
+        this.isLoading.set(false);
+        this.isSubmitted.set(false);
+        this.isUpdate.set(false);
+        this.toastr.error("Server error", "ERROR");
+      }
+    })
+  }
+
   toggleUpdate(status: boolean) {
     if (!status) {
       this.initForm(this.accountInfor!);
     }
     this.isUpdate.set(status);
+  }
+  
+  //GETTER
+  get firstName() {
+    return this.accountInforForm?.get('firstName');
+  }
+  
+  get lastName() {
+    return this.accountInforForm?.get('lastName');
+  }
+  
+  get email() {
+    return this.accountInforForm?.get('email');
+  }
+  
+  get phone() {
+    return this.accountInforForm?.get('phone');
   }
 }

@@ -12,22 +12,38 @@
                 <h3><span>Account Infor</span>mation</h3>
             </div>
             <div class="col-2 header-action">
-                <button type="button" class="btn">Go back</button>
+                <a routerLink="/" type="button" class="btn">Go back</a>
             </div>
         </div>
-        <form class="form-container" [formGroup]="accountInforForm!">
+        <form class="form-container" [formGroup]="accountInforForm!" (ngSubmit)="updateAccount()">
             <input type="hidden" formControlName="id">
             <div class="account-infor">
                 <h6 for="firstName" class="form-label">First Name</h6>
                 <input type="text" formControlName="firstName" placeholder="First name" class="form-control"
                     [readOnly]="!isUpdate()">
-                <div></div>
+                <div>
+                    <div *ngIf="isSubmitted || firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+                        class="text-danger account-infor-errors">
+                        <div *ngIf="firstName?.errors?.['required']">First name is required.</div>
+                        <div *ngIf="firstName?.errors?.['minlength'] || firstName?.errors?.['maxlength']">
+                            First name length must between 1 - 250.
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="account-infor">
                 <h6 for="lastName" class="form-label">Last Name</h6>
                 <input type="text" formControlName="lastName" placeholder="Last name" class="form-control"
                     [readOnly]="!isUpdate()">
-                <div></div>
+                <div>
+                    <div *ngIf="isSubmitted || lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+                        class="text-danger account-infor-errors">
+                        <div *ngIf="lastName?.errors?.['required']">Last name is required.</div>
+                        <div *ngIf="lastName?.errors?.['minlength'] || lastName?.errors?.['maxlength']">
+                            Last name length must between 1 - 100.
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="account-infor">
                 <h6 for="email" class="form-label">Email address</h6>
@@ -39,7 +55,12 @@
                 <h6 for="phone" class="form-label">Contact number</h6>
                 <input type="text" formControlName="phone" placeholder="Contact number" class="form-control"
                     [readOnly]="!isUpdate()">
-                <div></div>
+                <div>
+                    <div *ngIf="isSubmitted || phone?.invalid && (phone?.dirty || phone?.touched)"
+                        class="text-danger account-infor-errors">
+                        <div *ngIf="phone?.errors?.['pattern']">Invalid phone format.</div>
+                    </div>
+                </div>
             </div>
             <div class="action-btn">
                 <div *ngIf="isUpdate();else elseBlock">

@@ -4,9 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Task } from '../../shared/models/task.model';
 import { ResponseResult } from '../../shared/models/response.model';
-import { TaskCreateRequest } from '../../shared/models/dtos/task-create-request.model';
-import { TaskUpdateRequest } from '../../shared/models/dtos/task-update-request.model';
-import { TaskChangeStatusRequest } from '../../shared/models/dtos/task-change-status-request.model';
+import { TaskCreateRequest } from '../../shared/models/dtos/tasks/task-create-request.model';
+import { TaskUpdateRequest } from '../../shared/models/dtos/tasks/task-update-request.model';
+import { TaskChangeStatusRequest } from '../../shared/models/dtos/tasks/task-change-status-request.model';
 
 @Injectable({
     providedIn: 'root'

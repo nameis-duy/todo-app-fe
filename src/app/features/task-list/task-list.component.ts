@@ -4,14 +4,14 @@ import { Task } from '../../shared/models/task.model';
 import { CommonModule } from '@angular/common';
 import { TaskItemsComponent } from "../../shared/components/task-items/task-items.component";
 import { TaskFormsComponent } from "../../shared/components/task-forms/task-forms.component";
-import { TaskCreateRequest } from '../../shared/models/dtos/task-create-request.model';
+import { TaskCreateRequest } from '../../shared/models/dtos/tasks/task-create-request.model';
 import { TaskDetailComponent } from "../task-detail/task-detail.component";
 import { BehaviorSubject } from 'rxjs';
 import { AppConstant } from '../../core/constants/constant';
 import { Dictionary } from '../../shared/models/dictionary.model';
 import { ToastrService } from 'ngx-toastr';
 import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TaskUpdateRequest } from '../../shared/models/dtos/task-update-request.model';
+import { TaskUpdateRequest } from '../../shared/models/dtos/tasks/task-update-request.model';
 import { LoaderComponent } from "../../shared/components/loader/loader.component";
 
 @Component({

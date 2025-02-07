@@ -6,6 +6,7 @@ import { JwtService } from '../../../core/services/jwt.service';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderComponent } from "../../../shared/components/loader/loader.component";
+import { AppConstant } from '../../../core/constants/constant';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,8 @@ export class LoginComponent {
   toastr = inject(ToastrService);
   router = inject(Router);
   authForm: FormGroup;
+
+  userNameStoringKey = AppConstant.USER_NAME_STORING_KEY;
 
   loginErrorMsg = signal('');
   isLoading = signal(false);
@@ -44,6 +47,8 @@ export class LoginComponent {
         if (res) {
           this.jwtService.setToken(res.accessToken);
           this.jwtService.setRefreshToken(res.refreshToken);
+          const userInfor = this.jwtService.getTokenInfor();
+          localStorage.setItem(this.userNameStoringKey, userInfor['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);
           this.router.navigateByUrl('/');
         }
       },

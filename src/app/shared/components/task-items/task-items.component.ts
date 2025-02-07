@@ -1,7 +1,7 @@
 import { Component, inject, input, NgZone, output, signal, Signal, ViewChild } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { TaskFormsComponent } from "../task-forms/task-forms.component";
-import { TaskUpdateRequest } from '../../models/dtos/task-update-request.model';
+import { TaskUpdateRequest } from '../../models/dtos/tasks/task-update-request.model';
 import { TaskService } from '../../../core/services/task.service';
 import { CommonModule } from '@angular/common';
 import { AppConstant } from '../../../core/constants/constant';

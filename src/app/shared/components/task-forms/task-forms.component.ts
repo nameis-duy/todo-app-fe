@@ -1,9 +1,9 @@
 import { Component, inject, input, output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { TaskCreateRequest } from '../../models/dtos/task-create-request.model';
+import { TaskCreateRequest } from '../../models/dtos/tasks/task-create-request.model';
 import { Task } from '../../models/task.model';
 import { CommonModule, formatDate } from '@angular/common';
-import { TaskUpdateRequest } from '../../models/dtos/task-update-request.model';
+import { TaskUpdateRequest } from '../../models/dtos/tasks/task-update-request.model';
 import { Dictionary } from '../../models/dictionary.model';
 import { BaseService } from '../../../core/services/base.service';
 import { AppConstant } from '../../../core/constants/constant';
