@@ -36,7 +36,9 @@ export class ChangePasswordComponent {
   changePasswordForm?: FormGroup;
 
   isSubmitted = signal<boolean>(false);
-  isLoading = signal<boolean>(false); 
+  isLoading = signal<boolean>(false);
+  oldPassServerErrMsg = signal<string>('');
+  newPassServerErrMsg = signal<string>('');
 
   ngOnInit() {
     this.initForm();
@@ -65,6 +67,9 @@ export class ChangePasswordComponent {
     if (this.changePasswordForm?.invalid) {
       this.isLoading.set(false);
       this.isSubmitted.set(true);
+      console.log(this.oldPassword);
+      console.log(this.newPassword);
+      console.log(this.confirmPassword);
       return;
     }
 
@@ -78,7 +83,26 @@ export class ChangePasswordComponent {
       },
       error: (err) => {
         console.log("Error while change password: " + err);
-        this.toatrs.error("Server error", "Error");
+        if (err.status === 400) {
+          console.log('here');
+          console.log(err);
+          err.error.forEach((e: any) => {
+            console.log('here 2');
+            if (e.data === "NewPassword") {
+              const errMsg = e.message;
+              this.changePasswordForm?.get('newPassword')?.setErrors({ serverError: errMsg });
+              this.newPassServerErrMsg.set(errMsg);
+            } else {
+              const errMsg = e.message;
+              this.changePasswordForm?.get('oldPassword')?.setErrors({ serverError: errMsg });
+              this.oldPassServerErrMsg.set(errMsg);
+            }
+            console.log(this.newPassServerErrMsg());
+            console.log(this.newPassword);
+          });
+        } else {
+          this.toatrs.error("Server error", "Error");
+        }
         this.isLoading.set(false);
       }
     })
@@ -111,6 +135,7 @@ export class ChangePasswordComponent {
   get newPassword() {
     return this.changePasswordForm?.get('newPassword');
   }
+
   get confirmPassword() {
     return this.changePasswordForm?.get('confirmPassword');
   }

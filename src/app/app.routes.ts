@@ -4,6 +4,7 @@ import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { authGuard } from './core/auth/auth.guard';
 import { AccountComponent } from './features/account/account.component';
+import { ChangePasswordComponent } from './features/account/component/change-password/change-password.component';
 
 export const routes: Routes = [
     {
@@ -15,6 +16,11 @@ export const routes: Routes = [
     {
         path: "account",
         component: AccountComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: "account/password",
+        component: ChangePasswordComponent,
         canActivate: [authGuard]
     },
     {

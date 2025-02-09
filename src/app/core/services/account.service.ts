@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { Account } from "../../shared/models/account.model";
 import { ResponseResult } from "../../shared/models/response.model";
 import { AccountUpdateRequest } from "../../shared/models/dtos/accounts/account-update-request.model";
+import { AccountChangePasswordRequest } from "../../shared/models/dtos/accounts/account-change-password-request.model";
 
 @Injectable({
     providedIn: 'root'
@@ -19,5 +20,9 @@ export class AccountService {
 
     updateAccount(account: AccountUpdateRequest) : Observable<ResponseResult<Account>> {
         return this.http.put<ResponseResult<Account>>(this.API_URL, account);
+    }
+
+    changePassword(account: AccountChangePasswordRequest) : Observable<ResponseResult<Account>> {
+        return this.http.put<ResponseResult<Account>>(this.API_URL + "/password", account);
     }
 }
