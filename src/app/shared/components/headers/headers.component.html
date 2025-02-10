@@ -2,15 +2,17 @@
     <div class="row">
         <h3 class="col-2 ps-5"><span class="header-span-to">To</span>-Do</h3>
         <div class="col-8 search-section">
-            <div class="input-group mb-3 w-50 m-auto">
+            <form class="input-group mb-3 w-50 m-auto" (submit)="searchTask()">
                 <input type="text" class="form-control search-box-input" placeholder="Search your task here..."
-                    aria-label="Search task" aria-describedby="basic-addon2">
+                    aria-label="Search task" aria-describedby="basic-addon2"
+                    (keyup)="updateSearchText($any($event.target).value)"
+                    (change)="updateSearchText($any($event.target).value)">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary search-btn" type="button" title="''">
+                    <button class="btn btn-outline-secondary search-btn" type="submit" title="''">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
-            </div>
+            </form>
         </div>
         <div class="col-2 current-date-section text-center">
             <p>{{ daysOfWeek[today.getDay()] }} <br>

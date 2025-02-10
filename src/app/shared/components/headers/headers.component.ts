@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { SearchService } from './../../../core/services/search.service';
+import { Component, inject } from '@angular/core';
 
 @Component({
   selector: 'app-headers',
@@ -7,6 +8,18 @@ import { Component } from '@angular/core';
   styleUrl: './headers.component.scss'
 })
 export class HeadersComponent {
+  searchService = inject(SearchService);
+  searchText = '';
+
   today: Date = new Date();
   daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  searchTask() {
+    this.searchService.searchTask(this.searchText);
+  }
+
+  updateSearchText(searchInput: string) {
+    this.searchText = searchInput;
+    this.searchService.searchTask(searchInput);
+  }
 }

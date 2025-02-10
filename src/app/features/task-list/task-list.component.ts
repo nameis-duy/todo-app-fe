@@ -1,4 +1,4 @@
-import { Component, inject, NgZone, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { TaskService } from '../../core/services/task.service';
 import { Task } from '../../shared/models/task.model';
 import { CommonModule } from '@angular/common';
@@ -13,6 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TaskUpdateRequest } from '../../shared/models/dtos/tasks/task-update-request.model';
 import { LoaderComponent } from "../../shared/components/loader/loader.component";
+import { FilterTasksPipePipe } from './pipes/filter-tasks-pipe.pipe';
+import { SearchService } from '../../core/services/search.service';
 
 @Component({
   selector: 'app-task-list',
@@ -22,7 +24,8 @@ import { LoaderComponent } from "../../shared/components/loader/loader.component
     TaskFormsComponent,
     TaskDetailComponent,
     CdkDrag, CdkDropList,
-    LoaderComponent
+    LoaderComponent,
+    FilterTasksPipePipe
   ],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss'
@@ -30,12 +33,13 @@ import { LoaderComponent } from "../../shared/components/loader/loader.component
 export class TaskListComponent {
   taskService = inject(TaskService);
   toastr = inject(ToastrService);
-  ngZone = inject(NgZone);
+  searchService = inject(SearchService);
   statusStoredKey = AppConstant.STATUS_STORING_KEY;
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
 
   tasks: Task[] = [];
   isLoading = signal(false);
+  searchText = signal<string>('');
   statusObj: any;
   priorityObj: any;
 
@@ -44,6 +48,12 @@ export class TaskListComponent {
 
   ngOnInit() {
     this.loadTasks();
+    this.searchService.searchText$.subscribe({
+      next: (searchInput) => {
+        this.searchText.set(searchInput);
+        this.isLoading.set(false);
+      }
+    })
   }
 
   loadTasks(): void {
@@ -62,7 +72,7 @@ export class TaskListComponent {
         this.isLoading.set(false);
       }
     })
-  } 
+  }
 
   addTask(task: TaskCreateRequest): void {
     this.isLoading.set(true);
