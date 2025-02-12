@@ -1,4 +1,4 @@
-import { Component, inject, input, NgZone, output, signal, Signal, ViewChild } from '@angular/core';
+import { Component, inject, input, output, signal, ViewChild } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { TaskFormsComponent } from "../task-forms/task-forms.component";
 import { TaskUpdateRequest } from '../../models/dtos/tasks/task-update-request.model';
@@ -12,7 +12,12 @@ import { LoaderComponent } from "../loader/loader.component";
 
 @Component({
   selector: 'app-task-items',
-  imports: [TaskFormsComponent, CommonModule, StatusColorDirectiveDirective, LoaderComponent],
+  imports: [
+    TaskFormsComponent,
+    CommonModule,
+    StatusColorDirectiveDirective,
+    LoaderComponent
+  ],
   templateUrl: './task-items.component.html',
   styleUrl: './task-items.component.scss'
 })

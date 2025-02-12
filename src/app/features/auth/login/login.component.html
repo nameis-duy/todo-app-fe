@@ -3,17 +3,17 @@
 </div>
 <div class="auth-container">
     <div class="row">
-        <div class="input-section col-6">
+        <div class="input-section col-md-6">
             <h2 class="sign-in-title pb-4">Sign in</h2>
             <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
-                <div class="login-field input-group w-75">
+                <div class="login-field input-group w-md-75">
                     <span class="input-group-text" id="user-input-email">
                         <i class="fa-regular fa-envelope"></i>
                     </span>
                     <input formControlName="email" type="text" class="login-input form-control"
                         placeholder="Enter email" aria-describedby="user-input-email">
                 </div>
-                <div class="login-field input-group pt-3 w-75">
+                <div class="login-field input-group pt-3 w-md-75">
                     <span class="input-group-text" id="user-input-password">
                         <i class="login__icon fas fa-lock"></i>
                     </span>
@@ -34,9 +34,9 @@
                 <p>Don't have account? <a routerLink="/register" class="text-decoration-none">Create one</a></p>
             </div>
         </div>
-        <div class="img-section col-6">
+        <div class="img-section col-md-6">
             <img [src]="'https://img.freepik.com/free-vector/login-concept-illustration_114360-739.jpg?t=st=1737606090~exp=1737609690~hmac=368424737507a9ea7c772f24fea75363b397d1ddea9a341c74b8766d81d3eaf4&w=740'"
-                alt="login-image" width="400" height="400">
+                alt="login-image">
         </div>
     </div>
 </div>

@@ -55,7 +55,7 @@ export class LoginComponent {
       error: (err) => {
         console.log(err);
         if (err.status === 400) {
-          this.loginErrorMsg.set(err.error);
+          this.loginErrorMsg.set('Incorrect email or password');
           this.isLoading.set(false);
         }
         else {
