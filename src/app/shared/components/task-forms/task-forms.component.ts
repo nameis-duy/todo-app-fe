@@ -51,7 +51,7 @@ export class TaskFormsComponent {
         validators: [Validators.required, Validators.minLength(6), Validators.maxLength(150)],
         nonNullable: true
       }),
-      expiredAt: new FormControl('', {
+      expiredAt: new FormControl(isUpdate ? task?.expiredAt!.toString().split("+")[0] : '', {
         validators: [Validators.required, this.validExpiredTimeValidator(isUpdate)],
         nonNullable: true
       }),
@@ -65,14 +65,6 @@ export class TaskFormsComponent {
       }),
       id: new FormControl(task?.id)
     })
-
-    if (isUpdate) {
-      const expiredAtUtc = new Date(task?.expiredAt!);
-      console.log(task?.expiredAt!);
-      console.log(expiredAtUtc);
-      console.log(expiredAtUtc.toISOString().slice(0, 19));
-      this.taskForm.get('expiredAt')?.setValue(expiredAtUtc.toISOString().slice(0, 19));
-    }
   }
 
   getPriorities(): void {

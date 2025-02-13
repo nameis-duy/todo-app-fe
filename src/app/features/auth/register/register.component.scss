@@ -1,5 +1,6 @@
 .auth-container {
     padding: 3rem;
+    padding-bottom: 0;
     padding-left: 0;
     font-family: 'Montserrat', serif;
     font-optical-sizing: auto;
@@ -12,6 +13,7 @@
 
         img {
             width: 60%;
+            overflow: hidden;
         }
     }
 

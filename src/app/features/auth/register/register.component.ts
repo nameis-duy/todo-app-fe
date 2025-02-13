@@ -64,10 +64,18 @@ export class RegisterComponent {
         }
       },
       error: (err) => {
-        this.toastr.error('Server error', 'Error');
         console.log(err);
+        if (err.status === 400) {
+          err.error.forEach((e: any) => {
+            if (e.data == 'Email') {
+              this.registerForm.get('email')?.setErrors({ emailExists: true });
+            }
+          })
+        }
+        else {
+          this.toastr.error('Server error', 'Error');
+        }
         this.isLoading.set(false);
-        throw err;
       },
     });
   }
@@ -85,7 +93,7 @@ export class RegisterComponent {
       if (isMatchedPassword) {
         return null;
       }
-      
+
       confirmPassword.setErrors({ passwordsNotMatched: true })
       return { passwordsNotMatched: true }
     }

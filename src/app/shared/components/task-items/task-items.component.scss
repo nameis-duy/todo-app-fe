@@ -3,11 +3,14 @@
     font-optical-sizing: auto;
     font-style: normal;
 
-    border: solid 1px;
-    border-radius: 2rem;
+    border: solid 2px;
+    border-radius: 14px;
     padding: 1rem 1rem 0.5rem 1rem;
     width: 90%;
     margin: 1rem auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 
     [color-code='Low'] { color: #05A301; }
     [color-code='Medium'] { color: #42ADE2; }
@@ -26,6 +29,10 @@
         font-family: "Font Awesome 5 Free";
         float: left;
         transition: content 0.3s;
+        padding: 0;
+        text-align: center;
+        width: 4%;
+        flex: 0 0 auto;
 
         &:hover .fa-circle::before {
             cursor: pointer;
@@ -35,6 +42,10 @@
     }
 
     .detail-section {
+        flex: 0 0 auto;
+        width: 95%;
+        padding-left: 3%;
+
         .dots-options {
             float: right;
             padding-right: 1rem;

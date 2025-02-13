@@ -60,6 +60,7 @@
                             class="text-danger register-field-errors">
                             <div *ngIf="email?.errors?.['required']">Email is required.</div>
                             <div *ngIf="email?.errors?.['email']">Invalid email format.</div>
+                            <div *ngIf="email?.errors?.['emailExists']">This email already exists.</div>
                         </div>
                     </div>
                 </div>

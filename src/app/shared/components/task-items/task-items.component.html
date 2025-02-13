@@ -1,8 +1,8 @@
 <div *ngIf="isLoading()">
     <app-loader></app-loader>
 </div>
-<div class="task-items-container row" (click)="onClickDetail()" appStatusColorDirective [status]="task().status">
-    <div class="status-section col-1">
+<div class="task-items-container" (click)="onClickDetail()" appStatusColorDirective [status]="task().status">
+    <div class="status-section">
         @if (task().isCompleted) {
         <i class="fa-regular fa-circle-check" appStatusColorDirective [status]="task().status"
             (click)="changeTaskStatus(task().id, task().isCompleted)"></i>
@@ -12,7 +12,7 @@
             (click)="changeTaskStatus(task().id, task().isCompleted)"></i>
         }
     </div>
-    <div class="detail-section col-11">
+    <div class="detail-section">
         <div class="dots-options">
             <div class="dropdown ms-auto">
                 <div data-bs-toggle="dropdown">

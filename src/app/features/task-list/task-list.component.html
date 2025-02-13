@@ -39,10 +39,10 @@
 
         <!-- Task list -->
         <div *ngIf="!isLoading() && tasks.length > 0">
-            <div cdkDropList [cdkDropListData]="tasks" (cdkDropListDropped)="dropHandle($event)">
+            <div cdkDropList [cdkDropListData]="tasks" (cdkDropListDropped)="dropHandle($event)" class="task-list">
                 @for (task of tasks | filterTasksPipe : searchText(); track task) {
                 <app-task-items cdkDrag [cdkDragData]="task" [task]="task" [tasks]="tasks"
-                    (selectedId)="selectTask($event)"></app-task-items>
+                    (selectedId)="selectTask($event)" class="task-items"></app-task-items>
                 }
             </div>
         </div>
