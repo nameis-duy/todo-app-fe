@@ -1,29 +1,66 @@
 .auth-container {
     padding: 3rem;
+    padding-left: 0;
     font-family: 'Montserrat', serif;
     font-optical-sizing: auto;
     font-style: normal;
+    background-image: url('../../../../../public/login.src/login_bg.png');
+    min-height: 100%;
 
-    .register-field .register-btn {
-        background-color: #FF9090;
-        color: white;
+    .image-section {
+        z-index: -10;
 
-        &:hover {
-            background-color: #cea9a9;
+        img {
+            width: 60%;
         }
     }
 
-    .register-field .input-group-text {
-        width: 3rem;
-    }
+    .input-section {
+        .register-title {
+            font-weight: bold;
+        }
 
-    .register-field-errors {
-        padding-top: 1rem;
-        padding-left: 3.5rem;
-    }
+        .register-field {
+            .input-group-text {
+                width: 3rem;
+                background: transparent;
+                border: solid 1px #565454;
+                border-radius: 8px 0 0 8px;
+                border-right: none;
+                padding-left: 1.4rem;
+                padding-right: 3rem;
+                font-size: 1.4rem;
+            }
 
-    .register-input {
-        padding: 0.8rem;
-        padding-left: 1.5rem;
+            .register-input {
+                padding: 4%;
+                background: transparent;
+                border: solid 1px #565454;
+                border-radius: 0 8px 8px 0;
+                border-left: none;
+                padding-left: 0rem;
+
+                &:focus-visible {
+                    padding-left: 1rem;
+                    transition: .3s;
+                }
+            }
+
+            .register-field-errors {
+                padding-top: 1rem;
+                padding-left: 3.5rem;
+            }
+
+            .register-btn {
+                background-color: #FF9090;
+                color: white;
+                opacity: 60%;
+
+                &:hover {
+                    background-color: #cea9a9;
+                    opacity: 100%;
+                }
+            }
+        }
     }
 }

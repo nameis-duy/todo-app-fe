@@ -4,11 +4,10 @@
 <div class="auth-container">
     <div class="row">
         <div class="image-section col-6">
-            <img [src]="'https://media.istockphoto.com/id/1056400820/vector/concept-people-fill-out-a-form-application-form-for-employment-people-select-a-resume-for-a.jpg?s=612x612&w=0&k=20&c=DuzHzU_GTzNfPB6Wco_U6KrTCjhrhsz3VVE4NDkQGI8='"
-                alt="register-img" width="400" height="400" class="ms-5 mt-5">
+            <img src="login.src/registerImage.png" alt="register-img">
         </div>
         <div class="input-section col-6">
-            <h2 class="pb-4">Sign up</h2>
+            <h2 class="register-title pb-4">Sign Up</h2>
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                 <div>
                     <div class="register-field input-group w-75">
@@ -30,7 +29,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="register-field pt-3 w-75 input-group">
+                    <div class="register-field pt-4 w-75 input-group">
                         <span class="input-group-text" id="input-last-name">
                             <i class="fa-regular fa-id-card"></i>
                         </span>
@@ -49,7 +48,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="register-field input-group pt-3 w-75">
+                    <div class="register-field input-group pt-4 w-75">
                         <span class="input-group-text" id="input-email">
                             <i class="fa-regular fa-envelope"></i>
                         </span>
@@ -65,7 +64,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="register-field input-group pt-3 w-75">
+                    <div class="register-field input-group pt-4 w-75">
                         <span class="input-group-text" id="input-password">
                             <i class="fa-solid fa-lock"></i>
                         </span>
@@ -84,19 +83,20 @@
                     </div>
                 </div>
                 <div>
-                    <div class="register-field input-group pt-3 w-75">
+                    <div class="register-field input-group pt-4 w-75">
                         <span class="input-group-text" id="input-confirm-password">
                             <i class="fa-solid fa-user-lock"></i>
                         </span>
                         <input formControlName="confirmPassword" type="password" name="password" id="confirmPassword"
                             aria-describedby="input-confirm-password" class="register-input form-control"
-                            placeholder="Enter confirm password" [required]="true">
+                            placeholder="Confirm password" [required]="true">
                     </div>
                     <div class="register-field w-75">
                         <div *ngIf="isSubmitted || confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)"
                             class="text-danger register-field-errors">
                             <div *ngIf="confirmPassword?.errors?.['required']">Confirm password is required.</div>
-                            <div *ngIf="confirmPassword?.errors?.['passwordsNotMatched']">Confirm password and password are not the same.</div>
+                            <div *ngIf="confirmPassword?.errors?.['passwordsNotMatched']">Confirm password and password
+                                are not the same.</div>
                         </div>
                     </div>
                 </div>
