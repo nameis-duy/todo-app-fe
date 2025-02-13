@@ -23,8 +23,8 @@ export class TaskDetailComponent {
     this.task$()?.subscribe((t) => {
       this.task = t;
       if (this.task) {
-        const date = new Date(this.task!.createdAtUtc);
-        const expired = new Date(this.task.expiredAtUtc);
+        const date = new Date(this.task!.createdAt);
+        const expired = new Date(this.task.expiredAt);
         this.dateStr = date.toLocaleDateString('vi-VN', {
           day: '2-digit',
           month: '2-digit',

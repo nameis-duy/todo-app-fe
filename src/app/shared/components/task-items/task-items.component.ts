@@ -46,7 +46,7 @@ export class TaskItemsComponent {
   }
 
   ngOnInit() {
-    const date = new Date(this.task().createdAtUtc);
+    const date = new Date(this.task().createdAt);
     this.dateStr = date.toLocaleDateString('vi-VN', {
       day: '2-digit',
       month: '2-digit',
@@ -67,7 +67,7 @@ export class TaskItemsComponent {
           this.task().title = res.data.title;
           this.task().description = res.data.description;
           this.task().priority = res.data.priority;
-          this.task().expiredAtUtc = res.data.expiredAtUtc;
+          this.task().expiredAt = res.data.expiredAt;
           document.getElementById(`btn-update-modal-close-${this.task().id}`)?.click();
           document.getElementById(`prio-${this.task().id}`)?.setAttribute('color-code', this.task().priority);
           this.sortTasks();
@@ -77,7 +77,11 @@ export class TaskItemsComponent {
       },
       error: (err) => {
         console.error('Error edit task: ', err);
-        this.toastrService.error('Server error', 'Error');
+        if (err.status !== 400) {
+          this.toastrService.error('Server error', 'Error');
+        } else {
+          this.toastrService.error('Update failed', 'Error');
+        }
         this.isLoading.set(false);
       }
     })
@@ -150,7 +154,7 @@ export class TaskItemsComponent {
         return this.priorityObj[b.priority] - this.priorityObj[a.priority];
       }
 
-      return new Date(a.createdAtUtc).getTime() - new Date(b.createdAtUtc).getTime();
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
     })
   }
 

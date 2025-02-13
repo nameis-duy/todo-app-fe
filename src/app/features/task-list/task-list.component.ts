@@ -120,7 +120,7 @@ export class TaskListComponent {
       description: selectedTask.description,
       priority: this.priorityObj[selectedTask.priority],
       status: this.statusObj[selectedTask.status],
-      expiredAt: selectedTask.expiredAtUtc
+      expiredAt: selectedTask.expiredAt
     });
   }
 
@@ -155,7 +155,7 @@ export class TaskListComponent {
         return this.priorityObj[b.priority] - this.priorityObj[a.priority];
       }
 
-      return new Date(a.createdAtUtc).getTime() - new Date(b.createdAtUtc).getTime();
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
     })
   }
 

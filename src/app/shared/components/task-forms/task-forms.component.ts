@@ -67,11 +67,11 @@ export class TaskFormsComponent {
     })
 
     if (isUpdate) {
-      const expiredAtUtc = new Date(task?.expiredAtUtc!);
-      const localDate = new Date(expiredAtUtc.getTime() - expiredAtUtc.getTimezoneOffset() * 60000)
-        .toISOString().slice(0, -1);
-
-      this.taskForm.get('expiredAt')?.setValue(localDate);
+      const expiredAtUtc = new Date(task?.expiredAt!);
+      console.log(task?.expiredAt!);
+      console.log(expiredAtUtc);
+      console.log(expiredAtUtc.toISOString().slice(0, 19));
+      this.taskForm.get('expiredAt')?.setValue(expiredAtUtc.toISOString().slice(0, 19));
     }
   }
 
@@ -96,8 +96,8 @@ export class TaskFormsComponent {
     }
   }
 
-  validExpiredTimeValidator(isUpdate: boolean | undefined) : ValidatorFn {
-    return (control: AbstractControl) : ValidationErrors | null => {
+  validExpiredTimeValidator(isUpdate: boolean | undefined): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
       const now = new Date();
       const expireAt = new Date(control?.value);
 
