@@ -47,7 +47,7 @@
                 </ul>
             </div>
         </div>
-        <div class="edit-section-popup">
+        <div class="edit-section-popup" (mousedown)="$event.stopPropagation()">
             <div class="modal fade" id="update-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -65,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <div class="remove-section-popup">
+        <div class="remove-section-popup" (mousedown)="$event.stopPropagation()">
             <div class="modal fade" id="remove-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">

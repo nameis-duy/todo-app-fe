@@ -5,6 +5,7 @@
     height: 86.5vh;
     margin-bottom: 0.2rem;
     overflow-y: auto;
+    scrollbar-color: #d3d3d3 transparent;
 
     .add-section {
         padding-top: 2%;
@@ -57,6 +58,7 @@
     box-shadow: 0px 1px 2px 0px;
     width: 45%;
     margin-bottom: 0.2rem;
+    background: inherit;
 }
 
 .task-list {
@@ -69,7 +71,7 @@
     align-items: center;
     justify-content: space-between;
     cursor: move;
-    background: white;
+    background: inherit;
 }
 
 .cdk-drag-preview {
