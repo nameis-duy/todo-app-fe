@@ -1,13 +1,16 @@
 <div *ngIf="task;else elseBlock">
     <div class="task-detail-container">
-        <h5 class="task-title">{{ task.title }}</h5>
+        <h4 class="task-title">{{ task.title }}</h4>
         <p class="task-priority">Priority: <span class="priority-value" [attr.color-code]="task.priority">{{
                 task.priority }}</span></p>
         <p class="task-status">Status: <span class="status-value" appStatusColorDirective [status]="task.status">{{
                 task.status }}</span></p>
         <p class="task-date">Created on: {{ dateStr }} </p>
         <p class="task-date">Expired on: {{ expiredDateStr }} </p>
-        <p class="task-description">{{ task.description }}</p>
+        <div class="task-description">
+            <h6>Description:</h6>
+            {{ task.description }}
+        </div>
         <div class="task-action-btn card-footer">
             <button class="btn btn-edit" type="button" aria-label="''" data-bs-toggle="modal"
                 [attr.data-bs-target]="'#update-modal-' + task.id">

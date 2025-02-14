@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { TaskService } from '../../core/services/task.service';
 import { Task } from '../../shared/models/task.model';
 import { CommonModule } from '@angular/common';
@@ -37,9 +37,12 @@ export class TaskListComponent {
   statusStoredKey = AppConstant.STATUS_STORING_KEY;
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
 
+  @ViewChild('addModal') addModal?: ElementRef;
+
   tasks: Task[] = [];
   isLoading = signal(false);
   searchText = signal<string>('');
+  isAddModalPopup = signal<boolean>(false)
   statusObj: any;
   priorityObj: any;
 
@@ -54,6 +57,10 @@ export class TaskListComponent {
         this.isLoading.set(false);
       }
     })
+  }
+
+  ngAfterViewInit() {
+    this.handleAddModalClose();
   }
 
   loadTasks(): void {
@@ -137,6 +144,16 @@ export class TaskListComponent {
         console.error('Error update task: ', err);
         this.isLoading.set(false);
       }
+    })
+  }
+
+  toggleAddPopUp(status: boolean) {
+    this.isAddModalPopup.set(status);
+  }
+
+  handleAddModalClose() {
+    (this.addModal?.nativeElement as HTMLElement).addEventListener('hide.bs.modal', () => {
+      this.toggleAddPopUp(false);
     })
   }
 

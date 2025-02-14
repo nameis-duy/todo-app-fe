@@ -9,12 +9,12 @@
             </div>
             <div class="add-section-btn col-md-8 text-end">
                 <button type="button" class="btn btn-add-task" data-bs-toggle="modal"
-                    [attr.data-bs-target]="'#add-modal'">
+                    [attr.data-bs-target]="'#add-modal'" (click)="toggleAddPopUp(true)">
                     <span><i class="fa-solid fa-plus"></i></span>
                     Add Task
                 </button>
                 <div class="modal fade text-start" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
+                    aria-hidden="true" #addModal>
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -23,7 +23,7 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <app-task-forms (formCreateSubmit)="addTask($event)"
+                                <app-task-forms (formCreateSubmit)="addTask($event)" [isAddPopupForm]="isAddModalPopup()"
                                     [isUpdate]="false"></app-task-forms>
                             </div>
                         </div>

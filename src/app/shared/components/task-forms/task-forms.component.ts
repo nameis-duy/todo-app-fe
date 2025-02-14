@@ -1,8 +1,8 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { TaskCreateRequest } from '../../models/dtos/tasks/task-create-request.model';
 import { Task } from '../../models/task.model';
-import { CommonModule, formatDate } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { TaskUpdateRequest } from '../../models/dtos/tasks/task-update-request.model';
 import { Dictionary } from '../../models/dictionary.model';
 import { BaseService } from '../../../core/services/base.service';
@@ -24,6 +24,7 @@ export class TaskFormsComponent {
   priorities: Dictionary[] = [];
   taskForm?: FormGroup;
   isSubmitted = false;
+  isAddPopupForm = input<boolean>(false);
 
   baseService = inject(BaseService);
 
@@ -34,6 +35,18 @@ export class TaskFormsComponent {
 
   ngAfterViewInit() {
     this.createForm(this.task(), this.isUpdate());
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['isAddPopupForm']) {
+      if (this.isAddPopupForm()) {
+        this.taskForm?.get('expiredAt')?.setValue(this.formatDateString(new Date()));
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    console.log('here');
   }
 
   createForm(task?: Task, isUpdate?: boolean) {
@@ -65,6 +78,20 @@ export class TaskFormsComponent {
       }),
       id: new FormControl(task?.id)
     })
+  }
+
+  formatDateString(formatDate: Date, validMinuteExpired?: number): string {
+    validMinuteExpired ??= 31;
+    formatDate.setMinutes(formatDate.getMinutes() + validMinuteExpired);
+    let year = formatDate.getFullYear();
+    let month = String(formatDate.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    let day = String(formatDate.getDate()).padStart(2, '0');
+    let hours = String(formatDate.getHours()).padStart(2, '0');
+    let minutes = String(formatDate.getMinutes()).padStart(2, '0');
+    let seconds = String(formatDate.getSeconds()).padStart(2, '0');
+
+    // Format the date as 'YYYY-MM-DDTHH:mm:ss'
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   }
 
   getPriorities(): void {
