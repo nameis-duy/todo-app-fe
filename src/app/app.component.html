@@ -1,1 +1,16 @@
-<router-outlet></router-outlet>
+<div *ngIf="isAuthen()">
+    <app-headers></app-headers>
+</div>
+<div *ngIf="isAuthen();else elseBlock">
+    <div class="row w-100">
+        <div class="side-bar col-2">
+            <app-sidebar></app-sidebar>
+        </div>
+        <div class="col-10">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+<ng-template #elseBlock>
+    <router-outlet></router-outlet>
+</ng-template>

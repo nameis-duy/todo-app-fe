@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-account',
-  imports: [CommonModule, HeadersComponent, SidebarComponent, LoaderComponent, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, SidebarComponent, LoaderComponent, ReactiveFormsModule, RouterLink],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
 })

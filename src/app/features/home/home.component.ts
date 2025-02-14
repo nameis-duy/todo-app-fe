@@ -1,14 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { TaskListComponent } from "../task-list/task-list.component";
-import { HeadersComponent } from "../../shared/components/headers/headers.component";
-import { SidebarComponent } from "../../shared/components/sidebar/sidebar.component";
 import { BaseService } from '../../core/services/base.service';
 import { AppConstant } from '../../core/constants/constant';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
-  imports: [TaskListComponent, HeadersComponent, SidebarComponent],
+  imports: [TaskListComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
