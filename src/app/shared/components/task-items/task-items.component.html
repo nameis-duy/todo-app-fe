@@ -4,11 +4,11 @@
 <div class="task-items-container" (click)="onClickDetail()" appStatusColorDirective [status]="task().status">
     <div class="status-section">
         @if (task().isCompleted) {
-        <i class="fa-regular fa-circle-check" appStatusColorDirective [status]="task().status"
+        <i class="fa-regular fa-circle-check" matTooltip="Undone Task" appStatusColorDirective [status]="task().status"
             (click)="changeTaskStatus(task().id, task().isCompleted)"></i>
         }
         @if (!task().isCompleted) {
-        <i class="fa-regular fa-circle" appStatusColorDirective [status]="task().status"
+        <i class="fa-regular fa-circle" matTooltip="Complete Task" appStatusColorDirective [status]="task().status"
             (click)="changeTaskStatus(task().id, task().isCompleted)"></i>
         }
     </div>

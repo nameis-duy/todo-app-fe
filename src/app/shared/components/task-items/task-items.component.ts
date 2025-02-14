@@ -9,6 +9,7 @@ import { Dictionary } from '../../models/dictionary.model';
 import { StatusColorDirectiveDirective } from '../../directives/status-color-directive.directive';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderComponent } from "../loader/loader.component";
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-task-items',
@@ -16,7 +17,8 @@ import { LoaderComponent } from "../loader/loader.component";
     TaskFormsComponent,
     CommonModule,
     StatusColorDirectiveDirective,
-    LoaderComponent
+    LoaderComponent,
+    MatTooltipModule
   ],
   templateUrl: './task-items.component.html',
   styleUrl: './task-items.component.scss'

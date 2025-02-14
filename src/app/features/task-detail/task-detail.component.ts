@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { StatusColorDirectiveDirective } from '../../shared/directives/status-color-directive.directive';
 import { TaskService } from '../../core/services/task.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-task-detail',
-  imports: [CommonModule, StatusColorDirectiveDirective],
+  imports: [CommonModule, StatusColorDirectiveDirective, MatTooltipModule],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.scss'
 })
