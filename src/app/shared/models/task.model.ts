@@ -8,4 +8,5 @@ export interface Task {
     createdAt: Date;
     modifiedAt: Date;
     expiredAt: Date;
+    imageUrl: string;
 }

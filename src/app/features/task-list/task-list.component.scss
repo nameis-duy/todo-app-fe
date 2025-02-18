@@ -25,21 +25,32 @@
         }
     }
 
-    .btn-add-task {
-        margin-right: 0.6rem;
-        margin-top: 0.6rem;
-        border: none;
-        background: none;
-        color: #A1A3AB;
-
-        &:hover {
-            background-color: #A1A3AB;
-            color: #F5F8FF;
-            cursor: pointer;
+    .add-section-btn {
+        .btn-add-task {
+            margin-right: 0.6rem;
+            margin-top: 0.6rem;
+            border: none;
+            background: none;
+            color: #A1A3AB;
+    
+            &:hover {
+                background-color: #A1A3AB;
+                color: #F5F8FF;
+                cursor: pointer;
+            }
+    
+            span {
+                color: #F24E1E;
+            }
         }
+        
+        .modal-header, .modal-body {
+            background-color: #F9F9F9;
 
-        span {
-            color: #F24E1E;
+            span {
+                text-decoration: underline #F24E1E;
+                text-underline-offset: 10px;
+            }
         }
     }
 
@@ -62,7 +73,7 @@
 }
 
 .task-list {
-    overflow: hidden;
+    overflow: visible;
 }
 
 .task-items {

@@ -36,6 +36,7 @@ export class TaskListComponent {
   searchService = inject(SearchService);
   statusStoredKey = AppConstant.STATUS_STORING_KEY;
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
+  defaultImageUrl = AppConstant.DEFAULT_TASK_IMG_URL;
 
   @ViewChild('addModal') addModal?: ElementRef;
 
@@ -84,6 +85,9 @@ export class TaskListComponent {
   addTask(task: TaskCreateRequest): void {
     this.isLoading.set(true);
     task.priority = parseInt(task.priority.toString());
+    if (!task.imageUrl) {
+      task.imageUrl = this.defaultImageUrl;
+    }
     this.taskService.addTask(task).subscribe({
       next: (res) => {
         if (res.isSucceed) {
@@ -127,7 +131,8 @@ export class TaskListComponent {
       description: selectedTask.description,
       priority: this.priorityObj[selectedTask.priority],
       status: this.statusObj[selectedTask.status],
-      expiredAt: selectedTask.expiredAt
+      expiredAt: selectedTask.expiredAt,
+      imageUrl: ''
     });
   }
 

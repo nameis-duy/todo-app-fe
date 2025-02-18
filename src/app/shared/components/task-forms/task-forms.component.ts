@@ -1,4 +1,6 @@
-import { Component, inject, input, output, SimpleChanges } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import * as UC from '@uploadcare/file-uploader';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, inject, Input, input, NgZone, Output, output, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { TaskCreateRequest } from '../../models/dtos/tasks/task-create-request.model';
 import { Task } from '../../models/task.model';
@@ -7,12 +9,16 @@ import { TaskUpdateRequest } from '../../models/dtos/tasks/task-update-request.m
 import { Dictionary } from '../../models/dictionary.model';
 import { BaseService } from '../../../core/services/base.service';
 import { AppConstant } from '../../../core/constants/constant';
+import { Observable } from 'rxjs';
+
+UC.defineComponents(UC);
 
 @Component({
   selector: 'app-task-forms',
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './task-forms.component.html',
-  styleUrl: './task-forms.component.scss'
+  styleUrl: './task-forms.component.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TaskFormsComponent {
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
@@ -25,12 +31,46 @@ export class TaskFormsComponent {
   taskForm?: FormGroup;
   isSubmitted = false;
   isAddPopupForm = input<boolean>(false);
+  uploadedImageUrl = signal<string>('');
+  uploadedFiles: UC.OutputFileEntry<'success'>[] = [];
 
   baseService = inject(BaseService);
+  toastr = inject(ToastrService);
+  ngZone = inject(NgZone);
+  @ViewChild('config', { static: true }) imageUploadConfigRef!: ElementRef<InstanceType<UC.Config>>;
+  @ViewChild('ctxProvider', { static: true }) ctxProviderRef!: ElementRef<InstanceType<UC.UploadCtxProvider>>;
 
   constructor() {
     this.getPriorities();
     this.createForm();
+  }
+
+  ngOnInit() {
+    this.ctxProviderRef.nativeElement.addEventListener('change', this.handleFileUploadChangeEvent);
+
+    this.imageUploadConfigRef.nativeElement.localeDefinitionOverride = {
+      en: {
+        'photo__one': 'photo',
+        'photo__many': 'photos',
+        'photo__other': 'photos',
+
+        'multiple': 'false',
+        'upload-file': 'Browse',
+        'upload-files': 'Browse',
+        'choose-file': 'Choose photo',
+        'choose-files': 'Choose photos',
+        'drop-files-here': 'Drop photos here',
+        'select-file-source': 'Select photo source',
+        'edit-image': 'Edit photo',
+        'no-files': 'No photos selected',
+        'caption-edit-file': 'Edit photo',
+        'files-count-allowed': 'Only {{count}} {{plural:photo(count)}} allowed',
+        'files-max-size-limit-error': 'Photo is too big. Max photo size is {{maxFileSize}}.',
+        'header-uploading': 'Uploading {{count}} {{plural:photo(count)}}',
+        'header-succeed': '{{count}} {{plural:photo(count)}} uploaded',
+        'header-total': '{{count}} {{plural:photo(count)}} selected',
+      }
+    }
   }
 
   ngAfterViewInit() {
@@ -46,7 +86,8 @@ export class TaskFormsComponent {
   }
 
   ngOnDestroy() {
-    console.log('here');
+    this.ctxProviderRef.nativeElement.removeEventListener('change', this.handleFileUploadChangeEvent);
+    this.imageUploadConfigRef.nativeElement.localeDefinitionOverride = null;
   }
 
   createForm(task?: Task, isUpdate?: boolean) {
@@ -76,6 +117,7 @@ export class TaskFormsComponent {
         validators: [Validators.required],
         nonNullable: true
       }),
+      imageUrl: new FormControl(isUpdate ? task?.imageUrl : ''),
       id: new FormControl(task?.id)
     })
   }
@@ -135,6 +177,17 @@ export class TaskFormsComponent {
       }
 
       return null;
+    }
+  }
+
+  handleFileUploadChangeEvent = (e: UC.EventMap['change']) => {
+    if (e.detail.failedCount === 0) {
+      this.uploadedFiles = e.detail.allEntries.filter(f => f.status === 'success') as UC.OutputFileEntry<'success'>[];
+      if (this.uploadedFiles.length !== 0) {
+        this.uploadedImageUrl.set(this.uploadedFiles[0].cdnUrl);
+      }
+    } else {
+      this.toastr.error('Upload Failed', 'Error')
     }
   }
 

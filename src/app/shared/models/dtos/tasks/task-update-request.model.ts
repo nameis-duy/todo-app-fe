@@ -5,4 +5,5 @@ export interface TaskUpdateRequest {
     priority: number;
     status: number;
     expiredAt: Date;
+    imageUrl: string;
 }

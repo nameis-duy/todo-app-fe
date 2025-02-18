@@ -1,7 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
 import { LoaderComponent } from "../../../../shared/components/loader/loader.component";
-import { HeadersComponent } from "../../../../shared/components/headers/headers.component";
-import { SidebarComponent } from "../../../../shared/components/sidebar/sidebar.component";
 import { Router, RouterLink } from '@angular/router';
 import { AccountService } from '../../../../core/services/account.service';
 import { ToastrService } from 'ngx-toastr';
@@ -20,8 +18,6 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-change-password',
   imports: [CommonModule,
-    HeadersComponent,
-    SidebarComponent,
     RouterLink,
     ReactiveFormsModule, LoaderComponent],
   templateUrl: './change-password.component.html',

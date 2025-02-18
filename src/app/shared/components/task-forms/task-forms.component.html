@@ -40,14 +40,35 @@
                     </div>
                 </div>
             </div>
-            <div class="add-task-field">
-                <h6 for="description">Task Description</h6>
-                <textarea formControlName="description" type="textarea" placeholder="Enter description"
-                    class="add-task-input" (mousedown)="$event.stopPropagation()"></textarea>
-                <div>
-                    <div *ngIf="isSubmitted || description?.invalid && (description?.dirty || description?.touched)"
-                        class="text-danger input-errors">
-                        <div *ngIf="description?.errors?.['required']">Description cannot be empty</div>
+            <div class="add-task-field row">
+                <div class="description-section col-md-8">
+                    <h6 for="description">Task Description</h6>
+                    <textarea formControlName="description" type="textarea" placeholder="Enter description"
+                        class="add-task-input" (mousedown)="$event.stopPropagation()"></textarea>
+                    <div>
+                        <div *ngIf="isSubmitted || description?.invalid && (description?.dirty || description?.touched)"
+                            class="text-danger input-errors">
+                            <div *ngIf="description?.errors?.['required']">Description cannot be empty</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="add-image-section col-md-4">
+                    <h6 for="imageUrl">Upload Image</h6>
+                    <div class="image-upload-container">
+                        <div class="text-center">
+                            <div *ngIf="uploadedImageUrl().length !== 0">
+                                <img [src]="uploadedImageUrl()" alt="Uploaded Image"  width="150" height="150">
+                                <input type="hidden" formControlName="imageUrl" [value]="uploadedImageUrl()">
+                            </div>
+                            <uc-config #config ctx-name="image-uploader" source-list="local, facebook, gdrive"
+                                multiple="false" removeCopyright="true" imgOnly="true"
+                                pubkey="a9f23ab50050fa101785"></uc-config>
+
+                            <uc-file-uploader-regular ctx-name="image-uploader"
+                                class="uc-light"></uc-file-uploader-regular>
+
+                            <uc-upload-ctx-provider #ctxProvider ctx-name="image-uploader"></uc-upload-ctx-provider>
+                        </div>
                     </div>
                 </div>
             </div>

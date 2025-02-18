@@ -61,6 +61,17 @@
             }
         }
 
+        .edit-section-popup {
+            .modal-header, .modal-body {
+                background-color: #F9F9F9;
+    
+                span {
+                    text-decoration: underline #F24E1E;
+                    text-underline-offset: 10px;
+                }
+            }
+        }
+
         .remove-section-popup {
             .btn-done {
                 background-color: #F24E1E;

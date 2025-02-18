@@ -3,4 +3,5 @@ export interface TaskCreateRequest {
     description: string;
     priority: number;
     expiredAt: Date;
+    imageUrl: string;
 }

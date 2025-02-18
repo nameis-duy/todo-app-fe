@@ -1,5 +1,4 @@
-import { Component, inject, signal, ViewChild } from '@angular/core';
-import { HeadersComponent } from "../../shared/components/headers/headers.component";
+import { Component, inject, output, signal, ViewChild } from '@angular/core';
 import { SidebarComponent } from "../../shared/components/sidebar/sidebar.component";
 import { AccountService } from '../../core/services/account.service';
 import { Account } from '../../shared/models/account.model';
@@ -9,16 +8,18 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppConstant } from '../../core/constants/constant';
 import { RouterLink } from '@angular/router';
+import { ShareService } from '../../core/services/shared.service';
 
 @Component({
   selector: 'app-account',
-  imports: [CommonModule, SidebarComponent, LoaderComponent, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, LoaderComponent, ReactiveFormsModule, RouterLink],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
 })
 export class AccountComponent {
   accountService = inject(AccountService);
   toastr = inject(ToastrService);
+  sharedService = inject(ShareService);
   accountInfor: Account | null = null;
   accountInforForm?: FormGroup;
 
@@ -91,7 +92,7 @@ export class AccountComponent {
         if (res.isSucceed) {
           this.accountInfor = res.data;
           localStorage.setItem(this.userNameStoringKey, this.accountInfor.lastName);
-          this.sidebarComponent.updateName();
+          this.sharedService.sendMessage(this.accountInfor.lastName);
           this.toastr.success('Update successfully', "Success");
         }
         this.isLoading.set(false);
