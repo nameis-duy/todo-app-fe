@@ -1,6 +1,5 @@
-import { Component, inject, input, output, signal, ViewChild } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { Task } from '../../models/task.model';
-import { TaskFormsComponent } from "../task-forms/task-forms.component";
 import { TaskUpdateRequest } from '../../models/dtos/tasks/task-update-request.model';
 import { TaskService } from '../../../core/services/task.service';
 import { CommonModule } from '@angular/common';
@@ -10,15 +9,18 @@ import { StatusColorDirectiveDirective } from '../../directives/status-color-dir
 import { ToastrService } from 'ngx-toastr';
 import { LoaderComponent } from "../loader/loader.component";
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialog } from '@angular/material/dialog';
+import { FormModalComponent } from '../form-modal/form-modal.component';
 
 @Component({
   selector: 'app-task-items',
   imports: [
-    TaskFormsComponent,
     CommonModule,
     StatusColorDirectiveDirective,
     LoaderComponent,
-    MatTooltipModule
+    MatTooltipModule,
+    MatTabsModule
   ],
   templateUrl: './task-items.component.html',
   styleUrl: './task-items.component.scss'
@@ -26,12 +28,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class TaskItemsComponent {
   taskService = inject(TaskService);
   toastrService = inject(ToastrService);
+  formModal = inject(MatDialog);
   statusStoredKey = AppConstant.STATUS_STORING_KEY;
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
 
-  @ViewChild(TaskFormsComponent) formComponent!: TaskFormsComponent;
   task = input.required<Task>();
   tasks = input<Task[]>();
+  pendingTasks = input<Task[]>();
+  completeTasks = input<Task[]>();
   selectedId = output<number>();
   isLoading = signal<boolean>(false);
 
@@ -56,8 +60,26 @@ export class TaskItemsComponent {
     });
   }
 
-  ngAfterViewInit() {
-    this.formComponent.createForm(this.task(), true);
+  openFormModal() {
+    var updateFormModal = this.formModal.open(FormModalComponent, {
+      width: '800px',
+      maxWidth: '800px',
+      enterAnimationDuration: '0.3s',
+      exitAnimationDuration: '0.3s',
+      autoFocus: "false",
+      panelClass: "custom-modal-form",
+      data: {
+        formTitle: 'Edit Task',
+        isUpdate: true,
+        task: this.task()
+      }
+    });
+
+    updateFormModal.afterClosed().subscribe(res => {
+      if (res) {
+        this.updateTask(res);
+      }
+    })
   }
 
   updateTask(task: TaskUpdateRequest) {
@@ -70,7 +92,7 @@ export class TaskItemsComponent {
           this.task().description = res.data.description;
           this.task().priority = res.data.priority;
           this.task().expiredAt = res.data.expiredAt;
-          document.getElementById(`btn-update-modal-close-${this.task().id}`)?.click();
+          this.task().imageUrl = res.data.imageUrl;
           document.getElementById(`prio-${this.task().id}`)?.setAttribute('color-code', this.task().priority);
           this.sortTasks();
           this.toastrService.success('Edit successfully', 'Success');
@@ -115,9 +137,9 @@ export class TaskItemsComponent {
     })
   }
 
-  changeTaskStatus(id: number, isCompleted: boolean) {
+  changeTaskStatus(id: number, currentCompletedStatus: boolean) {
     this.isLoading.set(true);
-    const status = isCompleted ? 0 : 2;
+    const status = currentCompletedStatus ? 0 : 2; //if current status is complete : return change to pending status : else retrurn complete status
     const taskChangeRequest = {
       id,
       status
@@ -126,10 +148,16 @@ export class TaskItemsComponent {
     this.taskService.changeTaskStatus(taskChangeRequest).subscribe({
       next: (res) => {
         if (res.isSucceed) {
-          this.task().isCompleted = !isCompleted;
+          this.task().isCompleted = !currentCompletedStatus;
           this.task().status = Object.keys(this.statusObj).find(key => this.statusObj[key] === status)!;
-          this.sortTasks();
-          this.toastrService.success(`${isCompleted ? 'Change status' : 'Complete'} succeed`, 'Success');
+          if (currentCompletedStatus) {
+            this.pendingTasks()?.push(this.task());
+          } else {
+            this.completeTasks()?.push(this.task());
+          }
+          var indexToRemove = this.tasks()?.findIndex(t => t.id === id);
+          this.tasks()?.splice(indexToRemove!, 1);
+          this.toastrService.success(`${currentCompletedStatus ? 'Change Status' : 'Complete Task'} Succeed`, 'Success');
         }
         this.isLoading.set(false);
       },

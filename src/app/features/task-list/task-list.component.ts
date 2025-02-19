@@ -3,7 +3,6 @@ import { TaskService } from '../../core/services/task.service';
 import { Task } from '../../shared/models/task.model';
 import { CommonModule } from '@angular/common';
 import { TaskItemsComponent } from "../../shared/components/task-items/task-items.component";
-import { TaskFormsComponent } from "../../shared/components/task-forms/task-forms.component";
 import { TaskCreateRequest } from '../../shared/models/dtos/tasks/task-create-request.model';
 import { TaskDetailComponent } from "../task-detail/task-detail.component";
 import { BehaviorSubject } from 'rxjs';
@@ -15,18 +14,21 @@ import { TaskUpdateRequest } from '../../shared/models/dtos/tasks/task-update-re
 import { LoaderComponent } from "../../shared/components/loader/loader.component";
 import { FilterTasksPipePipe } from './pipes/filter-tasks-pipe.pipe';
 import { SearchService } from '../../core/services/search.service';
+import { MatDialog } from '@angular/material/dialog';
+import { FormModalComponent } from '../../shared/components/form-modal/form-modal.component';
+import { Dialog } from '@angular/cdk/dialog';
+
 
 @Component({
   selector: 'app-task-list',
   imports: [
     CommonModule,
     TaskItemsComponent,
-    TaskFormsComponent,
     TaskDetailComponent,
     CdkDrag, CdkDropList,
     LoaderComponent,
     FilterTasksPipePipe
-  ],
+],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss'
 })
@@ -34,13 +36,18 @@ export class TaskListComponent {
   taskService = inject(TaskService);
   toastr = inject(ToastrService);
   searchService = inject(SearchService);
+  addForm = inject(Dialog);
   statusStoredKey = AppConstant.STATUS_STORING_KEY;
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
   defaultImageUrl = AppConstant.DEFAULT_TASK_IMG_URL;
 
-  @ViewChild('addModal') addModal?: ElementRef;
+  @ViewChild('home', { static: true }) home!: ElementRef;
+  @ViewChild('profile', { static: true }) profile!: ElementRef;
+  form = inject(MatDialog);
 
-  tasks: Task[] = [];
+  pendingTasks = signal<Task[]>([]);
+  completedTasks = signal<Task[]>([]);
+  currentTab = signal<number>(0);
   isLoading = signal(false);
   searchText = signal<string>('');
   isAddModalPopup = signal<boolean>(false)
@@ -58,10 +65,51 @@ export class TaskListComponent {
         this.isLoading.set(false);
       }
     })
+
+    this.home.nativeElement.addEventListener('click', () => {
+      document.getElementById('profile')?.classList.remove('active');
+      document.getElementById('home')?.classList.add('active');
+      this.home.nativeElement.classList.add('active');
+      this.profile.nativeElement.classList.remove('active');
+      this.currentTab.set(0);
+    })
+
+    this.profile.nativeElement.addEventListener('click', () => {
+      document.getElementById('home')?.classList.remove('active');
+      document.getElementById('profile')?.classList.add('active');
+      this.profile.nativeElement.classList.add('active');
+      this.home.nativeElement.classList.remove('active');
+      this.currentTab.set(1);
+    })
   }
 
-  ngAfterViewInit() {
-    this.handleAddModalClose();
+  openFormModal() {
+    var formModal = this.form.open(FormModalComponent, {
+      width: '800px',
+      maxWidth: '800px',
+      enterAnimationDuration: '0.3s',
+      exitAnimationDuration: '0.3s',
+      autoFocus: "false",
+      panelClass: "custom-modal-form",
+      data: {
+        formTitle: 'Add New Task',
+        isUpdate: false
+      }
+    })
+
+    formModal.backdropClick().subscribe(() => {
+      this.toggleAddPopUp(false);
+    })
+
+    formModal.afterOpened().subscribe(() => {
+      this.toggleAddPopUp(true);
+    })
+
+    formModal.afterClosed().subscribe(res => {
+      if (res) {
+        this.addTask(res);        
+      }
+    })
   }
 
   loadTasks(): void {
@@ -69,8 +117,9 @@ export class TaskListComponent {
     this.taskService.getTasks().subscribe({
       next: (response) => {
         if (response.isSucceed) {
-          this.tasks = response.data;
-          this.selectedTask.next(this.tasks[0]);
+          this.pendingTasks.set(response.data.filter(t => !t.isCompleted));
+          this.completedTasks.set(response.data.filter(t => t.isCompleted));
+          this.selectedTask.next(this.pendingTasks()[0]);
         }
         this.isLoading.set(false);
       },
@@ -91,7 +140,7 @@ export class TaskListComponent {
     this.taskService.addTask(task).subscribe({
       next: (res) => {
         if (res.isSucceed) {
-          this.tasks.push(res.data);
+          this.pendingTasks().push(res.data);
           this.sortTasks();
           document.getElementById(`btn-close-add-modal`)?.click();
           this.toastr.success('Add successfully', 'Success');
@@ -107,13 +156,17 @@ export class TaskListComponent {
   }
 
   selectTask(id: number) {
-    this.selectedTask.next(this.tasks.find(task => task.id === id));
+    let task = this.pendingTasks().find(task => task.id === id);
+    if (!task) {
+      task = this.completedTasks().find(task => task.id === id)
+    }
+    this.selectedTask.next(task);
   }
 
   dropHandle(event: CdkDragDrop<Task[]>) {
-    let selectedTask = this.tasks[event.previousIndex];
-    const targetTask = this.tasks[event.currentIndex];
-    moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);
+    let selectedTask = this.currentTab() == 0 ? this.pendingTasks()[event.previousIndex] : this.completedTasks()[event.previousIndex];
+    const targetTask = this.currentTab() == 0 ? this.pendingTasks()[event.currentIndex] : this.completedTasks()[event.currentIndex];
+    moveItemInArray(this.currentTab() == 0 ? this.pendingTasks() : this.completedTasks(), event.previousIndex, event.currentIndex);
     if (event.previousIndex === event.currentIndex) {
       return;
     }
@@ -132,7 +185,7 @@ export class TaskListComponent {
       priority: this.priorityObj[selectedTask.priority],
       status: this.statusObj[selectedTask.status],
       expiredAt: selectedTask.expiredAt,
-      imageUrl: ''
+      imageUrl: selectedTask.imageUrl
     });
   }
 
@@ -156,19 +209,13 @@ export class TaskListComponent {
     this.isAddModalPopup.set(status);
   }
 
-  handleAddModalClose() {
-    (this.addModal?.nativeElement as HTMLElement).addEventListener('hide.bs.modal', () => {
-      this.toggleAddPopUp(false);
-    })
-  }
-
   //SUPPORT FUNC
   sortTasks() {
     if (!this.statusObj || !this.priorityObj) {
       this.initStatusAndPrioritiesObj();
     }
 
-    this.tasks.sort((a, b) => {
+    this.pendingTasks().sort((a, b) => {
       if (a.status !== b.status) {
         return this.statusObj[a.status] - this.statusObj[b.status];
       }

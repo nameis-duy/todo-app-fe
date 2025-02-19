@@ -1,41 +1,68 @@
-import { ToastrService } from 'ngx-toastr';
-import * as UC from '@uploadcare/file-uploader';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, inject, input, NgZone, output, signal, SimpleChanges, ViewChild } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { TaskCreateRequest } from '../../models/dtos/tasks/task-create-request.model';
-import { Task } from '../../models/task.model';
 import { CommonModule } from '@angular/common';
-import { TaskUpdateRequest } from '../../models/dtos/tasks/task-update-request.model';
-import { Dictionary } from '../../models/dictionary.model';
+import * as UC from '@uploadcare/file-uploader';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  ElementRef,
+  inject, signal,
+  ViewChild
+} from '@angular/core';
+import {
+  AbstractControl,
+  FormControl, FormGroup, FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { BaseService } from '../../../core/services/base.service';
+import { ToastrService } from 'ngx-toastr';
 import { AppConstant } from '../../../core/constants/constant';
+import { Task } from '../../models/task.model';
+import { Dictionary } from '../../models/dictionary.model';
+import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 
 UC.defineComponents(UC);
 
 @Component({
-  selector: 'app-task-forms',
-  imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './task-forms.component.html',
-  styleUrl: './task-forms.component.scss',
+  selector: 'app-form-modal',
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    CommonModule,
+    MatDialogClose
+  ],
+  templateUrl: './form-modal.component.html',
+  styleUrl: './form-modal.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class TaskFormsComponent {
+export class FormModalComponent {
+  baseService = inject(BaseService);
+  toastr = inject(ToastrService);
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
-  formCreateSubmit = output<TaskCreateRequest>();
-  formUpdateSubmit = output<TaskUpdateRequest>();
-  task = input<Task>();
-  isUpdate = input.required<boolean>();
 
+  /* INPUT SECTION */
+  data = inject(MAT_DIALOG_DATA);
+  formDialogRef = inject(MatDialogRef<FormModalComponent>);
+  inputData: any;
+  task = signal<Task | undefined>(undefined);
+  isUpdate = signal<boolean>(false);
+  formTitle = signal<string>('Add New Task');
+
+  /* Variable Declaration */
   priorities: Dictionary[] = [];
   taskForm?: FormGroup;
   isSubmitted = false;
-  isAddPopupForm = input<boolean>(false);
   uploadedImageUrl = signal<string>('');
   uploadedFiles: UC.OutputFileEntry<'success'>[] = [];
-
-  baseService = inject(BaseService);
-  toastr = inject(ToastrService);
-  ngZone = inject(NgZone);
   @ViewChild('config', { static: true }) imageUploadConfigRef!: ElementRef<InstanceType<UC.Config>>;
   @ViewChild('ctxProvider', { static: true }) ctxProviderRef!: ElementRef<InstanceType<UC.UploadCtxProvider>>;
 
@@ -46,6 +73,15 @@ export class TaskFormsComponent {
 
   ngOnInit() {
     this.ctxProviderRef.nativeElement.addEventListener('change', this.handleFileUploadChangeEvent);
+    if (this.data) {
+      this.isUpdate.set(this.data.isUpdate);
+      this.formTitle.set(this.data.formTitle);
+      this.task.set(this.data.task);
+      if (!this.isUpdate()) {
+        this.taskForm?.get('expiredAt')?.setValue(this.formatDateString(new Date()));
+      }
+      this.createForm(this.task(), this.isUpdate());
+    }
 
     this.imageUploadConfigRef.nativeElement.localeDefinitionOverride = {
       en: {
@@ -68,18 +104,6 @@ export class TaskFormsComponent {
         'header-uploading': 'Uploading {{count}} {{plural:photo(count)}}',
         'header-succeed': '{{count}} {{plural:photo(count)}} uploaded',
         'header-total': '{{count}} {{plural:photo(count)}} selected',
-      }
-    }
-  }
-
-  ngAfterViewInit() {
-    this.createForm(this.task(), this.isUpdate());
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['isAddPopupForm']) {
-      if (this.isAddPopupForm()) {
-        this.taskForm?.get('expiredAt')?.setValue(this.formatDateString(new Date()));
       }
     }
   }
@@ -146,14 +170,8 @@ export class TaskFormsComponent {
 
   onSubmit() {
     if (this.taskForm?.valid) {
-      if (this.isUpdate()) {
-        this.taskForm.get('imageUrl')!.setValue(this.uploadedImageUrl());
-        this.formUpdateSubmit.emit(this.taskForm.value);
-      } else {
-        this.formCreateSubmit.emit(this.taskForm.value);
-        this.createForm(undefined, false);
-        this.uploadedImageUrl.set('');
-      }
+      this.taskForm.get('imageUrl')!.setValue(this.uploadedImageUrl());
+      this.formDialogRef.close(this.taskForm.value);
     } else {
       this.isSubmitted = true;
     }

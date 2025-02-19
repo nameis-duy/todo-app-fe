@@ -87,6 +87,17 @@
             color: #747474;
         }
 
+        .task-content {
+            .image-section {
+                text-align: center;
+            }
+
+            img {
+                width: 75%;
+                border-radius: 14px;
+            }
+        }
+
         .enum-sections {
             font-size: smaller;
 

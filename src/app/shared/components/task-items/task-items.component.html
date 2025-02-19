@@ -16,12 +16,11 @@
         <div class="dots-options">
             <div class="dropdown ms-auto">
                 <div data-bs-toggle="dropdown">
-                    <i class="fas fa-ellipsis-v"></i>
+                    <i class="fa-solid fa-ellipsis"></i>
                 </div>
                 <ul class="dropdown-menu">
                     <li>
-                        <span class="dropdown-item" data-bs-toggle="modal"
-                            [attr.data-bs-target]="'#update-modal-' + task().id">
+                        <span class="dropdown-item" (click)="openFormModal()">
                             <i class="fas fa-pen mx-2"></i>
                             <span class="dropdown-item-text">Edit</span>
                         </span>
@@ -47,7 +46,7 @@
                 </ul>
             </div>
         </div>
-        <div class="edit-section-popup" (mousedown)="$event.stopPropagation()">
+        <!-- <div class="edit-section-popup" (mousedown)="$event.stopPropagation()">
             <div class="modal fade" id="update-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -64,11 +63,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="remove-section-popup" (mousedown)="$event.stopPropagation()">
             <div class="modal fade" id="remove-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Task</h1>
@@ -87,14 +86,19 @@
             </div>
         </div>
         <h4 class="item-title">{{ task().title }}</h4>
-        <p class="item-description pt-1">{{ (task().description.length > 200) ? task().description.slice(0, 197) + '...'
-            : task().description }}</p>
+        <div class="row task-content">
+            <p class="item-description pt-1 col-9">{{ (task().description.length > 150) ? task().description.slice(0,
+                147) + '...' : task().description }}</p>
+            <div class="col-3 image-section">
+                <img [src]="task().imageUrl" alt="Task Image">
+            </div>
+        </div>
         <div class="enum-sections row">
             <p class="col-md-4">
                 Priority:
-                <span class="priority-value" id="prio-{{task().id}}" [attr.color-code]="task().priority">{{
-                    task().priority
-                    }}</span>
+                <span class="priority-value" id="prio-{{task().id}}" [attr.color-code]="task().priority">
+                    {{task().priority}}
+                </span>
             </p>
             <p class="col-md-3">
                 Status:

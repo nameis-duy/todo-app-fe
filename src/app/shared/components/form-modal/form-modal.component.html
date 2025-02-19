@@ -1,0 +1,90 @@
+<div class="form-container" (mousedown)="$event.stopPropagation()">
+    <div class="form-header-section row w-100">
+        <div class="header col-9">
+            <h1 mat-dialog-title class="form-title fs-5"><span>{{ formTitle().substring(0, formTitle().length - 2)
+                    }}</span>{{ formTitle().substring(formTitle().length - 2) }}</h1>
+        </div>
+        <div class="col-3 text-end close-btn">
+            <i class="fa-solid fa-xmark" [mat-dialog-close]="true"></i>
+        </div>
+    </div>
+    <form [formGroup]="taskForm!" class="add-task-form" (ngSubmit)="onSubmit()">
+        <div class="input-container">
+            <div class="add-task-field">
+                <h6 for="title">Title:</h6>
+                <input formControlName="title" type="text" placeholder="Enter Title" class="add-task-input"
+                    (mousedown)="$event.stopPropagation()">
+                <div>
+                    <div *ngIf="isSubmitted || title?.invalid && (title?.dirty || title?.touched)"
+                        class="text-danger input-errors">
+                        <div *ngIf="title?.errors?.['required']">Title cannot be empty</div>
+                        <div *ngIf="title?.errors?.['minlength'] || title?.errors?.['maxLength']">
+                            Title length must between 6 - 150
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="add-task-field">
+                <h6 for="expiredAt">Expired Date</h6>
+                <input formControlName="expiredAt" type="datetime-local" placeholder="Enter date"
+                    class="add-task-input">
+                <div>
+                    <div *ngIf="isSubmitted || expiredAt?.invalid && (title?.dirty || title?.touched)"
+                        class="text-danger input-errors">
+                        <div *ngIf="expiredAt?.errors?.['required']">Expired date is required</div>
+                        <div *ngIf="expiredAt?.errors?.['invalidExpiredTime']">Expired time must be 30 minutes after
+                            current time.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="add-task-field">
+                <h6 for="priority">Priority</h6>
+                <div *ngFor="let prio of priorities" class="d-inline-block pe-5">
+                    <div class="form-check">
+                        <input formControlName="priority" class="form-check-input" type="radio" name="priority"
+                            value="{{prio.key}}" id="priority-{{prio.key}}">
+                        <label class="form-check-label" for="priority-{{prio.key}}">
+                            {{prio.value}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="add-task-field row">
+                <div class="description-section col-md-8">
+                    <h6 for="description">Task Description</h6>
+                    <textarea formControlName="description" type="textarea" placeholder="Enter description"
+                        class="add-task-input" (mousedown)="$event.stopPropagation()"></textarea>
+                    <div>
+                        <div *ngIf="isSubmitted || description?.invalid && (description?.dirty || description?.touched)"
+                            class="text-danger input-errors">
+                            <div *ngIf="description?.errors?.['required']">Description cannot be empty</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="add-image-section col-md-4">
+                    <h6 for="imageUrl">Upload Image</h6>
+                    <div class="image-upload-container">
+                        <div class="text-center">
+                            <div *ngIf="uploadedImageUrl().length !== 0">
+                                <img [src]="uploadedImageUrl()" alt="Uploaded Image" width="150" height="150">
+                                <input type="hidden" formControlName="imageUrl" [value]="uploadedImageUrl()">
+                            </div>
+                            <uc-config #config ctx-name="image-uploader" source-list="local, facebook, gdrive"
+                                multiple="false" removeCopyright="true" imgOnly="true"
+                                pubkey="a9f23ab50050fa101785"></uc-config>
+
+                            <uc-file-uploader-regular ctx-name="image-uploader"
+                                class="uc-light"></uc-file-uploader-regular>
+
+                            <uc-upload-ctx-provider #ctxProvider ctx-name="image-uploader"></uc-upload-ctx-provider>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" formControlName="id">
+        <button type="submit" class="btn btn-done">
+            Done
+        </button>
+    </form>
+</div>

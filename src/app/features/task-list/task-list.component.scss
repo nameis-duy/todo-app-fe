@@ -6,11 +6,12 @@
     margin-bottom: 0.2rem;
     overflow-y: auto;
     scrollbar-color: #d3d3d3 transparent;
+    font-family: 'Inter';
 
     .add-section {
         padding-top: 2%;
     }
-    
+
     .add-section-title {
         padding-left: 3rem;
         padding-top: 0.9rem;
@@ -32,24 +33,75 @@
             border: none;
             background: none;
             color: #A1A3AB;
-    
+
             &:hover {
                 background-color: #A1A3AB;
                 color: #F5F8FF;
                 cursor: pointer;
             }
-    
+
             span {
                 color: #F24E1E;
             }
         }
-        
-        .modal-header, .modal-body {
+
+        .modal-header,
+        .modal-body {
             background-color: #F9F9F9;
 
             span {
                 text-decoration: underline #F24E1E;
                 text-underline-offset: 10px;
+            }
+        }
+    }
+
+    .nav-tabs {
+        .nav-item {
+            &:hover {
+                cursor: pointer;
+            }
+
+            a {
+                color: #FF6767;
+            }
+        }
+
+        .nav-link {
+            &.active {
+                border: none;
+                background: inherit;
+                border-bottom: solid 2px #FF6767;
+            }
+
+            &:active,
+            &:hover {
+                border: none;
+                background: inherit;
+                border-bottom: solid 2px #FF6767;
+            }
+        }
+    }
+
+    /* Animate nav tab */
+    .tab-content {
+        .tab-pane {
+            transition: all 0.2s ease-out;
+        }
+
+        .tab-pane.active {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
     }
@@ -90,8 +142,8 @@
     box-sizing: border-box;
     border-radius: 4px;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-                0 8px 10px 1px rgba(0, 0, 0, 0.14),
-                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+        0 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .cdk-drag-placeholder {
