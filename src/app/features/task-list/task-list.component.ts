@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild, } from '@angular/core';
 import { TaskService } from '../../core/services/task.service';
 import { Task } from '../../shared/models/task.model';
 import { CommonModule } from '@angular/common';
@@ -17,6 +17,10 @@ import { SearchService } from '../../core/services/search.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormModalComponent } from '../../shared/components/form-modal/form-modal.component';
 import { Dialog } from '@angular/cdk/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
+import { FilterDropdownComponent } from "./components/filter-dropdown/filter-dropdown.component";
+import { DateRange } from '../../shared/models/filter/date-range.modal';
 
 
 @Component({
@@ -27,7 +31,10 @@ import { Dialog } from '@angular/cdk/dialog';
     TaskDetailComponent,
     CdkDrag, CdkDropList,
     LoaderComponent,
-    FilterTasksPipePipe
+    FilterTasksPipePipe,
+    MatTabsModule,
+    MatSelectModule,
+    FilterDropdownComponent
 ],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss'
@@ -56,6 +63,11 @@ export class TaskListComponent {
 
   private selectedTask = new BehaviorSubject<Task | undefined>(undefined);
   selectedTask$ = this.selectedTask.asObservable();
+
+  //FITLER VARIABLES
+  selectedPrios = signal<string[]>([]);
+  selectedCreatedDateRange = signal<DateRange | null>(null);
+  selectedExpiredDateRange = signal<DateRange | null>(null);
 
   ngOnInit() {
     this.loadTasks();
@@ -106,8 +118,9 @@ export class TaskListComponent {
     })
 
     formModal.afterClosed().subscribe(res => {
+      console.log(res)
       if (res) {
-        this.addTask(res);        
+        this.addTask(res);
       }
     })
   }
@@ -163,6 +176,22 @@ export class TaskListComponent {
     this.selectedTask.next(task);
   }
 
+  updateTask(task: TaskUpdateRequest) {
+    this.isLoading.set(true);
+    this.taskService.updateTask(task).subscribe({
+      next: (res) => {
+        if (res.isSucceed) {
+          this.toastr.success('Change successfully', 'Success');
+        }
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Error update task: ', err);
+        this.isLoading.set(false);
+      }
+    })
+  }
+
   dropHandle(event: CdkDragDrop<Task[]>) {
     let selectedTask = this.currentTab() == 0 ? this.pendingTasks()[event.previousIndex] : this.completedTasks()[event.previousIndex];
     const targetTask = this.currentTab() == 0 ? this.pendingTasks()[event.currentIndex] : this.completedTasks()[event.currentIndex];
@@ -189,20 +218,20 @@ export class TaskListComponent {
     });
   }
 
-  updateTask(task: TaskUpdateRequest) {
-    this.isLoading.set(true);
-    this.taskService.updateTask(task).subscribe({
-      next: (res) => {
-        if (res.isSucceed) {
-          this.toastr.success('Change successfully', 'Success');
-        }
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        console.error('Error update task: ', err);
-        this.isLoading.set(false);
-      }
-    })
+  handleFilterPriorities(selectedPrios: string[]) {
+    this.selectedPrios.set(selectedPrios);
+  }
+
+  handleFilterCreatedDate(selectedDateRange: DateRange | undefined) {
+    if (selectedDateRange) {
+      this.selectedCreatedDateRange.set(selectedDateRange);
+    }
+  }
+
+  handleFilterExpiredDate(selectedDateRange: DateRange | undefined) {
+    if (selectedDateRange) {
+      this.selectedExpiredDateRange.set(selectedDateRange);
+    }
   }
 
   toggleAddPopUp(status: boolean) {

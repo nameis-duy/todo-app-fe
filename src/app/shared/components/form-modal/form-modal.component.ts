@@ -79,8 +79,9 @@ export class FormModalComponent {
       this.task.set(this.data.task);
       if (!this.isUpdate()) {
         this.taskForm?.get('expiredAt')?.setValue(this.formatDateString(new Date()));
+      } else {
+        this.createForm(this.task(), this.isUpdate());
       }
-      this.createForm(this.task(), this.isUpdate());
     }
 
     this.imageUploadConfigRef.nativeElement.localeDefinitionOverride = {
@@ -171,6 +172,7 @@ export class FormModalComponent {
   onSubmit() {
     if (this.taskForm?.valid) {
       this.taskForm.get('imageUrl')!.setValue(this.uploadedImageUrl());
+      console.log('here');
       this.formDialogRef.close(this.taskForm.value);
     } else {
       this.isSubmitted = true;

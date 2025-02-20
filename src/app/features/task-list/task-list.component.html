@@ -4,10 +4,15 @@
 <div class="task-container row">
     <div class="task-list-container col-6">
         <div class="add-section row">
-            <div class="add-section-title col-md-4">
-                <h4><i class="fa-regular fa-file-lines"></i> <span>To-Do</span></h4>
+            <div class="add-section-title col-md-8">
+                <h4 class="d-inline-block">
+                    <span>To-Do</span>
+                </h4>
+                <app-filter-dropdown class="d-inline-block" (selectedPrio)="handleFilterPriorities($event)"
+                    (selectedCreatedRange)="handleFilterCreatedDate($event)"
+                    (selectedExpiredRange)="handleFilterExpiredDate($event)"></app-filter-dropdown>
             </div>
-            <div class="add-section-btn col-md-8 text-end">
+            <div class="add-section-btn col-md-4 text-end">
                 <button type="button" class="btn btn-add-task" (click)="openFormModal()">
                     <span><i class="fa-solid fa-plus"></i></span>
                     Add Task
@@ -61,7 +66,9 @@
                     <div *ngIf="!isLoading() && pendingTasks().length > 0">
                         <div cdkDropList [cdkDropListData]="pendingTasks()" (cdkDropListDropped)="dropHandle($event)"
                             class="task-list">
-                            @for (task of pendingTasks() | filterTasksPipe : searchText(); track task) {
+                            @for (task of pendingTasks() | filterTasksPipe : searchText() : selectedPrios() :
+                            selectedCreatedDateRange() : selectedExpiredDateRange(); track task)
+                            {
                             <app-task-items cdkDrag [cdkDragData]="task" [task]="task" [tasks]="pendingTasks()"
                                 [completeTasks]="completedTasks()" (selectedId)="selectTask($event)"
                                 class="task-items"></app-task-items>
@@ -70,7 +77,9 @@
                     </div>
 
                     <!-- No tasks message -->
-                    <div *ngIf="!isLoading() && pendingTasks().length === 0" class="task-notfound-section">
+                    <div *ngIf="!isLoading() && (pendingTasks() | filterTasksPipe : searchText() : selectedPrios() :
+                            selectedCreatedDateRange() : selectedExpiredDateRange()).length === 0"
+                        class="task-notfound-section">
                         <p>No tasks found.</p>
                     </div>
                 </div>
@@ -79,11 +88,13 @@
                     <div *ngIf="isLoading()" class="loading task-notfound-section">
                         <p>Loading tasks...</p>
                     </div>
-                    
+
                     <div *ngIf="!isLoading() && completedTasks().length > 0">
                         <div cdkDropList [cdkDropListData]="completedTasks()" (cdkDropListDropped)="dropHandle($event)"
                             class="task-list">
-                            @for (task of completedTasks() | filterTasksPipe : searchText(); track task) {
+                            @for (task of completedTasks() | filterTasksPipe : searchText() : selectedPrios() :
+                            selectedCreatedDateRange() : selectedExpiredDateRange(); track
+                            task) {
                             <app-task-items cdkDrag [cdkDragData]="task" [task]="task" [tasks]="completedTasks()"
                                 [pendingTasks]="pendingTasks()" (selectedId)="selectTask($event)"
                                 class="task-items"></app-task-items>
@@ -92,7 +103,9 @@
                     </div>
 
                     <!-- No tasks message -->
-                    <div *ngIf="!isLoading() && completedTasks().length === 0" class="task-notfound-section">
+                    <div *ngIf="!isLoading() && (completedTasks() | filterTasksPipe : searchText() : selectedPrios() : 
+                            selectedCreatedDateRange() : selectedExpiredDateRange()).length === 0"
+                        class="task-notfound-section">
                         <p>No tasks found.</p>
                     </div>
                 </div>

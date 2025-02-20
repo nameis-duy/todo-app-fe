@@ -1,0 +1,61 @@
+<div class="custom-dropdown">
+    <span class="material-symbols-outlined ps-3 btn-dropdown" #dropDownBtn>
+        filter_list
+    </span>
+    <div class="dropdown-menu" #dropDownMenu>
+        <h5 class="custom-dropdown-title">Filter Task</h5>
+        <mat-divider class="pb-4"></mat-divider>
+        <div class="custom-dropdown-item">
+            <p class="item-title">Priority</p>
+            <mat-form-field class="priority-filter-select w-100">
+                <mat-label>Priority</mat-label>
+                <mat-select [formControl]="selectedPriorities" multiple
+                    (selectionChange)="handleChangePrioritySelection($event);">
+                    @for (prio of priorities; track prio) {
+                    <mat-option [value]="prio.value">{{ prio.value }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="custom-dropdown-item">
+            <p class="item-title">Created Date</p>
+            <mat-form-field class="w-100">
+                <mat-label>Select Created Date</mat-label>
+                <mat-date-range-input [formGroup]="createdDateRangeForm" [rangePicker]="createdDatePicker">
+                    <input matStartDate formControlName="start" placeholder="Start date">
+                    <input matEndDate formControlName="end" placeholder="End date" (dateChange)="handleCreatedDateChange()">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="createdDatePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #createdDatePicker></mat-date-range-picker>
+                @if (createdDateRangeForm.controls['start'].hasError('matStartDateInvalid')) {
+                <mat-error>Invalid start date</mat-error>
+                }
+                @if (createdDateRangeForm.controls['end'].hasError('matEndDateInvalid')) {
+                <mat-error>Invalid end date</mat-error>
+                }
+            </mat-form-field>
+        </div>
+        <div class="custom-dropdown-item">
+            <p class="item-title">Expired Date</p>
+            <mat-form-field class="w-100">
+                <mat-label>Select Expired Date</mat-label>
+                <mat-date-range-input [formGroup]="expiredDateRangeForm" [rangePicker]="expiredDatePicker">
+                    <input matStartDate formControlName="start" placeholder="Start date">
+                    <input matEndDate formControlName="end" placeholder="End date" (dateChange)="handleExpiredDateChange()">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="expiredDatePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #expiredDatePicker></mat-date-range-picker>
+                @if (expiredDateRangeForm.controls['start'].hasError('matStartDateInvalid')) {
+                <mat-error>Invalid start date</mat-error>
+                }
+                @if (expiredDateRangeForm.controls['end'].hasError('matEndDateInvalid')) {
+                <mat-error>Invalid end date</mat-error>
+                }
+            </mat-form-field>
+        </div>
+        <div class="custom-dropdown-btn text-end">
+            <button class="btn btn-clear-result me-2" (click)="handleClearFilter()">Clear</button>
+            <button class="btn btn-show-result" (click)="openFilterDropdown()">Show Result</button>
+        </div>
+    </div>
+</div>

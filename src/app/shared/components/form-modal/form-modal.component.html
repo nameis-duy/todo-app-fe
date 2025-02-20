@@ -5,7 +5,7 @@
                     }}</span>{{ formTitle().substring(formTitle().length - 2) }}</h1>
         </div>
         <div class="col-3 text-end close-btn">
-            <i class="fa-solid fa-xmark" [mat-dialog-close]="true"></i>
+            <i class="fa-solid fa-xmark" [mat-dialog-close]></i>
         </div>
     </div>
     <form [formGroup]="taskForm!" class="add-task-form" (ngSubmit)="onSubmit()">
