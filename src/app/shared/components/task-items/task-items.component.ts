@@ -38,6 +38,7 @@ export class TaskItemsComponent {
   completeTasks = input<Task[]>();
   selectedId = output<number>();
   isLoading = signal<boolean>(false);
+  isSelected = input<boolean>(false);
 
   dateStr = '';
   statusObj: any;

@@ -61,13 +61,14 @@ export class TaskListComponent {
   statusObj: any;
   priorityObj: any;
 
+  selectedId = signal<number>(-1);
   private selectedTask = new BehaviorSubject<Task | undefined>(undefined);
   selectedTask$ = this.selectedTask.asObservable();
 
   //FITLER VARIABLES
   selectedPrios = signal<string[]>([]);
-  selectedCreatedDateRange = signal<DateRange | null>(null);
-  selectedExpiredDateRange = signal<DateRange | null>(null);
+  selectedCreatedDateRange = signal<DateRange | undefined>(undefined);
+  selectedExpiredDateRange = signal<DateRange | undefined>(undefined);
 
   ngOnInit() {
     this.loadTasks();
@@ -133,6 +134,8 @@ export class TaskListComponent {
           this.pendingTasks.set(response.data.filter(t => !t.isCompleted));
           this.completedTasks.set(response.data.filter(t => t.isCompleted));
           this.selectedTask.next(this.pendingTasks()[0]);
+          this.selectedId.set(this.pendingTasks()[0].id);
+          console.log(this.selectedId());
         }
         this.isLoading.set(false);
       },
@@ -174,6 +177,7 @@ export class TaskListComponent {
       task = this.completedTasks().find(task => task.id === id)
     }
     this.selectedTask.next(task);
+    this.selectedId.set(task?.id!);
   }
 
   updateTask(task: TaskUpdateRequest) {
@@ -227,15 +231,11 @@ export class TaskListComponent {
   }
 
   handleFilterCreatedDate(selectedDateRange: DateRange | undefined) {
-    if (selectedDateRange) {
-      this.selectedCreatedDateRange.set(selectedDateRange);
-    }
+    this.selectedCreatedDateRange.set(selectedDateRange);
   }
 
   handleFilterExpiredDate(selectedDateRange: DateRange | undefined) {
-    if (selectedDateRange) {
-      this.selectedExpiredDateRange.set(selectedDateRange);
-    }
+    this.selectedExpiredDateRange.set(selectedDateRange);
   }
 
   toggleAddPopUp(status: boolean) {

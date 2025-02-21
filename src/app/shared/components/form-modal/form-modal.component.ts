@@ -143,6 +143,7 @@ export class FormModalComponent {
         nonNullable: true
       }),
       imageUrl: new FormControl(isUpdate ? task?.imageUrl : ''),
+      status: new FormControl(isUpdate ? 2 : 0),
       id: new FormControl(task?.id)
     })
   }

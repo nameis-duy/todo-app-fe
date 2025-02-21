@@ -11,6 +11,10 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    
+    &.active {
+        background-color: #a1a3ab38;
+    }
 
     [color-code='Low'] { color: #05A301; }
     [color-code='Medium'] { color: #42ADE2; }
@@ -62,9 +66,11 @@
         }
 
         .edit-section-popup {
-            .modal-header, .modal-body {
+
+            .modal-header,
+            .modal-body {
                 background-color: #F9F9F9;
-    
+
                 span {
                     text-decoration: underline #F24E1E;
                     text-underline-offset: 10px;

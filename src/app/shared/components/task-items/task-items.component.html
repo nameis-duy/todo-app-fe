@@ -1,7 +1,7 @@
 <div *ngIf="isLoading()">
     <app-loader></app-loader>
 </div>
-<div class="task-items-container" (click)="onClickDetail()" appStatusColorDirective [status]="task().status">
+<div class="task-items-container" (click)="onClickDetail()" appStatusColorDirective [status]="task().status" [class.active]="isSelected()">
     <div class="status-section">
         @if (task().isCompleted) {
         <i class="fa-regular fa-circle-check" matTooltip="Undone Task" appStatusColorDirective [status]="task().status"

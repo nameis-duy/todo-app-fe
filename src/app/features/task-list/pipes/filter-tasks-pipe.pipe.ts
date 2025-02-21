@@ -8,7 +8,7 @@ import { DateRange } from '../../../shared/models/filter/date-range.modal';
 export class FilterTasksPipePipe implements PipeTransform {
 
   transform(tasks: Task[], searchText: string, priorities: string[] | undefined, 
-    createdDateRage: DateRange | null, expiredDateRange: DateRange | null): Task[] {
+    createdDateRage: DateRange | undefined, expiredDateRange: DateRange | undefined): Task[] {
     if (!searchText && (!priorities || priorities.length === 0) && !createdDateRage && !expiredDateRange) {
       return tasks;
     }

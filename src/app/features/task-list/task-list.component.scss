@@ -59,6 +59,7 @@
         }
     }
 
+    //CUSTOM NAV-TABS STYLE
     .nav-tabs {
         .nav-item {
             &:hover {
@@ -163,15 +164,14 @@
 
 //Customize mat-tab color
 :host {
-    @include mat.tabs-overrides((
-        //active style
+    @include mat.tabs-overrides(( //active style
             active-indicator-color: #FF6767,
             active-label-text-color: #FF6767,
             active-focus-label-text-color: #FF6767,
             active-indicator-shape: #FF6767,
             active-focus-indicator-color: #FF6767,
             active-hover-label-text-color: #FF6767,
-        //inactive
+            //inactive
             inactive-label-text-color: #FF6767,
             inactive-focus-label-text-color: #FF6767,
             inactive-hover-label-text-color: #FF6767,
