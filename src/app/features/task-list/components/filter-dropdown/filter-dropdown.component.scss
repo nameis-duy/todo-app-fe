@@ -21,6 +21,17 @@
         padding-bottom: 1.2rem;
         left: 2rem;
         width: 25rem;
+        box-shadow: 0px 1px 2px 0px;
+        border-radius: 5px;
+    }
+
+    .dropdown-backdrop {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        display: none;
     }
 
     .custom-dropdown-title {
@@ -36,7 +47,8 @@
     .custom-dropdown-btn {
         margin-top: 1rem;
 
-        .btn-show-result, .btn-clear-result {
+        .btn-show-result,
+        .btn-clear-result {
             background-color: #FF6767;
             color: #fff;
 

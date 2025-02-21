@@ -44,20 +44,11 @@
         <!-- Task list -->
         <div>
             <!-- Nav tabs -->
-            <div class="nav nav-tabs w-100 mb-2 mt-2" role="tablist">
-                <div class="nav-item w-50 text-center">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" role="tab" aria-controls="home"
-                        aria-selected="true" #home>Pending</a>
-                </div>
-                <div class="nav-item w-50 text-center">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile"
-                        aria-selected="false" #profile>Completed</a>
-                </div>
-            </div>
-
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <mat-tab-group (selectedTabChange)="handleTabChange($event)">
+                <mat-tab [label]="'Pending (' + 
+                (pendingTasks() | filterTasksPipe : searchText() :
+                selectedPrios() :
+                selectedCreatedDateRange() : selectedExpiredDateRange()).length + ')'">
                     <!-- Loading indicator -->
                     <div *ngIf="isLoading()" class="loading task-notfound-section">
                         <p>Loading tasks...</p>
@@ -78,13 +69,15 @@
 
                     <!-- No tasks message -->
                     <div *ngIf="!isLoading() && (pendingTasks() | filterTasksPipe : searchText() : selectedPrios() :
-                            selectedCreatedDateRange() : selectedExpiredDateRange()).length === 0"
+                    selectedCreatedDateRange() : selectedExpiredDateRange()).length === 0"
                         class="task-notfound-section">
                         <p>No tasks found.</p>
                     </div>
-                </div>
-                <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <!-- Loading indicator -->
+                </mat-tab>
+                <mat-tab [label]="'Completed (' + 
+                (completedTasks() | filterTasksPipe : searchText()
+                : selectedPrios() :
+                selectedCreatedDateRange() : selectedExpiredDateRange()).length + ')'"> <!-- Loading indicator -->
                     <div *ngIf="isLoading()" class="loading task-notfound-section">
                         <p>Loading tasks...</p>
                     </div>
@@ -108,8 +101,34 @@
                         class="task-notfound-section">
                         <p>No tasks found.</p>
                     </div>
+                </mat-tab>
+            </mat-tab-group>
+
+            <!-- Custom nav bar -->
+            <!-- <div class="nav nav-tabs w-100 mb-2 mt-2" role="tablist">
+                <div class="nav-item w-50 text-center">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" role="tab" aria-controls="home"
+                        aria-selected="true" #home>Pending
+                        ({{ (pendingTasks() | filterTasksPipe : searchText() :
+                        selectedPrios() :
+                        selectedCreatedDateRange() : selectedExpiredDateRange()).length }})</a>
                 </div>
-            </div>
+                <div class="nav-item w-50 text-center">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile"
+                        aria-selected="false" #profile>Completed
+                        ({{ (completedTasks() | filterTasksPipe : searchText()
+                        : selectedPrios() :
+                        selectedCreatedDateRange() : selectedExpiredDateRange()).length }})</a>
+                </div>
+            </div> -->
+
+            <!-- Tab panes -->
+            <!-- <div class="tab-content">
+                <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                </div>
+                <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                </div>
+            </div> -->
         </div>
     </div>
     <div class="task-detail-section col-5 card">

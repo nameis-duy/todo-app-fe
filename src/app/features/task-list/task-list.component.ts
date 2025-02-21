@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, signal, ViewChild, } from '@angular/core';
+import { Component, inject, signal, } from '@angular/core';
 import { TaskService } from '../../core/services/task.service';
 import { Task } from '../../shared/models/task.model';
 import { CommonModule } from '@angular/common';
@@ -17,7 +17,7 @@ import { SearchService } from '../../core/services/search.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormModalComponent } from '../../shared/components/form-modal/form-modal.component';
 import { Dialog } from '@angular/cdk/dialog';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { FilterDropdownComponent } from "./components/filter-dropdown/filter-dropdown.component";
 import { DateRange } from '../../shared/models/filter/date-range.modal';
@@ -48,8 +48,8 @@ export class TaskListComponent {
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
   defaultImageUrl = AppConstant.DEFAULT_TASK_IMG_URL;
 
-  @ViewChild('home', { static: true }) home!: ElementRef;
-  @ViewChild('profile', { static: true }) profile!: ElementRef;
+  // @ViewChild('home', { static: true }) home!: ElementRef;
+  // @ViewChild('profile', { static: true }) profile!: ElementRef;
   form = inject(MatDialog);
 
   pendingTasks = signal<Task[]>([]);
@@ -78,21 +78,21 @@ export class TaskListComponent {
       }
     })
 
-    this.home.nativeElement.addEventListener('click', () => {
-      document.getElementById('profile')?.classList.remove('active');
-      document.getElementById('home')?.classList.add('active');
-      this.home.nativeElement.classList.add('active');
-      this.profile.nativeElement.classList.remove('active');
-      this.currentTab.set(0);
-    })
+    // this.home.nativeElement.addEventListener('click', () => {
+    //   document.getElementById('profile')?.classList.remove('active');
+    //   document.getElementById('home')?.classList.add('active');
+    //   this.home.nativeElement.classList.add('active');
+    //   this.profile.nativeElement.classList.remove('active');
+    //   this.currentTab.set(0);
+    // })
 
-    this.profile.nativeElement.addEventListener('click', () => {
-      document.getElementById('home')?.classList.remove('active');
-      document.getElementById('profile')?.classList.add('active');
-      this.profile.nativeElement.classList.add('active');
-      this.home.nativeElement.classList.remove('active');
-      this.currentTab.set(1);
-    })
+    // this.profile.nativeElement.addEventListener('click', () => {
+    //   document.getElementById('home')?.classList.remove('active');
+    //   document.getElementById('profile')?.classList.add('active');
+    //   this.profile.nativeElement.classList.add('active');
+    //   this.home.nativeElement.classList.remove('active');
+    //   this.currentTab.set(1);
+    // })
   }
 
   openFormModal() {
@@ -216,6 +216,10 @@ export class TaskListComponent {
       expiredAt: selectedTask.expiredAt,
       imageUrl: selectedTask.imageUrl
     });
+  }
+
+  handleTabChange(e: MatTabChangeEvent) {
+    this.currentTab.set(e.index);
   }
 
   handleFilterPriorities(selectedPrios: string[]) {

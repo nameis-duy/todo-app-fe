@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 .task-list-container {
     border: 1px solid rgba(161, 163, 171, 0.63);
     border-radius: 1rem;
@@ -157,4 +159,21 @@
 
 .task-list.cdk-drop-list-dragging .task-items:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+//Customize mat-tab color
+:host {
+    @include mat.tabs-overrides((
+        //active style
+            active-indicator-color: #FF6767,
+            active-label-text-color: #FF6767,
+            active-focus-label-text-color: #FF6767,
+            active-indicator-shape: #FF6767,
+            active-focus-indicator-color: #FF6767,
+            active-hover-label-text-color: #FF6767,
+        //inactive
+            inactive-label-text-color: #FF6767,
+            inactive-focus-label-text-color: #FF6767,
+            inactive-hover-label-text-color: #FF6767,
+        ));
 }

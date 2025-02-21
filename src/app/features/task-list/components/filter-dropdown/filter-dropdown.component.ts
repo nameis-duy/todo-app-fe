@@ -30,6 +30,7 @@ import { DateRange } from '../../../../shared/models/filter/date-range.modal';
 export class FilterDropdownComponent {
   @ViewChild('dropDownBtn', { static: true }) dropDownBtn!: ElementRef;
   @ViewChild('dropDownMenu', { static: true }) dropDownMenu!: ElementRef;
+  @ViewChild('dropDownBackdrop', { static: true }) dropDownBackdrop!: ElementRef;
   renderer = inject(Renderer2);
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
 
@@ -66,7 +67,8 @@ export class FilterDropdownComponent {
   }
 
   ngOnInit() {
-    this.dropDownBtn.nativeElement.addEventListener('click', () => { this.openFilterDropdown() })
+    this.dropDownBtn.nativeElement.addEventListener('click', () => { this.openFilterDropdown() });
+    this.dropDownBackdrop.nativeElement.addEventListener('click', () => { this.openFilterDropdown() });
   }
 
   handleChangePrioritySelection(e: MatSelectChange) {
@@ -99,9 +101,11 @@ export class FilterDropdownComponent {
   openFilterDropdown() {
     if (this.isOpenned()) {
       this.renderer.setProperty(this.dropDownMenu.nativeElement, 'style', 'display: none;');
+      this.renderer.setProperty(this.dropDownBackdrop.nativeElement, 'style', 'display: none;');
       this.isOpenned.set(false);
     } else {
       this.renderer.setProperty(this.dropDownMenu.nativeElement, 'style', 'display: block;');
+      this.renderer.setProperty(this.dropDownBackdrop.nativeElement, 'style', 'display: block;');
       this.isOpenned.set(true);
     }
   }
