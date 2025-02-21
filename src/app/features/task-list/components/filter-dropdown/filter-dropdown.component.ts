@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, output, Renderer2, signal, ViewChild } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
@@ -10,6 +10,7 @@ import { Dictionary } from '../../../../shared/models/dictionary.model';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { DateRange } from '../../../../shared/models/filter/date-range.modal';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-filter-dropdown',
@@ -26,27 +27,57 @@ import { DateRange } from '../../../../shared/models/filter/date-range.modal';
   templateUrl: './filter-dropdown.component.html',
   styleUrl: './filter-dropdown.component.scss',
   providers: [provideNativeDateAdapter()],
+  animations: [
+    trigger('openClose', [
+      state(
+        'open',
+        style({
+          display: 'block',
+          opacity: 1
+        }),
+      ),
+      state(
+        'closed',
+        style({
+          display: 'none',
+          opacity: 0
+        }),
+      ),
+      transition('open => closed', [animate('.1s')]),
+      transition('closed => open', [animate('.3s')])
+    ]),
+    trigger('backdrop', [
+      state(
+        'open',
+        style({
+          display: 'block',
+        }),
+      ),
+      state(
+        'closed',
+        style({
+          display: 'none',
+        }),
+      ),
+    ])
+  ]
 })
 export class FilterDropdownComponent {
-  @ViewChild('dropDownBtn', { static: true }) dropDownBtn!: ElementRef;
-  @ViewChild('dropDownMenu', { static: true }) dropDownMenu!: ElementRef;
-  @ViewChild('dropDownBackdrop', { static: true }) dropDownBackdrop!: ElementRef;
-  renderer = inject(Renderer2);
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
 
   isOpenned = signal<boolean>(false);
 
   //PRIORITY FILTER
   priorities: Dictionary[] = [];
-  selectedPriorities! : FormControl;
+  selectedPriorities!: FormControl;
   selectedPrio = output<string[]>();
 
   //CREATED DATE RANGE
-  createdDateRangeForm! : FormGroup;
+  createdDateRangeForm!: FormGroup;
   selectedCreatedRange = output<DateRange | undefined>();
 
   //EXPIRED DATE RANGE
-  expiredDateRangeForm! : FormGroup;
+  expiredDateRangeForm!: FormGroup;
   selectedExpiredRange = output<DateRange | undefined>();
 
   constructor() {
@@ -64,11 +95,6 @@ export class FilterDropdownComponent {
       start: new FormControl<Date | null>(null),
       end: new FormControl<Date | null>(null)
     });
-  }
-
-  ngOnInit() {
-    this.dropDownBtn.nativeElement.addEventListener('click', () => { this.openFilterDropdown() });
-    this.dropDownBackdrop.nativeElement.addEventListener('click', () => { this.openFilterDropdown() });
   }
 
   handleChangePrioritySelection(e: MatSelectChange) {
@@ -98,16 +124,8 @@ export class FilterDropdownComponent {
   }
 
   //DROPDOWN FEATURE
-  openFilterDropdown() {
-    if (this.isOpenned()) {
-      this.renderer.setProperty(this.dropDownMenu.nativeElement, 'style', 'display: none;');
-      this.renderer.setProperty(this.dropDownBackdrop.nativeElement, 'style', 'display: none;');
-      this.isOpenned.set(false);
-    } else {
-      this.renderer.setProperty(this.dropDownMenu.nativeElement, 'style', 'display: block;');
-      this.renderer.setProperty(this.dropDownBackdrop.nativeElement, 'style', 'display: block;');
-      this.isOpenned.set(true);
-    }
+  toggleDropdown() {
+    this.isOpenned.set(!this.isOpenned());
   }
 
   handleClearFilter() {

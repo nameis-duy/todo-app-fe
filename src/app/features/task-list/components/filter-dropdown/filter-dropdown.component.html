@@ -1,9 +1,9 @@
 <div class="custom-dropdown">
-    <span class="material-symbols-outlined ps-3 btn-dropdown" #dropDownBtn>
+    <span class="material-symbols-outlined ps-3 btn-dropdown" #dropDownBtn (click)="toggleDropdown()">
         filter_list
     </span>
-    <div class="dropdown-backdrop" #dropDownBackdrop></div>
-    <div class="dropdown-menu" #dropDownMenu>
+    <div class="dropdown-backdrop" #dropDownBackdrop [@backdrop]="isOpenned() ? 'open' : 'closed'" (click)="toggleDropdown()"></div>
+    <div class="dropdown-menu" #dropDownMenu [@openClose]="isOpenned() ? 'open' : 'closed'">
         <h5 class="custom-dropdown-title">Filter</h5>
         <mat-divider class="pb-4"></mat-divider>
         <div class="custom-dropdown-item">
@@ -56,7 +56,7 @@
         </div>
         <div class="custom-dropdown-btn text-end">
             <button class="btn btn-clear-result me-2" (click)="handleClearFilter()">Clear</button>
-            <button class="btn btn-show-result" (click)="openFilterDropdown()">Show Result</button>
+            <button class="btn btn-show-result" (click)="toggleDropdown()">Show Result</button>
         </div>
     </div>
 </div>
