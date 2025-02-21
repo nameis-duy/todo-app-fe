@@ -26,8 +26,7 @@
                         </span>
                     </li>
                     <li>
-                        <span class="dropdown-item" data-bs-toggle="modal"
-                            [attr.data-bs-target]="'#remove-modal-' + task().id">
+                        <span class="dropdown-item" (click)="openDeleteConfirmModal()">
                             <i class="fas fa-trash mx-2"></i>
                             <span class="dropdown-item-text">Delete</span>
                         </span>
@@ -64,7 +63,7 @@
                 </div>
             </div>
         </div> -->
-        <div class="remove-section-popup" (mousedown)="$event.stopPropagation()">
+        <!-- <div class="remove-section-popup" (mousedown)="$event.stopPropagation()">
             <div class="modal fade" id="remove-modal-{{ task().id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -84,8 +83,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <h4 class="item-title">{{ task().title }}</h4>
+        </div> -->
+        <h4 class="item-title">{{ (task().title.length > 40) ? task().description.slice(0,
+                37) + '...' : task().title }}</h4>
         <div class="row task-content">
             <p class="item-description pt-1 col-9">{{ (task().description.length > 150) ? task().description.slice(0,
                 147) + '...' : task().description }}</p>

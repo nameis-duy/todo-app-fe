@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input, signal, SimpleChanges } from '@angular/core';
 import { Task } from '../../shared/models/task.model';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { FormModalComponent } from '../../shared/components/form-modal/form-moda
 import { ToastrService } from 'ngx-toastr';
 import { Dictionary } from '../../shared/models/dictionary.model';
 import { AppConstant } from '../../core/constants/constant';
+import { DeleteConfirmModalComponent } from '../../shared/components/delete-confirm-modal/delete-confirm-modal.component';
 
 @Component({
   selector: 'app-task-detail',
@@ -22,6 +23,7 @@ export class TaskDetailComponent {
   taskService = inject(TaskService);
   toastrService = inject(ToastrService);
   formModal = inject(MatDialog);
+  deleteConfirmModal = inject(MatDialog);
 
   statusStoredKey = AppConstant.STATUS_STORING_KEY;
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
@@ -31,9 +33,9 @@ export class TaskDetailComponent {
   dateStr = '';
   expiredDateStr = '';
   isLoading = signal<boolean>(false);
-  tasks = input<Task[]>();
   pendingTasks = input<Task[]>();
-  completeTasks = input<Task[]>();
+  completedTasks = input<Task[]>();
+  tasks = signal<Task[] | undefined>([]);
   statusObj: any;
   priorityObj: any;
 
@@ -44,7 +46,6 @@ export class TaskDetailComponent {
     this.statusObj = Object.fromEntries(statusList.map(item => [item.value, item.key]));
     this.priorityObj = Object.fromEntries(priorities.map(item => [item.value, item.key]));
   }
-
 
   ngOnInit() {
     this.task$()?.subscribe((t) => {
@@ -66,6 +67,8 @@ export class TaskDetailComponent {
           hour: '2-digit',
           minute: '2-digit'
         });
+
+        this.tasks.set(this.task?.status === "Completed" ? this.completedTasks() : this.pendingTasks());
       }
     })
   }
@@ -88,6 +91,27 @@ export class TaskDetailComponent {
     updateFormModal.afterClosed().subscribe(res => {
       if (res) {
         this.updateTask(res);
+      }
+    })
+  }
+
+  openDeleteModal() {
+    var formModal = this.deleteConfirmModal.open(DeleteConfirmModalComponent, {
+      width: '500px',
+      maxWidth: '500px',
+      enterAnimationDuration: '0.3s',
+      exitAnimationDuration: '0.3s',
+      autoFocus: "false",
+      panelClass: "custom-modal-form",
+      data: {
+        task: this.task,
+        tasks: this.tasks
+      }
+    })
+
+    formModal.afterClosed().subscribe(res => {
+      if (res) {
+        this.removeTask(this.task!.id);
       }
     })
   }
@@ -117,6 +141,28 @@ export class TaskDetailComponent {
         } else {
           this.toastrService.error('Update failed', 'Error');
         }
+        this.isLoading.set(false);
+      }
+    })
+  }
+
+  removeTask(id: number) {
+    this.isLoading.set(true);
+    this.taskService.removeTask(id).subscribe({
+      next: (res) => {
+        if (res.isSucceed) {
+          if (this.tasks) {
+            var indexToRemove = this.tasks()?.findIndex(t => t.id === id);
+            this.tasks()?.splice(indexToRemove!, 1);
+            this.task = this.tasks()![0];
+          }
+        }
+        this.toastrService.success('Remove successfully', 'Success');
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Error removing task: ', err);
+        this.toastrService.error('Server error', 'Error');
         this.isLoading.set(false);
       }
     })

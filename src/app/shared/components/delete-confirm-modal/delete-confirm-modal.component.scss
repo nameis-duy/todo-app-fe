@@ -1,0 +1,48 @@
+.confirm-form-container {
+    font-family: 'Inter';
+
+    .confirm-header {
+        .confirm-title {
+            padding-bottom: 0.5rem;
+            padding-left: 2rem;
+
+            span {
+                text-decoration: underline #F24E1E;
+                text-underline-offset: 10px;
+            }
+        }
+
+        .close-btn {
+            i {
+                padding-top: 1.3rem;
+                font-size: 1.5rem;
+                opacity: .5;
+            }
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+
+    .confirm-body {
+        p {
+            font-size: 1rem;
+        }
+    }
+
+    .confirm-footer {
+        padding-top: 1.5rem;
+
+        .btn-done {
+            background-color: #F24E1E;
+            color: #fff;
+            margin-right: .5rem;
+
+            &:hover {
+                background-color: hsl(12, 4%, 47%);
+            }
+        }
+    }
+
+}

@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialog } from '@angular/material/dialog';
 import { FormModalComponent } from '../form-modal/form-modal.component';
+import { DeleteConfirmModalComponent } from '../delete-confirm-modal/delete-confirm-modal.component';
 
 @Component({
   selector: 'app-task-items',
@@ -29,6 +30,7 @@ export class TaskItemsComponent {
   taskService = inject(TaskService);
   toastrService = inject(ToastrService);
   formModal = inject(MatDialog);
+  deleteConfirmModal = inject(MatDialog);
   statusStoredKey = AppConstant.STATUS_STORING_KEY;
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
 
@@ -83,6 +85,27 @@ export class TaskItemsComponent {
     })
   }
 
+  openDeleteConfirmModal() {
+    var formModal = this.deleteConfirmModal.open(DeleteConfirmModalComponent, {
+      width: '500px',
+      maxWidth: '500px',
+      enterAnimationDuration: '0.3s',
+      exitAnimationDuration: '0.3s',
+      autoFocus: "false",
+      panelClass: "custom-modal-form",
+      data: {
+        task: this.task(),
+        tasks: this.tasks()
+      }
+    })
+
+    formModal.afterClosed().subscribe(res => {
+      if (res) {
+        this.removeTask(this.task().id);
+      }
+    })
+  }
+
   updateTask(task: TaskUpdateRequest) {
     this.isLoading.set(true);
     task.priority = parseInt(task.priority.toString());
@@ -95,7 +118,7 @@ export class TaskItemsComponent {
           this.task().expiredAt = res.data.expiredAt;
           this.task().imageUrl = res.data.imageUrl;
           document.getElementById(`prio-${this.task().id}`)?.setAttribute('color-code', this.task().priority);
-          this.sortTasks();
+          this.sortTasks(this.tasks()!);
           this.toastrService.success('Edit successfully', 'Success');
         }
         this.isLoading.set(false);
@@ -120,10 +143,6 @@ export class TaskItemsComponent {
           if (this.tasks()) {
             var indexToRemove = this.tasks()?.findIndex(t => t.id === id);
             this.tasks()?.splice(indexToRemove!, 1);
-            const removeModal = document.getElementById(`remove-modal-${this.task().id}`);
-            if (removeModal) {
-              this.closeModal(removeModal);
-            }
             this.selectedId.emit(this.tasks()?.at(0)?.id ?? -1);
             this.toastrService.success('Remove successfully', 'Success');
           }
@@ -153,8 +172,10 @@ export class TaskItemsComponent {
           this.task().status = Object.keys(this.statusObj).find(key => this.statusObj[key] === status)!;
           if (currentCompletedStatus) {
             this.pendingTasks()?.push(this.task());
+            this.sortTasks(this.pendingTasks()!);
           } else {
             this.completeTasks()?.push(this.task());
+            this.sortTasks(this.completeTasks()!)
           }
           var indexToRemove = this.tasks()?.findIndex(t => t.id === id);
           this.tasks()?.splice(indexToRemove!, 1);
@@ -175,8 +196,8 @@ export class TaskItemsComponent {
   }
 
   //SUPPORT FUNC
-  sortTasks() {
-    this.tasks()?.sort((a, b) => {
+  sortTasks(tasks: Task[]) {
+    tasks.sort((a, b) => {
       if (a.status !== b.status) {
         return this.statusObj[a.status] - this.statusObj[b.status];
       }
@@ -203,18 +224,5 @@ export class TaskItemsComponent {
       return JSON.parse(prioJson);
     }
     return [];
-  }
-
-  closeModal(modal: HTMLElement) {
-    modal.classList.remove('show');
-    modal.style.display = 'none';
-    modal.setAttribute('aria-hidden', 'true');
-    modal.removeAttribute('aria-modal');
-    modal.removeAttribute('role');
-    document.body.classList.remove('modal-open');
-    const modalBackdrop = document.querySelector('.modal-backdrop');
-    if (modalBackdrop) {
-      modalBackdrop.remove();
-    }
   }
 }

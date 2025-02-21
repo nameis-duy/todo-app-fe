@@ -119,7 +119,6 @@ export class TaskListComponent {
     })
 
     formModal.afterClosed().subscribe(res => {
-      console.log(res)
       if (res) {
         this.addTask(res);
       }
@@ -135,7 +134,6 @@ export class TaskListComponent {
           this.completedTasks.set(response.data.filter(t => t.isCompleted));
           this.selectedTask.next(this.pendingTasks()[0]);
           this.selectedId.set(this.pendingTasks()[0].id);
-          console.log(this.selectedId());
         }
         this.isLoading.set(false);
       },
@@ -157,8 +155,7 @@ export class TaskListComponent {
       next: (res) => {
         if (res.isSucceed) {
           this.pendingTasks().push(res.data);
-          this.sortTasks();
-          document.getElementById(`btn-close-add-modal`)?.click();
+          this.sortPendingTasks();
           this.toastr.success('Add successfully', 'Success');
         }
         this.isLoading.set(false);
@@ -243,7 +240,7 @@ export class TaskListComponent {
   }
 
   //SUPPORT FUNC
-  sortTasks() {
+  sortPendingTasks() {
     if (!this.statusObj || !this.priorityObj) {
       this.initStatusAndPrioritiesObj();
     }

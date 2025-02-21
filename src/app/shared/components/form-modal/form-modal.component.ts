@@ -143,7 +143,7 @@ export class FormModalComponent {
         nonNullable: true
       }),
       imageUrl: new FormControl(isUpdate ? task?.imageUrl : ''),
-      status: new FormControl(isUpdate ? 2 : 0),
+      status: new FormControl(isUpdate ? (task?.isCompleted ? 2 : 0) : 0),
       id: new FormControl(task?.id)
     })
   }
@@ -173,7 +173,6 @@ export class FormModalComponent {
   onSubmit() {
     if (this.taskForm?.valid) {
       this.taskForm.get('imageUrl')!.setValue(this.uploadedImageUrl());
-      console.log('here');
       this.formDialogRef.close(this.taskForm.value);
     } else {
       this.isSubmitted = true;

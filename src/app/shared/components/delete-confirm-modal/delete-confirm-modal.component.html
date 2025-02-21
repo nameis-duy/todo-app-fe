@@ -1,0 +1,15 @@
+<div class="confirm-form-container">
+    <div class="confirm-header row w-100">
+        <h2 mat-dialog-title class="confirm-title fs-5 col-9"><span>Delete Ta</span>sk</h2>
+        <div class="col-3 text-end close-btn">
+            <i class="fa-solid fa-xmark" [mat-dialog-close]></i>
+        </div>
+    </div>
+    <mat-dialog-content class="confirm-body">
+        <p>Do you want to delete <span class="text-danger">{{ task.title }}</span> task?</p>
+    </mat-dialog-content>
+    <mat-dialog-actions class="confirm-footer">
+        <button type="button" class="btn btn-done" (click)="handleConfirm()">Confirm</button>
+        <button type="button" class="btn btn-danger" [mat-dialog-close]>Cancel</button>
+    </mat-dialog-actions>
+</div>

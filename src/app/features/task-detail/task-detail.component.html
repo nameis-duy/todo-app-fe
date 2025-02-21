@@ -22,8 +22,7 @@
             <button class="btn btn-edit" type="button" matTooltip="Edit Task" (click)="openFormModal()">
                 <i class="fa-regular fa-pen-to-square"></i>
             </button>
-            <button class="btn btn-remove" type="button" aria-label="''" data-bs-toggle="modal" matTooltip="Remove Task"
-                [attr.data-bs-target]="'#remove-modal-' + task.id">
+            <button class="btn btn-remove" type="button" matTooltip="Remove Task" (click)="openDeleteModal()">
                 <i class="fa-solid fa-trash"></i>
             </button>
         </div>
