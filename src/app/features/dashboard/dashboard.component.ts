@@ -11,6 +11,7 @@ import { Dictionary } from '../../shared/models/dictionary.model';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from "../../shared/components/loader/loader.component";
 import { MatDividerModule } from '@angular/material/divider';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -31,6 +32,7 @@ export class DashboardComponent {
   shareService = inject(ShareService);
   taskService = inject(TaskService);
   toastr = inject(ToastrService);
+  router = inject(Router);
 
   userName = signal<string>('');
   todayPendingTasks = signal<Task[]>([]);
@@ -88,6 +90,10 @@ export class DashboardComponent {
         // this.isLoading.set(false);
       }
     })
+  }
+
+  selectTask(id: number) {
+    this.router.navigate(['tasks', id]);
   }
 
   //SUPPORT FUNC

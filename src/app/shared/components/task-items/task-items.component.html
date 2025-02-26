@@ -2,7 +2,7 @@
     <app-loader></app-loader>
 </div>
 <div class="task-items-container" (click)="onClickDetail()" appStatusColorDirective [status]="task().status" [class.active]="isSelected()">
-    <div class="status-section">
+    <div class="status-section" (click)="$event.stopPropagation()">
         @if (task().isCompleted) {
         <i class="fa-regular fa-circle-check" matTooltip="Undone Task" appStatusColorDirective [status]="task().status"
             (click)="changeTaskStatus(task().id, task().isCompleted)"></i>
@@ -15,10 +15,10 @@
     <div class="detail-section">
         <div class="dots-options">
             <div class="dropdown ms-auto">
-                <div data-bs-toggle="dropdown">
+                <div data-bs-toggle="dropdown" (click)="$event.stopPropagation()">
                     <i class="fa-solid fa-ellipsis"></i>
                 </div>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" (click)="$event.stopPropagation()">
                     <li>
                         <span class="dropdown-item" (click)="openFormModal()">
                             <i class="fas fa-pen mx-2"></i>

@@ -13,6 +13,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialog } from '@angular/material/dialog';
 import { FormModalComponent } from '../form-modal/form-modal.component';
 import { DeleteConfirmModalComponent } from '../delete-confirm-modal/delete-confirm-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-items',
@@ -31,6 +32,7 @@ export class TaskItemsComponent {
   toastrService = inject(ToastrService);
   formModal = inject(MatDialog);
   deleteConfirmModal = inject(MatDialog);
+  router = inject(Router);
   statusStoredKey = AppConstant.STATUS_STORING_KEY;
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
 
@@ -170,6 +172,10 @@ export class TaskItemsComponent {
         if (res.isSucceed) {
           this.task().isCompleted = !currentCompletedStatus;
           this.task().status = Object.keys(this.statusObj).find(key => this.statusObj[key] === status)!;
+          if (!this.pendingTasks() || !this.completeTasks()) {
+            this.toastrService.success(`${currentCompletedStatus ? 'Change Status' : 'Complete Task'} Succeed`, 'Success');
+            this.router.navigate(['tasks']);
+          }
           if (currentCompletedStatus) {
             this.pendingTasks()?.push(this.task());
             this.sortTasks(this.pendingTasks()!);

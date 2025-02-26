@@ -6,6 +6,7 @@ import { authGuard } from './core/auth/auth.guard';
 import { AccountComponent } from './features/account/account.component';
 import { ChangePasswordComponent } from './features/account/component/change-password/change-password.component';
 import { TaskListComponent } from './features/task-list/task-list.component';
+import { TaskDetailComponent } from './features/task-detail/task-detail.component';
 
 export const routes: Routes = [
     {
@@ -17,6 +18,11 @@ export const routes: Routes = [
     {
         path: "tasks",
         component: TaskListComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: "tasks/:id",
+        component: TaskDetailComponent,
         canActivate: [authGuard]
     },
     {

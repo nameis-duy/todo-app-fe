@@ -7,6 +7,8 @@
             img {
                 width: 100% ;
                 border-radius: 14px;
+                max-width: 300px;
+                max-height: 300px;
             }
         }
     }
@@ -60,6 +62,42 @@
         .btn-edit {
             margin-right: 0.5rem;
         }
+    }
+}
+
+.task-detail-container[isfromnavigate="true"] {
+    margin-top: 8rem;
+    box-shadow: 0px 2px 2px 0px;
+    padding-top: 3%;
+    padding-left: 3%;
+    border: solid 1px #a1a3ab96;
+    border-radius: 16px;
+
+    .task-detail-header {
+        .header-title-section {
+            position: relative;
+
+            .btn-back {
+                position: absolute;
+                right: 5%;
+                top: -5%;
+                text-decoration: underline;
+                font-weight: 500;
+
+                &:hover {
+                    background-color: #bab4b4;
+                }
+            }
+        }
+    }
+
+    .task-description {
+        color: #747474;
+        padding-top: 3%;
+        padding-right: 1rem;
+        height: 23vi;
+        overflow-y: auto;
+        line-height: 200%;
     }
 }
 
