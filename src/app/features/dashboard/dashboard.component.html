@@ -1,0 +1,100 @@
+<div *ngIf="isLoading()">
+    <app-loader></app-loader>
+</div>
+<div class="dashboard-container">
+    <div class="greeting-section">
+        <h2 class="d-inline-block greeting-title">Welcome back, {{ userName() }}</h2>
+        <span>
+            <img src="dashboard/handWave.png" alt="Hand wave picture">
+        </span>
+    </div>
+    <div class="statistic-section row">
+        <div class="task-section col-md-6">
+            <div class="task-section-header row">
+                <div class="header-title col-8">
+                    <img src="dashboard/Pending.png" alt="title-icon">
+                    <h5 class="d-inline-block header-text">To-Do</h5>
+                </div>
+                <div class="header-action col-4 text-end">
+                    <button type="button" class="btn btn-add-task">
+                        <span><i class="fa-solid fa-plus"></i></span>
+                        Add Task
+                    </button>
+                </div>
+                <span *ngIf="latestTaskDate()">
+                    <p class="date-section">{{ latestTaskDate() | date:'longDate' }}
+                        <span>&#9679; {{ dateDiff() }}</span>
+                    </p>
+                </span>
+            </div>
+            <div class="task-section-body">
+                <div *ngIf="todayPendingTasks().length === 0; else elseBlock">
+                    @for (task of pendingTasks(); track task) {
+                    <app-task-items tems [task]="task" [tasks]="pendingTasks()"
+                        [pendingTasks]="pendingTasks()" [completeTasks]="completedTasks()"></app-task-items>
+                    }
+                </div>
+                <ng-template #elseBlock>
+                    @for (task of todayPendingTasks(); track task) {
+                    <app-task-items tems [task]="task" [tasks]="todayPendingTasks()"
+                        [pendingTasks]="todayPendingTasks()" [completeTasks]="completedTasks()"></app-task-items>
+                    }
+                    <div *ngIf="todayPendingTasks().length !== 2">
+                        <hr class="w-100">
+                        @for (task of pendingTasks(); track task) {
+                        <app-task-items tems [task]="task" [tasks]="pendingTasks()"
+                            [pendingTasks]="pendingTasks()" [completeTasks]="completedTasks()"></app-task-items>
+                        }
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        <div class="chart-section col-md-6">
+            <div class="progress-bar-section">
+                <div class="progress-bar-header">
+                    <img src="dashboard/taskComplete.png" alt="title-icon">
+                    <h6 class="d-inline-block header-text">Task Status</h6>
+                </div>
+                <div class="progress-bar-content">
+                    <div class="progress-bar-item">
+                        <app-progress-bar [value]="completedTask()" [strokeWidth]="14" [customColor]="'Completed'"
+                            [diameter]="100"></app-progress-bar>
+                        <div class="progress-bar-item-title">
+                            <span appStatusColorDirective [status]="'Completed'">&#9679;</span>
+                            <p class="d-inline-block ps-2">Completed</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar-item">
+                        <app-progress-bar [value]="inProgressTask()" [strokeWidth]="14" [customColor]="'InProgress'"
+                            [diameter]="100"></app-progress-bar>
+                        <div class="progress-bar-item-title">
+                            <span appStatusColorDirective [status]="'InProgress'">&#9679;</span>
+                            <p class="d-inline-block ps-2">In Progress</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar-item">
+                        <app-progress-bar [value]="pendingTask()" [strokeWidth]="14" [customColor]="'Pending'"
+                            [diameter]="100"></app-progress-bar>
+                        <div class="progress-bar-item-title">
+                            <span appStatusColorDirective [status]="'Pending'">&#9679;</span>
+                            <p class="d-inline-block ps-2">Not Started</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="completed-tasks-section">
+                <div class="completed-tasks-header">
+                    <img src="dashboard/taskCompleted.png" alt="title-icon">
+                    <h6 class="d-inline-block header-text">Completed Task</h6>
+                </div>
+                <div class="completed-tasks-content">
+                    <div class="task-section-body">
+                        @for (task of completedTasks(); track task) {
+                        <app-task-items [task]="task"></app-task-items>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -180,10 +180,7 @@ export class TaskListComponent {
   updateTask(task: TaskUpdateRequest) {
     this.isLoading.set(true);
     this.taskService.updateTask(task).subscribe({
-      next: (res) => {
-        if (res.isSucceed) {
-          this.toastr.success('Change successfully', 'Success');
-        }
+      next: () => {
         this.isLoading.set(false);
       },
       error: (err) => {

@@ -1,0 +1,53 @@
+@use '@angular/material' as mat;
+
+:host {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    align-content: stretch;
+    position: relative;
+
+    .spinner-background {
+        display: flex;
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        box-sizing: border-box;
+        line-height: inherit;
+        text-align: center;
+        overflow: hidden;
+        border-color: #D9D9D9;
+        border-radius: 50%;
+        border-style: solid;
+        border-width: 15px;
+        padding-left: 2%;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+    }
+
+    .mat-progress-spinner {
+        flex: 1 1 100%;
+        width: inherit;
+        height: inherit;
+    }
+
+    [customColor="Completed"] {
+        @include mat.progress-spinner-overrides((
+            active-indicator-color: #05A301,
+          ));
+    }
+
+    [customColor="InProgress"] {
+        @include mat.progress-spinner-overrides((
+            active-indicator-color: #0225FF,
+          ));
+    }
+
+    [customColor="Pending"] {
+        @include mat.progress-spinner-overrides((
+            active-indicator-color: #F21E1E,
+          ));
+    }
+}

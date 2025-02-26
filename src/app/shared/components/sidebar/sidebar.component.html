@@ -2,24 +2,24 @@
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
             <div>
-                <div class="nav_list nav-user-item">
+                <div class="nav_list nav-user-item">    
                     <span class="nav_logo-name">{{ name() }}</span> <br> {{ email }}
                 </div>
                 <div class="nav_list">
                     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
                         class="nav_link" ariaCurrentWhenActive="page">
-                        <i class="fa-solid fa-list-check"></i>
+                        <mat-icon fontIcon="dashboard"></mat-icon>
+                        <span class="nav_name">Dashboard</span>
+                    </a>
+                    <a routerLink="/tasks" class="nav_link" routerLinkActive="active" ariaCurrentWhenActive="page">
+                        <mat-icon fontIcon="checklist"></mat-icon>
                         <span class="nav_name">My Task</span>
                     </a>
                     <a routerLink="/account" routerLinkActive="active" class="nav_link" ariaCurrentWhenActive="page">
-                        <i class="fa-regular fa-user"></i>
+                        <mat-icon fontIcon="account_circle"></mat-icon>
                         <span class="nav_name">Profile</span>
                     </a>
                     <!-- <a href="#" class="nav_link">
-                        <i class='bx bx-message-square-detail nav_icon'></i>
-                        <span class="nav_name">Messages</span>
-                    </a>
-                    <a href="#" class="nav_link">
                         <i class='bx bx-bookmark nav_icon'></i>
                         <span class="nav_name">Bookmark</span>
                     </a>

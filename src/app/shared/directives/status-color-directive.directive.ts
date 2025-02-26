@@ -1,4 +1,4 @@
-import { Directive, ElementRef, inject, Input, input, Renderer2, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, inject, Input, Renderer2, SimpleChanges } from '@angular/core';
 
 @Directive({
   selector: '[appStatusColorDirective]'
@@ -16,11 +16,14 @@ export class StatusColorDirectiveDirective {
   }
 
   updateColor() : void {
-    let colorCode = '#0225FF';
+    let colorCode = '#F21E1E';
     let borderColorCode = '#A1A3AB'
     if (this.status === 'Completed') {
       colorCode = '#05A301';
       borderColorCode = '#05A301';
+    } else if (this.status === 'InProgress') {
+      colorCode = '#0225FF';
+      borderColorCode = '#0225FF';
     }
 
     if (this.el.nativeElement.tagName === 'DIV') {

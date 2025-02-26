@@ -1,0 +1,124 @@
+.dashboard-container {
+    font-family: 'Inter';
+    padding-top: 2%;
+    padding-left: 2%;
+    padding-right: 5%;
+
+    .greeting-section {
+        margin-bottom: 1%;
+
+        .greeting-title {
+            padding-right: 1rem;
+        }
+    }
+
+    .statistic-section {
+        border: 1px solid #a1a3ab91;
+        box-shadow: 0px 1px 2px 0px;
+        min-height: 78vh;
+
+        .task-section {
+            padding: 2%;
+            box-shadow: -1px 2px 6px -2px;
+            margin: 2%;
+            margin-right: 0;
+            border-radius: 14px;
+
+            .task-section-header {
+
+                .header-title {
+                    .header-text {
+                        padding-left: 2%;
+                        color: #FF6767;
+                    }
+                }
+
+                .header-action {
+                    .btn-add-task {
+                        border: none;
+                        background: none;
+                        color: #A1A3AB;
+
+                        &:hover {
+                            background-color: #A1A3AB;
+                            color: #F5F8FF;
+                            cursor: pointer;
+                        }
+
+                        span {
+                            color: #F24E1E;
+                        }
+                    }
+                }
+
+                .date-section {
+                    padding-top: 2%;
+                    font-size: 0.9rem;
+
+                    span {
+                        color: #A1A3AB;
+                        padding-left: 2%;
+                    }
+                }
+            }
+        }
+
+        .chart-section {
+            display: grid;
+            margin: 1% 0;
+            width: 48%;
+            grid-template-rows: max-content;
+
+            .progress-bar-section {
+                padding: 2%;
+                box-shadow: -1px 2px 6px -2px;
+                margin: 2%;
+                margin-bottom: 0;
+                border-radius: 14px;
+
+                .progress-bar-header {
+                    padding-left: 3%;
+                    padding-top: 2%;
+
+                    .header-text {
+                        padding-left: 2%;
+                        color: #FF6767;
+                    }
+                }
+
+                .progress-bar-content {
+                    display: flex;
+                    justify-content: space-evenly;
+                    padding-top: 5%;
+
+                    .progress-bar-item {
+                        .progress-bar-item-title {
+                            padding-top: 20%;
+                        }
+                    }
+                }
+            }
+
+            .completed-tasks-section {
+                padding: 2%;
+                box-shadow: -1px 2px 6px -2px;
+                margin: 2%;
+                border-radius: 14px;
+
+                .completed-tasks-header {
+                    padding-left: 3%;
+                    padding-top: 2%;
+
+                    .header-text {
+                        padding-left: 2%;
+                        color: #FF6767;
+                    }
+                }
+
+                .completed-tasks-content {
+                    padding-top: 5%;
+                }
+            }
+        }
+    }
+}

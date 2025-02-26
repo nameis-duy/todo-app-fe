@@ -5,12 +5,18 @@ import { RegisterComponent } from './features/auth/register/register.component';
 import { authGuard } from './core/auth/auth.guard';
 import { AccountComponent } from './features/account/account.component';
 import { ChangePasswordComponent } from './features/account/component/change-password/change-password.component';
+import { TaskListComponent } from './features/task-list/task-list.component';
 
 export const routes: Routes = [
     {
         path: "",
         pathMatch: "full",
         component: HomeComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: "tasks",
+        component: TaskListComponent,
         canActivate: [authGuard]
     },
     {

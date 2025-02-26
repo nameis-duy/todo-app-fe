@@ -1,4 +1,4 @@
-import { Component, inject, output, signal, ViewChild } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { SidebarComponent } from "../../shared/components/sidebar/sidebar.component";
 import { AccountService } from '../../core/services/account.service';
 import { Account } from '../../shared/models/account.model';

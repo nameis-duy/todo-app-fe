@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { TaskListComponent } from "../task-list/task-list.component";
 import { BaseService } from '../../core/services/base.service';
 import { AppConstant } from '../../core/constants/constant';
 import { HttpClient } from '@angular/common/http';
+import { DashboardComponent } from "../dashboard/dashboard.component";
 
 @Component({
   selector: 'app-home',
-  imports: [TaskListComponent],
+  imports: [DashboardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
