@@ -6,6 +6,7 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   inject, signal,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {
@@ -108,7 +109,7 @@ export class FormModalComponent {
       }
     }
   }
-
+  
   ngOnDestroy() {
     this.ctxProviderRef.nativeElement.removeEventListener('change', this.handleFileUploadChangeEvent);
     this.imageUploadConfigRef.nativeElement.localeDefinitionOverride = null;
@@ -173,6 +174,7 @@ export class FormModalComponent {
   onSubmit() {
     if (this.taskForm?.valid) {
       this.taskForm.get('imageUrl')!.setValue(this.uploadedImageUrl());
+      this.expiredAt!.setValue(this.expiredAt!.value + `+0${(-(new Date()).getTimezoneOffset() / 60)}:00`);
       this.formDialogRef.close(this.taskForm.value);
     } else {
       this.isSubmitted = true;

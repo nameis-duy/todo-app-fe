@@ -59,26 +59,6 @@ export class TaskDetailComponent {
         next: (res) => {
           if (res.isSucceed) {
             this.task = res.data;
-            if (this.task) {
-              const date = new Date(this.task!.createdAt);
-              const expired = new Date(this.task.expiredAt);
-              this.dateStr = date.toLocaleDateString('vi-VN', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-              });
-              this.expiredDateStr = expired.toLocaleDateString('vi-VN', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-              });
-
-              this.tasks.set(this.task?.status === "Completed" ? this.completedTasks() : this.pendingTasks());
-            }
           }
           this.isLoading.set(false);
         },
@@ -89,28 +69,12 @@ export class TaskDetailComponent {
     } else {
       this.task$()?.subscribe((t) => {
         this.task = t;
-        if (this.task) {
-          const date = new Date(this.task!.createdAt);
-          const expired = new Date(this.task.expiredAt);
-          this.dateStr = date.toLocaleDateString('vi-VN', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-          });
-          this.expiredDateStr = expired.toLocaleDateString('vi-VN', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-          });
-
-          this.tasks.set(this.task?.status === "Completed" ? this.completedTasks() : this.pendingTasks());
-        }
       })
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
   }
 
   openFormModal() {

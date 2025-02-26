@@ -14,8 +14,8 @@
                 <p class="task-status">Status: <span class="status-value" appStatusColorDirective
                         [status]="task.status">{{
                         task.status }}</span></p>
-                <p class="task-date">Created on: {{ dateStr }} </p>
-                <p class="task-date">Expired on: {{ expiredDateStr }} </p>
+                <p class="task-date">Created on: {{ task.createdAt | date : 'hh:mm aa dd/MM/YYYY '}} </p>
+                <p class="task-date">Expired on: {{ task.expiredAt | date : 'hh:mm aa dd/MM/YYYY '}} </p>
 
             </div>
         </div>
