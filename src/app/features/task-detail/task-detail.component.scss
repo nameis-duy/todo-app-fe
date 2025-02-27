@@ -72,8 +72,17 @@
     padding-left: 3%;
     border: solid 1px #a1a3ab96;
     border-radius: 16px;
+    height: calc(100vh - 160px);
 
     .task-detail-header {
+        .header-image-section {
+            img {
+                width: auto;
+                height: calc(100vh - 67vh);
+                object-fit: cover;
+            }
+        }
+
         .header-title-section {
             position: relative;
 
@@ -95,7 +104,7 @@
         color: #747474;
         padding-top: 3%;
         padding-right: 1rem;
-        height: 23vi;
+        height: calc(100vh - 570px);
         overflow-y: auto;
         line-height: 200%;
     }

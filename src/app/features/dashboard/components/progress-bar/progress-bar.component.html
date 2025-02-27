@@ -1,4 +1,4 @@
-<div class="spinner-background">{{progress.value.toFixed(0)}}%</div>
+<div class="spinner-background">{{value().toFixed(0)}}%</div>
 <mat-progress-spinner #progress [mode]="'determinate'" [value]="value()"
     [attr.customColor]="customColor()"
     [strokeWidth]="strokeWidth()" [diameter]="diameter()">

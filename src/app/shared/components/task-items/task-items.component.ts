@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormModalComponent } from '../form-modal/form-modal.component';
 import { DeleteConfirmModalComponent } from '../delete-confirm-modal/delete-confirm-modal.component';
 import { Router } from '@angular/router';
+import { StringCamelToSpacePipe } from '../../pipes/string-camel-to-space.pipe';
 
 @Component({
   selector: 'app-task-items',
@@ -22,7 +23,8 @@ import { Router } from '@angular/router';
     StatusColorDirectiveDirective,
     LoaderComponent,
     MatTooltipModule,
-    MatTabsModule
+    MatTabsModule,
+    StringCamelToSpacePipe
   ],
   templateUrl: './task-items.component.html',
   styleUrl: './task-items.component.scss'
@@ -143,6 +145,11 @@ export class TaskItemsComponent {
       next: (res) => {
         if (res.isSucceed) {
           if (this.tasks()) {
+            if (!this.pendingTasks() && !this.completeTasks()) {
+              this.toastrService.success('Remove successfully', 'Success');
+              this.router.navigate(['tasks']);
+              return;
+            }
             var indexToRemove = this.tasks()?.findIndex(t => t.id === id);
             this.tasks()?.splice(indexToRemove!, 1);
             this.selectedId.emit(this.tasks()?.at(0)?.id ?? -1);

@@ -45,7 +45,7 @@
           ));
     }
 
-    [customColor="Pending"] {
+    [customColor="NotStarted"] {
         @include mat.progress-spinner-overrides((
             active-indicator-color: #F21E1E,
           ));

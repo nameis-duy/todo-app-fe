@@ -7,7 +7,7 @@ export class StatusColorDirectiveDirective {
   el = inject(ElementRef);
   render = inject(Renderer2);
 
-  @Input() status = 'Pending';
+  @Input() status = 'NotStarted';
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['status']) {
@@ -23,7 +23,6 @@ export class StatusColorDirectiveDirective {
       borderColorCode = '#05A301';
     } else if (this.status === 'InProgress') {
       colorCode = '#0225FF';
-      borderColorCode = '#0225FF';
     }
 
     if (this.el.nativeElement.tagName === 'DIV') {

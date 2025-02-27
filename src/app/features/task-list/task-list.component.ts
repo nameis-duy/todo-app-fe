@@ -178,16 +178,7 @@ export class TaskListComponent {
   }
 
   updateTask(task: TaskUpdateRequest) {
-    this.isLoading.set(true);
-    this.taskService.updateTask(task).subscribe({
-      next: () => {
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        console.error('Error update task: ', err);
-        this.isLoading.set(false);
-      }
-    })
+    this.taskService.updateTask(task).subscribe();
   }
 
   dropHandle(event: CdkDragDrop<Task[]>) {
@@ -198,8 +189,6 @@ export class TaskListComponent {
       return;
     }
     selectedTask.priority = targetTask.priority;
-    selectedTask.status = targetTask.status;
-    selectedTask.isCompleted = targetTask.isCompleted;
 
     if (!this.statusObj || !this.priorityObj) {
       this.initStatusAndPrioritiesObj();

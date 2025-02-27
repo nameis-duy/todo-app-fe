@@ -12,11 +12,18 @@ import { ToastrService } from 'ngx-toastr';
 import { Dictionary } from '../../shared/models/dictionary.model';
 import { AppConstant } from '../../core/constants/constant';
 import { DeleteConfirmModalComponent } from '../../shared/components/delete-confirm-modal/delete-confirm-modal.component';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { StringCamelToSpacePipe } from '../../shared/pipes/string-camel-to-space.pipe';
 
 @Component({
   selector: 'app-task-detail',
-  imports: [CommonModule, StatusColorDirectiveDirective, MatTooltipModule, RouterLink],
+  imports: [
+    CommonModule,
+    StatusColorDirectiveDirective,
+    MatTooltipModule,
+    RouterLink,
+    StringCamelToSpacePipe
+  ],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.scss'
 })
@@ -25,6 +32,7 @@ export class TaskDetailComponent {
   toastrService = inject(ToastrService);
   formModal = inject(MatDialog);
   deleteConfirmModal = inject(MatDialog);
+  router = inject(Router);
 
   statusStoredKey = AppConstant.STATUS_STORING_KEY;
   priorityStoredKey = AppConstant.PRIORITY_STORING_KEY;
@@ -59,11 +67,14 @@ export class TaskDetailComponent {
         next: (res) => {
           if (res.isSucceed) {
             this.task = res.data;
+          } else {
+            this.router.navigate(['tasks']);
           }
           this.isLoading.set(false);
         },
         error: (err) => {
           console.log("Error get task detail: " + err);
+          this.router.navigate(['tasks']);
         }
       })
     } else {
@@ -71,10 +82,6 @@ export class TaskDetailComponent {
         this.task = t;
       })
     }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
   }
 
   openFormModal() {

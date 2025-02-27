@@ -16,7 +16,7 @@
                     <h5 class="d-inline-block header-text">To-Do</h5>
                 </div>
                 <div class="header-action col-4 text-end">
-                    <button type="button" class="btn btn-add-task">
+                    <button type="button" class="btn btn-add-task" (click)="openFormModal()">
                         <span><i class="fa-solid fa-plus"></i></span>
                         Add Task
                     </button>
@@ -73,10 +73,10 @@
                         </div>
                     </div>
                     <div class="progress-bar-item">
-                        <app-progress-bar [value]="pendingTask()" [strokeWidth]="14" [customColor]="'Pending'"
+                        <app-progress-bar [value]="pendingTask()" [strokeWidth]="14" [customColor]="'NotStarted'"
                             [diameter]="100"></app-progress-bar>
                         <div class="progress-bar-item-title">
-                            <span appStatusColorDirective [status]="'Pending'">&#9679;</span>
+                            <span appStatusColorDirective [status]="'NotStarted'">&#9679;</span>
                             <p class="d-inline-block ps-2">Not Started</p>
                         </div>
                     </div>

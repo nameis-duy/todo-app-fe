@@ -9,8 +9,8 @@ import { ProgressSpinnerMode, MatProgressSpinnerModule } from '@angular/material
 })
 export class ProgressBarComponent {
   mode: ProgressSpinnerMode = 'determinate';
-  value = input<number>(100);
-  color = input<string>('#000');
+  value = input<number>(0);
+  color = input<string>();
   strokeWidth = input<number>();
   diameter = input<number>();
   customColor = input<string>();

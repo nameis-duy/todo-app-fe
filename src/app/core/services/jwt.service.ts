@@ -32,6 +32,7 @@ export class JwtService {
     }
 
     destroyToken(): void {
+        localStorage.clear();
         this.cookieService.deleteAll();
     }
 

@@ -84,7 +84,7 @@
                 </div>
             </div>
         </div> -->
-        <h4 class="item-title">{{ (task().title.length > 40) ? task().description.slice(0,
+        <h4 class="item-title">{{ (task().title.length > 40) ? task().title.slice(0,
                 37) + '...' : task().title }}</h4>
         <div class="row task-content">
             <p class="item-description pt-1 col-9">{{ (task().description.length > 150) ? task().description.slice(0,
@@ -93,18 +93,18 @@
                 <img [src]="task().imageUrl" alt="Task Image">
             </div>
         </div>
-        <div class="enum-sections row">
-            <p class="col-md-4">
+        <div class="enum-sections">
+            <p class="priority-section">
                 Priority:
                 <span class="priority-value" id="prio-{{task().id}}" [attr.color-code]="task().priority">
                     {{task().priority}}
                 </span>
             </p>
-            <p class="col-md-3">
+            <p class="status-section">
                 Status:
-                <span class="status-value" appStatusColorDirective [status]="task().status">{{ task().status }}</span>
+                <span class="status-value" appStatusColorDirective [status]="task().status">{{ task().status | camelToSpace}}</span>
             </p>
-            <div class="col-md-5 text-center">
+            <div class="created-date-section text-center">
                 <p class="created-date">Created on: {{ dateStr }}</p>
             </div>
         </div>

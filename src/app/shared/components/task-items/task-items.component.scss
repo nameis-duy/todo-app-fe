@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    
+
     &.active {
         background-color: #a1a3ab38;
     }
@@ -30,7 +30,6 @@
     }
 
     .status-section {
-        font-family: "Font Awesome 5 Free";
         float: left;
         transition: content 0.3s;
         padding: 0;
@@ -95,9 +94,27 @@
 
         .enum-sections {
             font-size: smaller;
+            display: grid;
+            grid-template-areas: "content1 content2 content3";
+            justify-items: center;
 
-            .created-date {
-                color: #ababab;
+            .priority-section {
+                grid-area: content1;
+                width: 100%;
+            }
+
+            .status-section {
+                grid-area: content2;
+                width: 100%;
+            }
+
+            .created-date-section {
+                grid-area: content3;
+                width: 100%;
+
+                .created-date {
+                    color: #ababab;
+                }
             }
         }
     }
